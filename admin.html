@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BALENN — Owner Admin</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+:root{
+    --bg:#f7f2ee;
+    --surface:#fffaf7;
+    --surface-2:#f3e9e3;
+    --text:#332c2b;
+    --muted:#8c7d77;
+    --line:#eadfd9;
+    --pink:#c99b9e;
+    --pink-soft:#ead0d0;
+    --gold:#b99a68;
+    --gold-soft:#eadfc8;
+    --peach:#d9a48f;
+    --green:#77947f;
+    --shadow:0 12px 35px rgba(75,50,42,.08);
+    --radius:20px;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:'DM Sans',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+button,
+input,
+select{
+    font:inherit;
+}
+
+/* =====================================================
+   OWNER LOGIN
+===================================================== */
+
+.login-screen{
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at 20% 20%,rgba(201,155,158,.18),transparent 28%),
+        radial-gradient(circle at 80% 80%,rgba(185,154,104,.16),transparent 30%),
+        #f7f2ee;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:9999;
+}
+
+.login-card{
+    width:min(430px,100%);
+    background:rgba(255,250,247,.96);
+    border:1px solid var(--line);
+    border-radius:28px;
+    padding:42px 38px;
+    box-shadow:0 25px 80px rgba(75,50,42,.12);
+    text-align:center;
+}
+
+.login-logo{
+    font-family:'Playfair Display',serif;
+    font-size:42px;
+    letter-spacing:5px;
+    color:var(--text);
+}
+
+.login-sub{
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:2.5px;
+    margin-top:3px;
+    text-transform:uppercase;
+}
+
+.login-divider{
+    width:45px;
+    height:1px;
+    background:var(--gold);
+    margin:24px auto;
+}
+
+.login-title{
+    font-family:'Playfair Display',serif;
+    font-size:28px;
+    margin-bottom:7px;
+}
+
+.login-description{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.7;
+    margin-bottom:25px;
+}
+
+.login-form{
+    text-align:left;
+}
+
+.login-label{
+    display:block;
+    font-size:10px;
+    color:var(--muted);
+    margin:0 0 7px 4px;
+    letter-spacing:.5px;
+}
+
+.login-input{
+    width:100%;
+    height:46px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:#fff;
+    outline:none;
+    padding:0 14px;
+    color:var(--text);
+    font-size:12px;
+    margin-bottom:16px;
+}
+
+.login-input:focus{
+    border-color:var(--pink);
+    box-shadow:0 0 0 3px rgba(201,155,158,.1);
+}
+
+.login-button{
+    width:100%;
+    height:47px;
+    border:none;
+    border-radius:12px;
+    background:#302927;
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1px;
+    transition:.2s;
+    margin-top:4px;
+}
+
+.login-button:hover{
+    background:#403633;
+    transform:translateY(-1px);
+}
+
+.login-error{
+    display:none;
+    color:#a46767;
+    background:#f5e4e4;
+    border:1px solid #ead0d0;
+    border-radius:10px;
+    padding:9px 12px;
+    font-size:10px;
+    margin-bottom:14px;
+    text-align:center;
+}
+
+.login-footer{
+    color:#aaa09a;
+    font-size:9px;
+    margin-top:22px;
+}
+
+/* =====================================================
+   ADMIN LAYOUT
+===================================================== */
+
+.admin-layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:250px;
+    background:#302927;
+    color:#fff;
+    padding:28px 18px;
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    display:flex;
+    flex-direction:column;
+    z-index:20;
+}
+
+.brand{
+    padding:4px 14px 30px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+    margin-bottom:22px;
+}
+
+.brand-name{
+    font-family:'Playfair Display',serif;
+    font-size:28px;
+    letter-spacing:3px;
+}
+
+.brand-sub{
+    color:#cbb9af;
+    font-size:11px;
+    letter-spacing:1.5px;
+    margin-top:5px;
+}
+
+.menu-title{
+    color:#9f918b;
+    font-size:10px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    padding:0 14px 10px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#cfc4bf;
+    padding:13px 14px;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:14px;
+    transition:.2s;
+}
+
+.nav a:hover{
+    background:rgba(255,255,255,.07);
+    color:#fff;
+}
+
+.nav a.active{
+    background:#c99b9e;
+    color:#fff;
+}
+
+.nav-icon{
+    width:22px;
+    text-align:center;
+    font-size:16px;
+}
+
+.sidebar-bottom{
+    margin-top:auto;
+}
+
+.store-link,
+.logout-button{
+    display:block;
+    width:100%;
+    text-decoration:none;
+    text-align:center;
+    color:#e8d9d2;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:12px;
+    padding:11px;
+    font-size:12px;
+    transition:.2s;
+    background:transparent;
+}
+
+.store-link:hover,
+.logout-button:hover{
+    background:rgba(255,255,255,.07);
+}
+
+.logout-button{
+    margin-top:9px;
+    cursor:pointer;
+    color:#d8b8b8;
+}
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main{
+    margin-left:250px;
+    width:calc(100% - 250px);
+    min-height:100vh;
+}
+
+.topbar{
+    height:82px;
+    background:rgba(255,250,247,.92);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 36px;
+    position:sticky;
+    top:0;
+    z-index:10;
+    backdrop-filter:blur(12px);
+}
+
+.page-title{
+    font-family:'Playfair Display',serif;
+    font-size:25px;
+}
+
+.page-subtitle{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:3px;
+}
+
+.admin-profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.profile-avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:var(--pink-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#76595a;
+    font-weight:700;
+}
+
+.profile-text strong{
+    display:block;
+    font-size:13px;
+}
+
+.profile-text span{
+    display:block;
+    color:var(--muted);
+    font-size:11px;
+}
+
+.content{
+    padding:32px 36px 50px;
+}
+
+.welcome{
+    margin-bottom:26px;
+}
+
+.welcome h2{
+    font-family:'Playfair Display',serif;
+    font-size:29px;
+    font-weight:600;
+}
+
+.welcome p{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:6px;
+}
+
+/* =====================================================
+   STAT CARDS
+===================================================== */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.stat-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+}
+
+.stat-card::after{
+    content:"";
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    position:absolute;
+    right:-22px;
+    top:-22px;
+    background:var(--pink-soft);
+    opacity:.55;
+}
+
+.stat-card:nth-child(2)::after{
+    background:var(--gold-soft);
+}
+
+.stat-card:nth-child(3)::after{
+    background:#eadbd5;
+}
+
+.stat-card:nth-child(4)::after{
+    background:#e1ddd0;
+}
+
+.stat-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:relative;
+    z-index:1;
+}
+
+.stat-label{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.stat-icon{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--surface-2);
+}
+
+.stat-number{
+    font-family:'Playfair Display',serif;
+    font-size:29px;
+    margin-top:15px;
+    position:relative;
+    z-index:1;
+}
+
+.stat-note{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:4px;
+    position:relative;
+    z-index:1;
+}
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:1.45fr .85fr;
+    gap:22px;
+}
+
+.card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
+
+.card-header{
+    padding:21px 22px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.card-title{
+    font-family:'Playfair Display',serif;
+    font-size:19px;
+}
+
+.card-link{
+    text-decoration:none;
+    color:#9c7275;
+    font-size:12px;
+}
+
+.card-link:hover{
+    text-decoration:underline;
+}
+
+/* =====================================================
+   ORDERS
+===================================================== */
+
+.order-list{
+    padding:6px 22px 10px;
+}
+
+.order-row{
+    display:grid;
+    grid-template-columns:1.2fr 1fr .8fr .7fr;
+    align-items:center;
+    gap:12px;
+    padding:17px 0;
+    border-bottom:1px solid var(--line);
+}
+
+.order-row:last-child{
+    border-bottom:none;
+}
+
+.order-number{
+    font-size:13px;
+    font-weight:700;
+}
+
+.customer-name{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:3px;
+}
+
+.order-total{
+    font-size:13px;
+    font-weight:600;
+}
+
+.status{
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    padding:6px 9px;
+    border-radius:30px;
+    font-size:10px;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+.status.pending{
+    background:#f5ead3;
+    color:#9b7741;
+}
+
+.status.shipping{
+    background:#e6d9e9;
+    color:#7d6684;
+}
+
+.status.completed{
+    background:#dce9df;
+    color:#607d68;
+}
+
+.status.cancelled{
+    background:#f0dddd;
+    color:#956565;
+}
+
+.empty{
+    padding:35px 20px;
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* =====================================================
+   QUICK ACTIONS
+===================================================== */
+
+.quick-actions{
+    padding:20px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.quick-action{
+    text-decoration:none;
+    background:#faf4f0;
+    border:1px solid var(--line);
+    border-radius:15px;
+    padding:17px 14px;
+    color:var(--text);
+    transition:.2s;
+}
+
+.quick-action:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(75,50,42,.08);
+}
+
+.quick-icon{
+    font-size:20px;
+    margin-bottom:10px;
+}
+
+.quick-action strong{
+    display:block;
+    font-size:13px;
+}
+
+.quick-action span{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    margin-top:4px;
+}
+
+/* =====================================================
+   SUMMARY
+===================================================== */
+
+.summary{
+    margin-top:22px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+}
+
+.summary-list{
+    padding:10px 22px 18px;
+}
+
+.summary-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:13px 0;
+    border-bottom:1px solid var(--line);
+    font-size:12px;
+}
+
+.summary-item:last-child{
+    border-bottom:none;
+}
+
+.summary-item span{
+    color:var(--muted);
+}
+
+.summary-item strong{
+    font-size:13px;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+.mobile-menu{
+    display:none;
+    border:none;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+@media(max-width:1100px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+
+    .summary{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        transform:translateX(-100%);
+        transition:.25s;
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .main{
+        margin-left:0;
+        width:100%;
+    }
+
+    .mobile-menu{
+        display:block;
+    }
+
+    .topbar{
+        padding:0 18px;
+    }
+
+    .content{
+        padding:24px 18px 40px;
+    }
+
+    .profile-text{
+        display:none;
+    }
+}
+
+@media(max-width:560px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .order-row{
+        grid-template-columns:1fr 1fr;
+        gap:7px;
+    }
+
+    .order-row > :nth-child(3),
+    .order-row > :nth-child(4){
+        margin-top:3px;
+    }
+
+    .quick-actions{
+        grid-template-columns:1fr;
+    }
+
+    .welcome h2{
+        font-size:24px;
+    }
+
+    .login-card{
+        padding:35px 24px;
+    }
+
+    .login-logo{
+        font-size:36px;
+    }
+}
+</style>
+
+<!-- =========================
+     BALENN ADMIN LOADER
+========================= -->
+
+<style>
+    #balennAdminLoader {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background:
+            radial-gradient(
+                circle at 50% 40%,
+                rgba(216, 174, 176, 0.18),
+                transparent 32%
+            ),
+            #302b2b;
+
+        transition:
+            opacity 0.6s ease,
+            visibility 0.6s ease;
+    }
+
+    #balennAdminLoader.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .admin-loader-inner {
+        width: min(90vw, 420px);
+        text-align: center;
+        animation:
+            adminLoaderAppear
+            0.8s ease forwards;
+    }
+
+    @keyframes adminLoaderAppear {
+
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    }
+
+    .admin-loader-brand {
+        font-family:
+            "Cormorant Garamond",
+            Georgia,
+            serif;
+
+        font-size: 52px;
+        font-weight: 700;
+        letter-spacing: 9px;
+        color: #f7eee8;
+        margin-left: 9px;
+    }
+
+    .admin-loader-brand span {
+        color: #d8c29d;
+    }
+
+    .admin-loader-title {
+        margin-top: 8px;
+
+        font-family:
+            "Manrope",
+            sans-serif;
+
+        font-size: 8px;
+        font-weight: 600;
+        letter-spacing: 4px;
+
+        color: #d9aaa8;
+
+        text-transform: uppercase;
+    }
+
+    .admin-loader-progress {
+        width: min(280px, 70vw);
+        height: 1px;
+
+        margin: 35px auto 0;
+
+        background: rgba(
+            216,
+            194,
+            157,
+            0.18
+        );
+
+        overflow: hidden;
+    }
+
+    .admin-loader-progress-bar {
+        width: 0%;
+        height: 100%;
+
+        background:
+            linear-gradient(
+                90deg,
+                #d9aaa8,
+                #d8c29d
+            );
+
+        animation:
+            adminProgress
+            1.4s
+            ease
+            forwards;
+    }
+
+    @keyframes adminProgress {
+
+        0% {
+            width: 0%;
+        }
+
+        100% {
+            width: 100%;
+        }
+
+    }
+
+    .admin-loader-status {
+        margin-top: 14px;
+
+        font-family:
+            "Manrope",
+            sans-serif;
+
+        font-size: 7px;
+        letter-spacing: 2px;
+
+        color: rgba(
+            247,
+            238,
+            232,
+            0.55
+        );
+
+        text-transform: uppercase;
+    }
+</style>
+
+</head>
+
+<body>
+
+<!-- =====================================================
+     OWNER LOGIN
+===================================================== -->
+
+<div class="login-screen" id="loginScreen">
+
+```
+<div class="login-card">
+
+    <div class="login-logo">BALENN</div>
+
+    <div class="login-sub">
+        Fashion Co., Ltd.
+    </div>
+
+    <div class="login-divider"></div>
+
+    <h1 class="login-title">
+        Owner Access
+    </h1>
+
+    <p class="login-description">
+        พื้นที่สำหรับผู้ดูแลร้าน BALENN เท่านั้น
+    </p>
+
+    <form class="login-form" id="loginForm">
+
+        <label class="login-label">
+            USERNAME
+        </label>
+
+        <input
+            type="text"
+            id="username"
+            class="login-input"
+            placeholder="Enter username"
+            autocomplete="username"
+            required
+        >
+
+        <label class="login-label">
+            PASSWORD
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            class="login-input"
+            placeholder="Enter password"
+            autocomplete="current-password"
+            required
+        >
+
+        <div class="login-error" id="loginError">
+            Username หรือ Password ไม่ถูกต้อง
+        </div>
+
+        <button
+            type="submit"
+            class="login-button"
+        >
+            SIGN IN
+        </button>
+
+    </form>
+
+    <div class="login-footer">
+        BALENN Owner Administration
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- =====================================================
+     ADMIN
+===================================================== -->
+
+<div class="admin-layout" id="adminApp" style="display:none;">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+```
+<div class="brand">
+    <div class="brand-name">BALENN</div>
+    <div class="brand-sub">FASHION ADMIN</div>
+</div>
+
+<div class="menu-title">Management</div>
+
+<nav class="nav">
+
+    <a href="admin.html" class="active">
+        <span class="nav-icon">⌂</span>
+        Dashboard
+    </a>
+
+    <a href="admin-products.html">
+        <span class="nav-icon">◈</span>
+        Products
+    </a>
+
+    <a href="admin-orders.html">
+        <span class="nav-icon">▤</span>
+        Orders
+    </a>
+
+    <a href="admin-customers.html">
+        <span class="nav-icon">♧</span>
+        Customers
+    </a>
+
+</nav>
+
+<div class="sidebar-bottom">
+
+    <a href="index.html" class="store-link">
+        ↗ View BALENN Store
+    </a>
+
+    <button
+        class="logout-button"
+        id="logoutButton"
+    >
+        ⇥ Logout
+    </button>
+
+</div>
+```
+
+</aside>
+
+<!-- MAIN -->
+
+<main class="main">
+
+```
+<header class="topbar">
+
+    <div style="display:flex;align-items:center;gap:15px;">
+
+        <button
+            class="mobile-menu"
+            id="mobileMenu"
+        >
+            ☰
+        </button>
+
+        <div>
+
+            <div class="page-title">
+                Dashboard
+            </div>
+
+            <div class="page-subtitle">
+                BALENN Fashion Co., Ltd.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="admin-profile">
+
+        <div class="profile-avatar">
+            B
+        </div>
+
+        <div class="profile-text">
+
+            <strong>
+                Owner
+            </strong>
+
+            <span>
+                Store Manager
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<section class="content">
+
+    <div class="welcome">
+
+        <h2>
+            Welcome back, BALENN ✦
+        </h2>
+
+        <p>
+            ภาพรวมร้านค้าและข้อมูลการขายของคุณ
+        </p>
+
+    </div>
+
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    TOTAL SALES
+                </div>
+
+                <div class="stat-icon">
+                    ฿
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalSales"
+            >
+                ฿0.00
+            </div>
+
+            <div class="stat-note">
+                ยอดขายจากคำสั่งซื้อทั้งหมด
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    ORDERS
+                </div>
+
+                <div class="stat-icon">
+                    ▤
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalOrders"
+            >
+                0
+            </div>
+
+            <div class="stat-note">
+                คำสั่งซื้อทั้งหมด
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    CUSTOMERS
+                </div>
+
+                <div class="stat-icon">
+                    ♧
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalCustomers"
+            >
+                0
+            </div>
+
+            <div class="stat-note">
+                ลูกค้าที่มีประวัติการสั่งซื้อ
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    PRODUCTS
+                </div>
+
+                <div class="stat-icon">
+                    ◈
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalProducts"
+            >
+                0
+            </div>
+
+            <div class="stat-note">
+                สินค้าที่มีอยู่ในระบบ
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- DASHBOARD GRID -->
+
+    <div class="dashboard-grid">
+
+
+        <!-- RECENT ORDERS -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div class="card-title">
+                    Recent Orders
+                </div>
+
+                <a
+                    href="admin-orders.html"
+                    class="card-link"
+                >
+                    ดูทั้งหมด →
+                </a>
+
+            </div>
+
+            <div
+                class="order-list"
+                id="recentOrders"
+            ></div>
+
+        </div>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div class="card-title">
+                    Quick Actions
+                </div>
+
+            </div>
+
+            <div class="quick-actions">
+
+                <a
+                    href="admin-products.html"
+                    class="quick-action"
+                >
+                    <div class="quick-icon">＋</div>
+
+                    <strong>
+                        Add Product
+                    </strong>
+
+                    <span>
+                        เพิ่มสินค้าใหม่
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="admin-orders.html"
+                    class="quick-action"
+                >
+                    <div class="quick-icon">▤</div>
+
+                    <strong>
+                        Manage Orders
+                    </strong>
+
+                    <span>
+                        จัดการคำสั่งซื้อ
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="admin-customers.html"
+                    class="quick-action"
+                >
+                    <div class="quick-icon">♧</div>
+
+                    <strong>
+                        Customers
+                    </strong>
+
+                    <span>
+                        ดูลูกค้าของร้าน
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="index.html"
+                    class="quick-action"
+                >
+                    <div class="quick-icon">↗</div>
+
+                    <strong>
+                        View Store
+                    </strong>
+
+                    <span>
+                        เปิดหน้าร้านค้า
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="summary">
+
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div class="card-title">
+                    Order Summary
+                </div>
+
+            </div>
+
+            <div class="summary-list">
+
+                <div class="summary-item">
+                    <span>Pending</span>
+                    <strong id="pendingOrders">0</strong>
+                </div>
+
+                <div class="summary-item">
+                    <span>Shipping</span>
+                    <strong id="shippingOrders">0</strong>
+                </div>
+
+                <div class="summary-item">
+                    <span>Completed</span>
+                    <strong id="completedOrders">0</strong>
+                </div>
+
+                <div class="summary-item">
+                    <span>Cancelled</span>
+                    <strong id="cancelledOrders">0</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <div class="card-title">
+                    Store Information
+                </div>
+
+            </div>
+
+            <div class="summary-list">
+
+                <div class="summary-item">
+                    <span>Free Shipping</span>
+                    <strong>฿1,500+</strong>
+                </div>
+
+                <div class="summary-item">
+                    <span>Payment</span>
+                    <strong>Bank Transfer</strong>
+                </div>
+
+                <div class="summary-item">
+                    <span>Product Categories</span>
+                    <strong>4</strong>
+                </div>
+
+                <div class="summary-item">
+
+                    <span>
+                        Store Status
+                    </span>
+
+                    <strong style="color:var(--green);">
+                        ● Online
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+```
+
+</main>
+
+</div>
+
+<script>
+
+/* =====================================================
+   OWNER LOGIN
+===================================================== */
+
+const OWNER_USERNAME = "owner";
+const OWNER_PASSWORD = "balenn2026";
+
+const LOGIN_KEY = "balennOwnerLoggedIn";
+
+const loginScreen =
+    document.getElementById("loginScreen");
+
+const adminApp =
+    document.getElementById("adminApp");
+
+const loginForm =
+    document.getElementById("loginForm");
+
+const loginError =
+    document.getElementById("loginError");
+
+
+function showAdmin(){
+
+    loginScreen.style.display = "none";
+
+    adminApp.style.display = "flex";
+
+}
+
+
+function showLogin(){
+
+    loginScreen.style.display = "flex";
+
+    adminApp.style.display = "none";
+
+}
+
+
+if(sessionStorage.getItem(LOGIN_KEY) === "true"){
+
+    showAdmin();
+
+}
+
+
+loginForm.addEventListener("submit",function(event){
+
+    event.preventDefault();
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    if(
+        username === OWNER_USERNAME &&
+        password === OWNER_PASSWORD
+    ){
+
+        sessionStorage.setItem(
+            LOGIN_KEY,
+            "true"
+        );
+
+        loginError.style.display = "none";
+
+        showAdmin();
+
+    }else{
+
+        loginError.style.display = "block";
+
+        document.getElementById("password").value = "";
+
+    }
+
+});
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+document
+    .getElementById("logoutButton")
+    .addEventListener("click",function(){
+
+        sessionStorage.removeItem(LOGIN_KEY);
+
+        showLogin();
+
+        document.getElementById("username").value = "";
+
+        document.getElementById("password").value = "";
+
+    });
+
+
+/* =====================================================
+   BALENN ADMIN DASHBOARD
+===================================================== */
+
+const ORDER_KEY = "balennOrderHistory";
+const PRODUCT_KEY = "balennProducts";
+
+
+/* ---------- HELPERS ---------- */
+
+function readStorage(key){
+
+    try{
+
+        const data =
+            JSON.parse(localStorage.getItem(key));
+
+        return Array.isArray(data)
+            ? data
+            : [];
+
+    }catch(error){
+
+        return [];
+
+    }
+
+}
+
+
+function toNumber(value){
+
+    if(typeof value === "number"){
+
+        return Number.isFinite(value)
+            ? value
+            : 0;
+
+    }
+
+    if(value === null || value === undefined){
+
+        return 0;
+
+    }
+
+    const cleaned =
+        String(value)
+            .replace(/฿/g,"")
+            .replace(/บาท/gi,"")
+            .replace(/,/g,"")
+            .replace(/\s/g,"")
+            .trim();
+
+    const number =
+        Number(cleaned);
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+
+}
+
+
+function getOrderTotal(order){
+
+    const possibleValues = [
+
+        order?.total,
+        order?.grandTotal,
+        order?.amount,
+        order?.orderTotal
+
+    ];
+
+    for(const value of possibleValues){
+
+        const number =
+            toNumber(value);
+
+        if(number > 0){
+
+            return number;
+
+        }
+
+    }
+
+
+    if(Array.isArray(order?.items)){
+
+        return order.items.reduce(
+            (sum,item)=>{
+
+                const price =
+                    toNumber(item?.price) ||
+                    toNumber(item?.salePrice) ||
+                    toNumber(item?.unitPrice) ||
+                    toNumber(item?.productPrice);
+
+                const quantity =
+                    Number(item?.quantity) ||
+                    Number(item?.qty) ||
+                    1;
+
+                return sum + (price * quantity);
+
+            },
+            0
+        );
+
+    }
+
+    return 0;
+
+}
+
+
+function getOrderNumber(order,index){
+
+    return (
+
+        order?.orderNumber ||
+        order?.orderId ||
+        order?.id ||
+        `ORDER-${String(index + 1).padStart(4,"0")}`
+
+    );
+
+}
+
+
+function getCustomerName(order){
+
+    if(order?.customer?.name){
+
+        return order.customer.name;
+
+    }
+
+    if(order?.customerInfo?.name){
+
+        return order.customerInfo.name;
+
+    }
+
+    if(order?.user?.name){
+
+        return order.user.name;
+
+    }
+
+    if(typeof order?.customer === "string"){
+
+        return order.customer;
+
+    }
+
+    return "Guest Customer";
+
+}
+
+
+function getStatus(order){
+
+    const status =
+        String(
+            order?.status ||
+            order?.orderStatus ||
+            "Pending"
+        ).toLowerCase();
+
+
+    if(
+        status.includes("complete") ||
+        status.includes("สำเร็จ")
+    ){
+
+        return {
+            text:"Completed",
+            className:"completed"
+        };
+
+    }
+
+
+    if(
+        status.includes("ship") ||
+        status.includes("จัดส่ง")
+    ){
+
+        return {
+            text:"Shipping",
+            className:"shipping"
+        };
+
+    }
+
+
+    if(
+        status.includes("cancel") ||
+        status.includes("ยกเลิก")
+    ){
+
+        return {
+            text:"Cancelled",
+            className:"cancelled"
+        };
+
+    }
+
+
+    return {
+        text:"Pending",
+        className:"pending"
+    };
+
+}
+
+
+/* ---------- SAFE HTML ---------- */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function statusBadge(status){
+
+    return `
+        <span class="status ${status.className}">
+            ${status.text}
+        </span>
+    `;
+
+}
+
+
+/* ---------- LOAD DATA ---------- */
+
+const orders =
+    readStorage(ORDER_KEY);
+
+const products =
+    readStorage(PRODUCT_KEY);
+
+
+/* ---------- SALES ---------- */
+
+const totalSales =
+    orders.reduce(
+        (sum,order)=>{
+
+            return sum + getOrderTotal(order);
+
+        },
+        0
+    );
+
+
+document.getElementById("totalSales").textContent =
+    "฿" +
+    totalSales.toLocaleString("en-US",{
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+    });
+
+
+document.getElementById("totalOrders").textContent =
+    orders.length;
+
+
+document.getElementById("totalProducts").textContent =
+    products.length;
+
+
+/* ---------- CUSTOMERS ---------- */
+
+const customers =
+    new Set();
+
+
+orders.forEach(order=>{
+
+    let email =
+        order?.customer?.email ||
+        order?.customerInfo?.email ||
+        order?.user?.email;
+
+    let phone =
+        order?.customer?.phone ||
+        order?.customerInfo?.phone ||
+        order?.user?.phone;
+
+    let name =
+        getCustomerName(order);
+
+
+    const identity =
+        email ||
+        phone ||
+        name;
+
+
+    if(identity){
+
+        customers.add(
+            String(identity)
+                .toLowerCase()
+                .trim()
+        );
+
+    }
+
+});
+
+
+document.getElementById("totalCustomers").textContent =
+    customers.size;
+
+
+/* ---------- ORDER STATUS ---------- */
+
+let pending = 0;
+let shipping = 0;
+let completed = 0;
+let cancelled = 0;
+
+
+orders.forEach(order=>{
+
+    const status =
+        getStatus(order).className;
+
+
+    if(status === "pending"){
+        pending++;
+    }
+
+    if(status === "shipping"){
+        shipping++;
+    }
+
+    if(status === "completed"){
+        completed++;
+    }
+
+    if(status === "cancelled"){
+        cancelled++;
+    }
+
+});
+
+
+document.getElementById("pendingOrders").textContent =
+    pending;
+
+document.getElementById("shippingOrders").textContent =
+    shipping;
+
+document.getElementById("completedOrders").textContent =
+    completed;
+
+document.getElementById("cancelledOrders").textContent =
+    cancelled;
+
+
+/* ---------- RECENT ORDERS ---------- */
+
+const recentOrders =
+    document.getElementById("recentOrders");
+
+
+if(!orders.length){
+
+    recentOrders.innerHTML = `
+
+        <div class="empty">
+            ยังไม่มีคำสั่งซื้อในระบบ
+        </div>
+
+    `;
+
+}else{
+
+    const latestOrders =
+        [...orders]
+            .sort((a,b)=>{
+
+                const dateA =
+                    new Date(
+                        a?.createdAt ||
+                        a?.dateTime ||
+                        a?.date ||
+                        0
+                    ).getTime();
+
+                const dateB =
+                    new Date(
+                        b?.createdAt ||
+                        b?.dateTime ||
+                        b?.date ||
+                        0
+                    ).getTime();
+
+                return dateB - dateA;
+
+            })
+            .slice(0,5);
+
+
+    recentOrders.innerHTML =
+        latestOrders
+            .map(order=>{
+
+                const originalIndex =
+                    orders.indexOf(order);
+
+                const number =
+                    getOrderNumber(
+                        order,
+                        originalIndex
+                    );
+
+                const customer =
+                    getCustomerName(order);
+
+                const total =
+                    getOrderTotal(order);
+
+                const status =
+                    getStatus(order);
+
+
+                return `
+
+                    <div class="order-row">
+
+                        <div>
+
+                            <div class="order-number">
+                                ${escapeHTML(number)}
+                            </div>
+
+                            <div class="customer-name">
+                                ${escapeHTML(customer)}
+                            </div>
+
+                        </div>
+
+
+                        <div class="order-total">
+
+                            ฿${total.toLocaleString("en-US",{
+                                minimumFractionDigits:2,
+                                maximumFractionDigits:2
+                            })}
+
+                        </div>
+
+
+                        <div>
+                            ${statusBadge(status)}
+                        </div>
+
+
+                        <div style="text-align:right;">
+
+                            <a
+                                href="admin-orders.html"
+                                class="card-link"
+                            >
+                                ดู →
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            })
+            .join("");
+
+}
+
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+
+const mobileMenu =
+    document.getElementById("mobileMenu");
+
+const sidebar =
+    document.getElementById("sidebar");
+
+
+mobileMenu.addEventListener(
+    "click",
+    ()=>{
+
+        sidebar.classList.toggle("open");
+
+    }
+);
+
+
+/* Close sidebar after selecting menu */
+
+document
+    .querySelectorAll(".sidebar a")
+    .forEach(link=>{
+
+        link.addEventListener(
+            "click",
+            ()=>{
+
+                if(window.innerWidth <= 800){
+
+                    sidebar.classList.remove("open");
+
+                }
+
+            }
+        );
+
+    });
+
+</script>
+
+<!-- =========================
+     BALENN ADMIN LOADER
+========================= -->
+
+<div id="balennAdminLoader">
+
+    <div class="admin-loader-inner">
+
+        <div class="admin-loader-brand">
+            BAL<span>ENN</span>
+        </div>
+
+        <div class="admin-loader-title">
+            Administration System
+        </div>
+
+        <div class="admin-loader-progress">
+
+            <div
+                class="admin-loader-progress-bar">
+            </div>
+
+        </div>
+
+        <div class="admin-loader-status">
+            Initializing dashboard...
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+(function () {
+
+    const loader =
+        document.getElementById(
+            "balennAdminLoader"
+        );
+
+    if (!loader) return;
+
+    window.addEventListener(
+        "load",
+        function () {
+
+            setTimeout(function () {
+
+                loader.classList.add("hidden");
+
+                setTimeout(function () {
+
+                    if (loader) {
+                        loader.remove();
+                    }
+
+                }, 650);
+
+            }, 850);
+
+        }
+    );
+
+})();
+</script>
+
+</body>
+</html>

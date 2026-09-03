@@ -1,0 +1,2333 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Receipt | BALENN</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap');
+
+        :root {
+            --ivory: #fbf7f2;
+            --cream: #f4ebe3;
+            --pink: #d9aaa8;
+            --pink-soft: #ead1cf;
+            --gold: #b99a69;
+            --gold-soft: #d8c29a;
+            --text: #302b2a;
+            --muted: #8b817d;
+            --line: #e7ddd5;
+            --white: #ffffff;
+            --success: #718c76;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Manrope", sans-serif;
+            background: var(--ivory);
+            color: var(--text);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(251, 247, 242, 0.96);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            min-height: 78px;
+            margin: auto;
+            padding: 0 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .logo {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: var(--gold);
+        }
+
+        .nav {
+            flex: 1;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .nav a {
+            font-size: 11px;
+            letter-spacing: 1.2px;
+            color: #655d59;
+            white-space: nowrap;
+            transition: 0.25s ease;
+        }
+
+        .nav a:hover {
+            color: var(--gold);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            background: var(--white);
+
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .menu-btn {
+            display: none;
+        }
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page {
+            max-width: 900px;
+            margin: auto;
+            padding: 60px 20px 100px;
+        }
+
+        .receipt {
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(70, 50, 40, 0.06);
+        }
+
+        /* =========================
+           RECEIPT HEADER
+        ========================= */
+
+        .receipt-head {
+            padding: 45px 45px 35px;
+            text-align: center;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand-small {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+        }
+
+        .brand-small span {
+            color: var(--gold);
+        }
+
+        .thank-you {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .receipt-title {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 50px;
+            font-weight: 600;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .receipt-subtitle {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* =========================
+           ORDER META
+        ========================= */
+
+        .order-meta {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .meta-box {
+            padding: 22px 18px;
+            text-align: center;
+            border-right: 1px solid var(--line);
+        }
+
+        .meta-box:last-child {
+            border-right: 0;
+        }
+
+        .meta-label {
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            margin-bottom: 7px;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            font-size: 12px;
+            font-weight: 700;
+            word-break: break-word;
+        }
+
+        .status {
+            color: var(--success);
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .receipt-content {
+            padding: 40px 45px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        /* =========================
+           CUSTOMER
+        ========================= */
+
+        .customer-box {
+            padding: 22px;
+            border: 1px solid var(--line);
+            background: #fdfaf7;
+            border-radius: 15px;
+        }
+
+        .customer-name {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .customer-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 7px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .customer-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .customer-label {
+            min-width: 75px;
+            color: var(--muted);
+        }
+
+        /* =========================
+           ITEMS
+        ========================= */
+
+        .items-head {
+            display: grid;
+            grid-template-columns: 1fr 90px 110px;
+            gap: 15px;
+
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--line);
+
+            font-size: 9px;
+            letter-spacing: 1.2px;
+            color: var(--muted);
+        }
+
+        .items-head div:nth-child(2),
+        .items-head div:nth-child(3) {
+            text-align: right;
+        }
+
+        .item {
+            display: grid;
+            grid-template-columns: 1fr 90px 110px;
+            gap: 15px;
+            align-items: center;
+
+            padding: 15px 0;
+            border-bottom: 1px dashed var(--line);
+        }
+
+        .item-product {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .item-image {
+            width: 62px;
+            height: 78px;
+            flex-shrink: 0;
+
+            border-radius: 9px;
+            overflow: hidden;
+
+            background: var(--cream);
+            border: 1px solid var(--line);
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .item-image.no-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family: "Cormorant Garamond", serif;
+            font-size: 13px;
+            color: var(--gold);
+        }
+
+        .item-name {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .item-detail {
+            margin-top: 3px;
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .item-qty,
+        .item-price {
+            text-align: right;
+            font-size: 12px;
+        }
+
+        /* =========================
+           TOTAL
+        ========================= */
+
+        .summary {
+            max-width: 400px;
+            margin-left: auto;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+
+            padding: 8px 0;
+            font-size: 12px;
+        }
+
+        .summary-row span:first-child {
+            color: var(--muted);
+        }
+
+        .summary-row.discount span:last-child {
+            color: var(--success);
+        }
+
+        .summary-total {
+            margin-top: 10px;
+            padding-top: 18px;
+            border-top: 1px solid var(--text);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .summary-total span:first-child {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+
+        .grand-total {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 34px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           PAYMENT
+        ========================= */
+
+        .payment-box {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .payment-card {
+            padding: 17px;
+            background: #fdfaf7;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+        }
+
+        .payment-label {
+            font-size: 9px;
+            color: var(--muted);
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .payment-value {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* =========================
+           NOTE
+        ========================= */
+
+        .note-box {
+            padding: 18px;
+            background: var(--cream);
+            border-radius: 12px;
+
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        /* =========================
+           ACTIONS
+        ========================= */
+
+        .receipt-actions {
+            padding: 30px 45px 40px;
+
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+
+            border-top: 1px solid var(--line);
+        }
+
+        .action-btn {
+            min-height: 46px;
+            padding: 0 23px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 30px;
+            border: 1px solid var(--text);
+
+            font-size: 11px;
+            letter-spacing: 0.8px;
+
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .action-primary {
+            background: var(--text);
+            color: var(--white);
+        }
+
+        .action-primary:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .action-secondary {
+            background: var(--white);
+            color: var(--text);
+        }
+
+        .action-secondary:hover {
+            background: var(--cream);
+        }
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error-box {
+            max-width: 650px;
+            margin: 80px auto;
+            padding: 50px 25px;
+            text-align: center;
+
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+        }
+
+        .error-box h1 {
+            font-family: "Cormorant Garamond", serif;
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .error-box p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        /* =========================
+           MOBILE MENU
+        ========================= */
+
+        .mobile-menu {
+            display: none;
+            padding: 15px 25px 25px;
+            border-top: 1px solid var(--line);
+            background: var(--ivory);
+        }
+
+        .mobile-menu.active {
+            display: grid;
+            gap: 13px;
+        }
+
+        .mobile-menu a {
+            font-size: 12px;
+            padding: 5px 0;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .header-inner {
+                min-height: 70px;
+                padding: 0 18px;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .menu-btn {
+                display: flex;
+            }
+
+            .logo {
+                font-size: 29px;
+            }
+
+            .order-meta {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .meta-box:nth-child(2) {
+                border-right: 0;
+            }
+
+            .meta-box:nth-child(-n+2) {
+                border-bottom: 1px solid var(--line);
+            }
+
+            .receipt-content,
+            .receipt-head,
+            .receipt-actions {
+                padding-left: 25px;
+                padding-right: 25px;
+            }
+
+            .payment-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .page {
+                padding: 25px 10px 60px;
+            }
+
+            .receipt {
+                border-radius: 18px;
+            }
+
+            .receipt-head {
+                padding-top: 35px;
+            }
+
+            .receipt-title {
+                font-size: 42px;
+            }
+
+            .items-head {
+                grid-template-columns: 1fr 55px 85px;
+                gap: 8px;
+            }
+
+            .item {
+                grid-template-columns: 1fr 55px 85px;
+                gap: 8px;
+            }
+
+            .item-image {
+                width: 52px;
+                height: 66px;
+            }
+
+            .item-product {
+                gap: 9px;
+            }
+
+            .item-name {
+                font-size: 11px;
+            }
+
+            .item-detail {
+                font-size: 9px;
+            }
+
+            .customer-row {
+                flex-direction: column;
+                gap: 1px;
+            }
+
+            .customer-label {
+                min-width: 0;
+            }
+
+            .receipt-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+        }
+
+        /* =========================
+           PRINT
+        ========================= */
+
+        @media print {
+
+            body {
+                background: #fff;
+            }
+
+            .header,
+            .receipt-actions {
+                display: none !important;
+            }
+
+            .page {
+                max-width: none;
+                padding: 0;
+            }
+
+            .receipt {
+                border: 0;
+                box-shadow: none;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <button
+            class="icon-btn menu-btn"
+            id="menuBtn"
+            type="button"
+        >
+            ☰
+        </button>
+
+        <a href="index.html" class="logo">
+            BAL<span>ENN</span>
+        </a>
+
+        <nav class="nav">
+            <a href="index.html">HOME</a>
+            <a href="index.html#new-arrivals">NEW ARRIVALS</a>
+            <a href="index.html#clothing">CLOTHING</a>
+            <a href="index.html#dresses">DRESSES</a>
+            <a href="index.html#tops">TOPS</a>
+            <a href="index.html#bottoms">BOTTOMS</a>
+            <a href="index.html#bags">BAGS</a>
+            <a href="index.html#sale">SALE</a>
+        </nav>
+
+        <div class="header-actions">
+
+            <a
+                href="order-history.html"
+                class="icon-btn"
+                title="Order History"
+            >
+                ♡
+            </a>
+
+            <a
+                href="cart.html"
+                class="icon-btn"
+                title="Shopping Bag"
+            >
+                🛍️
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+
+        <a href="index.html">HOME</a>
+        <a href="index.html#new-arrivals">NEW ARRIVALS</a>
+        <a href="index.html#clothing">CLOTHING</a>
+        <a href="index.html#dresses">DRESSES</a>
+        <a href="index.html#tops">TOPS</a>
+        <a href="index.html#bottoms">BOTTOMS</a>
+        <a href="index.html#bags">BAGS</a>
+        <a href="index.html#sale">SALE</a>
+
+    </div>
+
+</header>
+
+
+<main class="page">
+
+    <div id="receiptContainer"></div>
+
+</main>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+
+    /* =========================
+       STORAGE
+    ========================= */
+
+    const ORDER_KEY = "balennOrderHistory";
+    const LAST_ORDER_KEY = "balennLastOrder";
+    const PRODUCTS_KEY = "balennProducts";
+
+    const DB_NAME = "BALENN_DB";
+    const DB_VERSION = 1;
+    const IMAGE_STORE = "images";
+    const IMAGE_PREFIX = "idb:";
+
+
+    const container =
+        document.getElementById("receiptContainer");
+
+    const menuBtn =
+        document.getElementById("menuBtn");
+
+    const mobileMenu =
+        document.getElementById("mobileMenu");
+
+
+    /* =========================
+       MOBILE MENU
+    ========================= */
+
+    if (menuBtn) {
+
+        menuBtn.addEventListener("click", function () {
+
+            mobileMenu.classList.toggle("active");
+
+        });
+
+    }
+
+
+    /* =========================
+       FORMAT PRICE
+    ========================= */
+
+    function formatPrice(value) {
+
+        return Number(value || 0).toLocaleString(
+            "th-TH",
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        );
+
+    }
+
+
+    /* =========================
+       ESCAPE HTML
+    ========================= */
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =========================
+       INDEXED DB
+    ========================= */
+
+    function openDatabase() {
+
+        return new Promise(function (resolve, reject) {
+
+            if (!("indexedDB" in window)) {
+
+                reject(
+                    new Error("IndexedDB is not supported.")
+                );
+
+                return;
+
+            }
+
+
+            const request =
+                indexedDB.open(DB_NAME, DB_VERSION);
+
+
+            request.onupgradeneeded = function (event) {
+
+                const db = event.target.result;
+
+
+                if (!db.objectStoreNames.contains(IMAGE_STORE)) {
+
+                    db.createObjectStore(
+                        IMAGE_STORE,
+                        {
+                            keyPath: "id"
+                        }
+                    );
+
+                }
+
+            };
+
+
+            request.onsuccess = function () {
+
+                resolve(request.result);
+
+            };
+
+
+            request.onerror = function () {
+
+                reject(request.error);
+
+            };
+
+        });
+
+    }
+
+/* =========================
+   GET IMAGE BLOB
+========================= */
+async function getImageBlob(imageRef){
+
+  if(
+    !imageRef ||
+    typeof imageRef !== "string" ||
+    !imageRef.startsWith(IMAGE_PREFIX)
+  ){
+    return null;
+  }
+
+  try{
+    const db = await openDatabase();
+
+    return await new Promise((resolve) => {
+      const transaction = db.transaction(
+        IMAGE_STORE,
+        "readonly"
+      );
+
+      const store = transaction.objectStore(IMAGE_STORE);
+
+      // รองรับทั้งรูปแบบใหม่และรูปแบบเก่า
+      const refs = [
+        imageRef,
+        imageRef.slice(IMAGE_PREFIX.length)
+      ];
+
+      let index = 0;
+
+      function extractBlob(result){
+        if(!result) return null;
+
+        if(result instanceof Blob){
+          return result;
+        }
+
+        const values = [
+          result.blob,
+          result.data,
+          result.image,
+          result.file
+        ];
+
+        for(const value of values){
+
+          if(value instanceof Blob){
+            return value;
+          }
+
+          if(value instanceof ArrayBuffer){
+            return new Blob([value]);
+          }
+        }
+
+        return null;
+      }
+
+      function tryNext(){
+        if(index >= refs.length){
+          resolve(null);
+          return;
+        }
+
+        const ref = refs[index++];
+
+        let request;
+
+        try{
+          request = store.get(ref);
+        }catch(error){
+          tryNext();
+          return;
+        }
+
+        request.onsuccess = () => {
+
+          const blob = extractBlob(request.result);
+
+          if(blob){
+            resolve(blob);
+          }else{
+            tryNext();
+          }
+        };
+
+        request.onerror = () => {
+          tryNext();
+        };
+      }
+
+      tryNext();
+    });
+
+  }catch(error){
+    console.warn(
+      "BALENN receipt image read error:",
+      error
+    );
+
+    return null;
+  }
+}
+
+    /* =========================
+       IMAGE OBJECT URL CACHE
+    ========================= */
+
+    const objectURLCache = new Map();
+
+
+    /* =========================
+       RESOLVE IMAGE
+    ========================= */
+
+    async function resolveImage(imageRef) {
+
+        if (!imageRef) {
+            return "";
+        }
+
+
+        /*
+         * Normal URL / Base64
+         */
+
+        if (
+            !String(imageRef)
+                .startsWith(IMAGE_PREFIX)
+        ) {
+
+            return String(imageRef);
+
+        }
+
+
+        /*
+         * Already converted
+         */
+
+        if (objectURLCache.has(imageRef)) {
+
+            return objectURLCache.get(imageRef);
+
+        }
+
+
+        /*
+         * Get Blob from IndexedDB
+         */
+
+        const blob =
+            await getImageBlob(imageRef);
+
+
+        if (!blob) {
+
+            return "";
+
+        }
+
+
+        const objectURL =
+            URL.createObjectURL(blob);
+
+
+        objectURLCache.set(
+            imageRef,
+            objectURL
+        );
+
+
+        return objectURL;
+
+    }
+
+
+    /* =========================
+       GET QUERY ORDER
+    ========================= */
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const orderNumber =
+        params.get("order");
+
+
+    /* =========================
+       GET ORDERS
+    ========================= */
+
+    function getOrders() {
+
+        try {
+
+            const orders =
+                JSON.parse(
+                    localStorage.getItem(
+                        ORDER_KEY
+                    ) || "[]"
+                );
+
+
+            return Array.isArray(orders)
+                ? orders
+                : [];
+
+        } catch (error) {
+
+            console.error(error);
+
+            return [];
+
+        }
+
+    }
+
+
+    /* =========================
+       GET LAST ORDER
+    ========================= */
+
+    function getLastOrder() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(
+                    LAST_ORDER_KEY
+                )
+            );
+
+        } catch (error) {
+
+            return null;
+
+        }
+
+    }
+
+
+    /* =========================
+       FIND ORDER
+    ========================= */
+
+    function findOrder() {
+
+        const orders = getOrders();
+
+
+        if (orderNumber) {
+
+            const found =
+                orders.find(function (order) {
+
+                    return String(
+                        order.orderNumber ||
+                        order.orderId ||
+                        order.id ||
+                        ""
+                    ) === String(orderNumber);
+
+                });
+
+
+            if (found) {
+
+                return found;
+
+            }
+
+        }
+
+
+        const lastOrder =
+            getLastOrder();
+
+
+        if (lastOrder) {
+
+            return lastOrder;
+
+        }
+
+
+        if (orders.length) {
+
+            return orders[
+                orders.length - 1
+            ];
+
+        }
+
+
+        return null;
+
+    }
+
+
+    /* =========================
+       GET PRODUCTS
+    ========================= */
+
+    function getProducts() {
+
+        try {
+
+            const products =
+                JSON.parse(
+                    localStorage.getItem(
+                        PRODUCTS_KEY
+                    ) || "[]"
+                );
+
+
+            return Array.isArray(products)
+                ? products
+                : [];
+
+        } catch (error) {
+
+            console.error(error);
+
+            return [];
+
+        }
+
+    }
+
+
+    /* =========================
+       GET PRODUCT ID
+    ========================= */
+
+    function getItemProductId(item) {
+
+        return (
+            item.productId ||
+            item.productID ||
+            item.product_id ||
+            item.id ||
+            item.sku ||
+            ""
+        );
+
+    }
+
+
+    /* =========================
+       GET PRODUCT
+    ========================= */
+
+    function findProductForItem(item) {
+
+        const products =
+            getProducts();
+
+
+        const itemId =
+            getItemProductId(item);
+
+
+        /*
+         * หาโดย ID / SKU
+         */
+
+        if (itemId) {
+
+            const product =
+                products.find(function (product) {
+
+                    return String(
+                        product.id ||
+                        product.productId ||
+                        product.productID ||
+                        product.sku ||
+                        ""
+                    ) === String(itemId);
+
+                });
+
+
+            if (product) {
+
+                return product;
+
+            }
+
+        }
+
+
+        /*
+         * หาโดยชื่อ
+         */
+
+        const itemName =
+            String(
+                item.name ||
+                item.title ||
+                ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+        if (itemName) {
+
+            const product =
+                products.find(function (product) {
+
+                    const productName =
+                        String(
+                            product.name ||
+                            product.title ||
+                            ""
+                        )
+                        .trim()
+                        .toLowerCase();
+
+
+                    return (
+                        productName ===
+                        itemName
+                    );
+
+                });
+
+
+            if (product) {
+
+                return product;
+
+            }
+
+        }
+
+
+        return null;
+
+    }
+
+
+    /* =========================
+       GET PRODUCT IMAGE
+    ========================= */
+
+    function getProductImage(item) {
+
+        /*
+         * 1. รูปที่บันทึกมากับ Order
+         */
+
+        const directImage =
+            item.image ||
+            item.img ||
+            item.imageUrl ||
+            item.thumbnail ||
+            item.productImage ||
+            item.imageRef ||
+            item.imageURL;
+
+
+        if (directImage) {
+
+            return directImage;
+
+        }
+
+
+        /*
+         * 2. หา Product จาก balennProducts
+         */
+
+        const product =
+            findProductForItem(item);
+
+
+        if (product) {
+
+            return (
+                product.image ||
+                product.img ||
+                product.imageUrl ||
+                product.thumbnail ||
+                product.productImage ||
+                product.imageRef ||
+                product.imageURL ||
+                ""
+            );
+
+        }
+
+
+        return "";
+
+    }
+
+
+    /* =========================
+       IMAGE PLACEHOLDER
+    ========================= */
+
+    function imagePlaceholder() {
+
+        return `
+            <div class="item-image no-image">
+                BALENN
+            </div>
+        `;
+
+    }
+
+
+    /* =========================
+       IMAGE HTML
+    ========================= */
+
+    function renderImage(item, index) {
+
+        const image =
+            getProductImage(item);
+
+
+        const name =
+            item.name ||
+            item.title ||
+            "BALENN Product";
+
+
+        /*
+         * ไม่มีรูป
+         */
+
+        if (!image) {
+
+            return imagePlaceholder();
+
+        }
+
+
+        /*
+         * IndexedDB image
+         *
+         * ยังไม่ใส่ src
+         * จะ resolve หลัง render
+         */
+
+        if (
+            String(image)
+                .startsWith(IMAGE_PREFIX)
+        ) {
+
+            return `
+                <div
+                    class="item-image"
+                    data-image-ref="${escapeHTML(image)}"
+                >
+                    <div
+                        class="image-loading"
+                        data-image-index="${index}"
+                    >
+                        BALENN
+                    </div>
+                </div>
+            `;
+
+        }
+
+
+        /*
+         * Normal URL / Base64
+         */
+
+        return `
+            <div class="item-image">
+
+                <img
+                    src="${escapeHTML(image)}"
+                    alt="${escapeHTML(name)}"
+                    onerror="this.style.display='none'; this.parentElement.classList.add('no-image'); this.parentElement.innerHTML='BALENN';"
+                >
+
+            </div>
+        `;
+
+    }
+
+
+    /* =========================
+       LOAD INDEXED DB IMAGES
+    ========================= */
+
+    async function hydrateReceiptImages() {
+
+        const imageBoxes =
+            container.querySelectorAll(
+                ".item-image[data-image-ref]"
+            );
+
+
+        if (!imageBoxes.length) {
+
+            return;
+
+        }
+
+
+        await Promise.all(
+
+            Array.from(imageBoxes).map(
+                async function (box) {
+
+                    const imageRef =
+                        box.getAttribute(
+                            "data-image-ref"
+                        );
+
+
+                    const imageURL =
+                        await resolveImage(
+                            imageRef
+                        );
+
+
+                    if (!imageURL) {
+
+                        box.classList.add(
+                            "no-image"
+                        );
+
+                        box.innerHTML =
+                            "BALENN";
+
+                        return;
+
+                    }
+
+
+                    const img =
+                        document.createElement(
+                            "img"
+                        );
+
+
+                    img.src =
+                        imageURL;
+
+
+                    img.alt =
+                        "BALENN Product";
+
+
+                    img.onload = function () {
+
+                        box.innerHTML = "";
+
+                        box.appendChild(img);
+
+                    };
+
+
+                    img.onerror = function () {
+
+                        box.classList.add(
+                            "no-image"
+                        );
+
+                        box.innerHTML =
+                            "BALENN";
+
+                    };
+
+                }
+            )
+
+        );
+
+    }
+
+
+    /* =========================
+       RENDER RECEIPT
+    ========================= */
+
+    function renderReceipt(order) {
+
+        if (!order) {
+
+            container.innerHTML = `
+
+                <div class="error-box">
+
+                    <h1>Receipt Not Found</h1>
+
+                    <p>
+                        ไม่พบข้อมูลคำสั่งซื้อ
+                        กรุณาตรวจสอบ Order Number อีกครั้ง
+                    </p>
+
+                    <a
+                        href="order-history.html"
+                        class="action-btn action-primary"
+                    >
+                        ดูประวัติคำสั่งซื้อ
+                    </a>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        const number =
+            order.orderNumber ||
+            order.orderId ||
+            order.id ||
+            "-";
+
+
+        const date =
+            order.dateTime ||
+            order.date ||
+            "-";
+
+
+        const status =
+            order.status ||
+            "Pending";
+
+
+        const customer =
+            order.customer ||
+            order.customerInfo ||
+            order.user ||
+            {};
+
+
+        const items =
+            Array.isArray(order.items)
+                ? order.items
+                : [];
+
+
+        /*
+         * คำนวณ subtotal สำรอง
+         * เผื่อ order เก่าไม่มี subtotal
+         */
+
+        let calculatedSubtotal = 0;
+
+
+        items.forEach(function (item) {
+
+            const quantity =
+                Number(
+                    item.quantity ??
+                    item.qty ??
+                    1
+                );
+
+
+            const price =
+                Number(
+                    item.price ??
+                    item.salePrice ??
+                    0
+                );
+
+
+            calculatedSubtotal +=
+                price * quantity;
+
+        });
+
+
+        const subtotal =
+            Number(
+                order.subtotal ??
+                calculatedSubtotal
+            );
+
+
+        const shipping =
+            Number(
+                order.shipping ?? 0
+            );
+
+
+        const discount =
+            Number(
+                order.discount ?? 0
+            );
+
+
+        const total =
+            Number(
+                order.total ??
+                (
+                    subtotal +
+                    shipping -
+                    discount
+                )
+            );
+
+
+        const paymentMethod =
+            order.paymentMethod ||
+            "Bank Transfer";
+
+
+        const paymentBank =
+            order.paymentBank ||
+            order.bank ||
+            "-";
+
+
+        const delivery =
+            order.delivery ||
+            "Standard Delivery";
+
+
+        const note =
+            order.note ||
+            "";
+
+
+        /* =========================
+           ITEMS
+        ========================= */
+
+        let itemsHTML = "";
+
+
+        if (items.length) {
+
+            itemsHTML =
+                items.map(
+                    function (item, index) {
+
+                        const quantity =
+                            Number(
+                                item.quantity ??
+                                item.qty ??
+                                1
+                            );
+
+
+                        const price =
+                            Number(
+                                item.price ??
+                                item.salePrice ??
+                                0
+                            );
+
+
+                        const itemTotal =
+                            price * quantity;
+
+
+                        return `
+
+                            <div class="item">
+
+                                <div class="item-product">
+
+                                    ${renderImage(
+                                        item,
+                                        index
+                                    )}
+
+                                    <div>
+
+                                        <div class="item-name">
+                                            ${escapeHTML(
+                                                item.name ||
+                                                item.title ||
+                                                "สินค้า BALENN"
+                                            )}
+                                        </div>
+
+                                        <div class="item-detail">
+
+                                            ${item.size
+                                                ? escapeHTML(
+                                                    "Size: " +
+                                                    item.size
+                                                )
+                                                : ""
+                                            }
+
+                                            ${item.color
+                                                ? escapeHTML(
+                                                    " • Color: " +
+                                                    item.color
+                                                )
+                                                : ""
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="item-qty">
+                                    × ${quantity}
+                                </div>
+
+
+                                <div class="item-price">
+                                    ฿${formatPrice(
+                                        itemTotal
+                                    )}
+                                </div>
+
+                            </div>
+
+                        `;
+
+                    }
+                ).join("");
+
+        } else {
+
+            itemsHTML = `
+
+                <div class="item">
+
+                    <div class="item-product">
+
+                        <div class="item-image no-image">
+                            BALENN
+                        </div>
+
+                        <div class="item-name">
+                            ไม่มีข้อมูลสินค้า
+                        </div>
+
+                    </div>
+
+                    <div></div>
+                    <div></div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* =========================
+           CUSTOMER ADDRESS
+        ========================= */
+
+        const fullAddress =
+            customer.address ||
+            [
+                customer.addressLine,
+                customer.district,
+                customer.province,
+                customer.postalCode
+            ]
+            .filter(Boolean)
+            .join(" ");
+
+
+        container.innerHTML = `
+
+            <article class="receipt">
+
+                <!-- RECEIPT HEADER -->
+
+                <div class="receipt-head">
+
+                    <div class="brand-small">
+                        BAL<span>ENN</span>
+                    </div>
+
+                    <div class="thank-you">
+                        THANK YOU FOR YOUR ORDER
+                    </div>
+
+                    <h1 class="receipt-title">
+                        ORDER RECEIPT
+                    </h1>
+
+                    <p class="receipt-subtitle">
+                        ขอบคุณที่เลือกช้อปกับ BALENN
+                    </p>
+
+                </div>
+
+
+                <!-- ORDER META -->
+
+                <div class="order-meta">
+
+                    <div class="meta-box">
+
+                        <div class="meta-label">
+                            Order Number
+                        </div>
+
+                        <div class="meta-value">
+                            ${escapeHTML(number)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="meta-box">
+
+                        <div class="meta-label">
+                            Date & Time
+                        </div>
+
+                        <div class="meta-value">
+                            ${escapeHTML(date)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="meta-box">
+
+                        <div class="meta-label">
+                            Payment
+                        </div>
+
+                        <div class="meta-value">
+                            ${escapeHTML(paymentMethod)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="meta-box">
+
+                        <div class="meta-label">
+                            Status
+                        </div>
+
+                        <div class="meta-value status">
+                            ${escapeHTML(status)}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="receipt-content">
+
+
+                    <!-- CUSTOMER -->
+
+                    <section class="section">
+
+                        <div class="section-title">
+                            Customer Information
+                        </div>
+
+                        <div class="customer-box">
+
+                            <div class="customer-name">
+                                ${escapeHTML(
+                                    customer.name ||
+                                    "ลูกค้า BALENN"
+                                )}
+                            </div>
+
+
+                            <div class="customer-row">
+
+                                <span class="customer-label">
+                                    โทรศัพท์
+                                </span>
+
+                                <span>
+                                    ${escapeHTML(
+                                        customer.phone ||
+                                        "-"
+                                    )}
+                                </span>
+
+                            </div>
+
+
+                            <div class="customer-row">
+
+                                <span class="customer-label">
+                                    Email
+                                </span>
+
+                                <span>
+                                    ${escapeHTML(
+                                        customer.email ||
+                                        "-"
+                                    )}
+                                </span>
+
+                            </div>
+
+
+                            <div class="customer-row">
+
+                                <span class="customer-label">
+                                    ที่อยู่
+                                </span>
+
+                                <span>
+                                    ${escapeHTML(
+                                        fullAddress ||
+                                        "-"
+                                    )}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ITEMS -->
+
+                    <section class="section">
+
+                        <div class="section-title">
+                            Order Items
+                        </div>
+
+
+                        <div class="items-head">
+
+                            <div>PRODUCT</div>
+                            <div>QTY</div>
+                            <div>TOTAL</div>
+
+                        </div>
+
+
+                        ${itemsHTML}
+
+                    </section>
+
+
+                    <!-- TOTAL -->
+
+                    <section class="section">
+
+                        <div class="summary">
+
+                            <div class="summary-row">
+
+                                <span>
+                                    Subtotal
+                                </span>
+
+                                <span>
+                                    ฿${formatPrice(
+                                        subtotal
+                                    )}
+                                </span>
+
+                            </div>
+
+
+                            <div class="summary-row">
+
+                                <span>
+                                    Shipping
+                                </span>
+
+                                <span>
+                                    ${
+                                        shipping === 0
+                                            ? "FREE"
+                                            : "฿" +
+                                              formatPrice(
+                                                  shipping
+                                              )
+                                    }
+                                </span>
+
+                            </div>
+
+
+                            <div class="summary-row discount">
+
+                                <span>
+                                    Discount
+                                </span>
+
+                                <span>
+                                    - ฿${formatPrice(
+                                        discount
+                                    )}
+                                </span>
+
+                            </div>
+
+
+                            <div class="summary-total">
+
+                                <span>
+                                    TOTAL
+                                </span>
+
+                                <span class="grand-total">
+                                    ฿${formatPrice(
+                                        total
+                                    )}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- PAYMENT -->
+
+                    <section class="section">
+
+                        <div class="section-title">
+                            Payment & Delivery
+                        </div>
+
+
+                        <div class="payment-box">
+
+                            <div class="payment-card">
+
+                                <div class="payment-label">
+                                    PAYMENT METHOD
+                                </div>
+
+                                <div class="payment-value">
+                                    ${escapeHTML(
+                                        paymentMethod
+                                    )}
+                                </div>
+
+                            </div>
+
+
+                            <div class="payment-card">
+
+                                <div class="payment-label">
+                                    BANK
+                                </div>
+
+                                <div class="payment-value">
+                                    ${escapeHTML(
+                                        paymentBank
+                                    )}
+                                </div>
+
+                            </div>
+
+
+                            <div class="payment-card">
+
+                                <div class="payment-label">
+                                    DELIVERY
+                                </div>
+
+                                <div class="payment-value">
+                                    ${escapeHTML(
+                                        delivery
+                                    )}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    ${
+                        note
+                            ? `
+
+                            <section class="section">
+
+                                <div class="section-title">
+                                    Order Note
+                                </div>
+
+                                <div class="note-box">
+                                    ${escapeHTML(note)}
+                                </div>
+
+                            </section>
+
+                            `
+                            : ""
+                    }
+
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="receipt-actions">
+
+                    <button
+                        type="button"
+                        class="action-btn action-primary"
+                        id="printReceipt"
+                    >
+                        🖨️ พิมพ์ใบเสร็จ
+                    </button>
+
+
+                    <a
+                        href="order-history.html"
+                        class="action-btn action-secondary"
+                    >
+                        ดูประวัติคำสั่งซื้อ
+                    </a>
+
+
+                    <a
+                        href="index.html"
+                        class="action-btn action-secondary"
+                    >
+                        กลับหน้าหลัก
+                    </a>
+
+                </div>
+
+            </article>
+
+        `;
+
+
+        /* =========================
+           PRINT
+        ========================= */
+
+        const printButton =
+            document.getElementById(
+                "printReceipt"
+            );
+
+
+        if (printButton) {
+
+            printButton.addEventListener(
+                "click",
+                function () {
+
+                    window.print();
+
+                }
+            );
+
+        }
+
+    }
+
+
+    /* =========================
+       START
+    ========================= */
+
+    const order =
+        findOrder();
+
+
+    renderReceipt(order);
+
+
+    /*
+     * สำคัญมาก:
+     * หลังจากสร้าง HTML แล้ว
+     * ค่อยโหลดรูปจาก IndexedDB
+     */
+
+    await hydrateReceiptImages();
+
+
+    /* =========================
+       CLEAN OBJECT URL
+       ========================= */
+
+    window.addEventListener(
+        "beforeunload",
+        function () {
+
+            objectURLCache.forEach(
+                function (url) {
+
+                    try {
+
+                        URL.revokeObjectURL(url);
+
+                    } catch (error) {}
+
+                }
+            );
+
+        }
+    );
+
+});
+</script>
+
+</body>
+</html>

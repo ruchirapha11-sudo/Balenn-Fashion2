@@ -1,0 +1,2524 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BALENN — Orders</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+:root{
+    --bg:#f7f2ee;
+    --surface:#fffaf7;
+    --surface2:#f3e9e3;
+    --text:#332c2b;
+    --muted:#8c7d77;
+    --line:#eadfd9;
+    --pink:#c99b9e;
+    --pinkSoft:#ead0d0;
+    --gold:#b99a68;
+    --goldSoft:#eadfc8;
+    --green:#77947f;
+    --red:#a66d6d;
+    --purple:#87718c;
+    --shadow:0 12px 35px rgba(75,50,42,.08);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:'DM Sans',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+button,
+input,
+select{
+    font:inherit;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:250px;
+    background:#302927;
+    color:white;
+    padding:28px 18px;
+    z-index:100;
+    display:flex;
+    flex-direction:column;
+}
+
+.brand{
+    padding:4px 14px 30px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+    margin-bottom:22px;
+}
+
+.brand-name{
+    font-family:'Playfair Display',serif;
+    font-size:28px;
+    letter-spacing:3px;
+}
+
+.brand-sub{
+    color:#cbb9af;
+    font-size:11px;
+    letter-spacing:1.5px;
+    margin-top:5px;
+}
+
+.menu-title{
+    color:#9f918b;
+    font-size:10px;
+    letter-spacing:1.5px;
+    padding:0 14px 10px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#cfc4bf;
+    padding:13px 14px;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:14px;
+    transition:.2s;
+}
+
+.nav a:hover{
+    background:rgba(255,255,255,.07);
+    color:white;
+}
+
+.nav a.active{
+    background:var(--pink);
+    color:white;
+}
+
+.nav-icon{
+    width:22px;
+    text-align:center;
+}
+
+.sidebar-bottom{
+    margin-top:auto;
+}
+
+.store-link{
+    display:block;
+    text-decoration:none;
+    color:#e8d9d2;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:12px;
+    padding:11px;
+    text-align:center;
+    font-size:12px;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    margin-left:250px;
+    min-height:100vh;
+}
+
+.topbar{
+    height:82px;
+    background:rgba(255,250,247,.94);
+    border-bottom:1px solid var(--line);
+    padding:0 36px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:50;
+    backdrop-filter:blur(12px);
+}
+
+.page-title{
+    font-family:'Playfair Display',serif;
+    font-size:25px;
+}
+
+.page-subtitle{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:3px;
+}
+
+.admin-profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:var(--pinkSoft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#76595a;
+    font-weight:700;
+}
+
+.profile-text strong{
+    display:block;
+    font-size:13px;
+}
+
+.profile-text span{
+    display:block;
+    font-size:11px;
+    color:var(--muted);
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content{
+    padding:32px 36px 50px;
+}
+
+.heading{
+    margin-bottom:24px;
+}
+
+.heading h1{
+    font-family:'Playfair Display',serif;
+    font-size:29px;
+}
+
+.heading p{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:5px;
+}
+
+/* =========================
+   STAT BOXES
+========================= */
+
+.order-stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:22px;
+}
+
+.order-stat{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:17px;
+    padding:18px;
+    box-shadow:var(--shadow);
+}
+
+.order-stat-label{
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:.6px;
+}
+
+.order-stat-number{
+    font-family:'Playfair Display',serif;
+    font-size:27px;
+    margin-top:9px;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.toolbar{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:14px;
+    display:flex;
+    gap:12px;
+    margin-bottom:20px;
+    box-shadow:var(--shadow);
+}
+
+.search{
+    flex:1;
+    position:relative;
+}
+
+.search input{
+    width:100%;
+    height:43px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    padding:0 14px 0 40px;
+    outline:none;
+    background:white;
+}
+
+.search input:focus{
+    border-color:var(--pink);
+    box-shadow:0 0 0 3px rgba(201,155,158,.12);
+}
+
+.search-icon{
+    position:absolute;
+    left:14px;
+    top:10px;
+    color:var(--muted);
+}
+
+.toolbar select{
+    min-width:160px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    padding:0 13px;
+    background:white;
+    outline:none;
+    cursor:pointer;
+}
+
+.toolbar select:focus{
+    border-color:var(--pink);
+}
+
+/* =========================
+   ORDERS
+========================= */
+
+.orders-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    min-width:1050px;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#f5eee9;
+}
+
+th{
+    text-align:left;
+    padding:15px 18px;
+    font-size:10px;
+    color:var(--muted);
+    letter-spacing:.5px;
+}
+
+td{
+    padding:15px 18px;
+    border-top:1px solid var(--line);
+    font-size:12px;
+    vertical-align:middle;
+}
+
+tbody tr{
+    transition:.15s;
+}
+
+tbody tr:hover{
+    background:#fffdfb;
+}
+
+.order-number{
+    font-weight:700;
+}
+
+.order-date{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:4px;
+}
+
+.customer-name{
+    font-weight:600;
+}
+
+.customer-contact{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:4px;
+}
+
+.item-count{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.total{
+    font-weight:700;
+}
+
+.payment{
+    font-size:11px;
+}
+
+.status-select{
+    border:1px solid var(--line);
+    border-radius:9px;
+    padding:7px 8px;
+    background:white;
+    outline:none;
+    font-size:11px;
+    cursor:pointer;
+}
+
+.status-select.pending{
+    background:#f5ead3;
+    color:#92703e;
+}
+
+.status-select.shipping{
+    background:#e8dfea;
+    color:#75627e;
+}
+
+.status-select.completed{
+    background:#dce9df;
+    color:#607d68;
+}
+
+.status-select.cancelled{
+    background:#f0dddd;
+    color:#956565;
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.action-buttons{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    white-space:nowrap;
+}
+
+.view-btn{
+    border:1px solid var(--line);
+    background:white;
+    color:var(--text);
+    border-radius:9px;
+    padding:7px 10px;
+    cursor:pointer;
+    font-size:11px;
+    transition:.2s;
+}
+
+.view-btn:hover{
+    background:var(--surface2);
+}
+
+.delete-btn{
+    border:1px solid #ead1d1;
+    background:#fff6f6;
+    color:var(--red);
+    border-radius:9px;
+    padding:7px 10px;
+    cursor:pointer;
+    font-size:11px;
+    transition:.2s;
+}
+
+.delete-btn:hover{
+    background:#f0dddd;
+    color:#8d5555;
+}
+
+.delete-btn:active,
+.view-btn:active{
+    transform:scale(.97);
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+    text-align:center;
+    padding:65px 20px;
+    color:var(--muted);
+}
+
+.empty-icon{
+    font-size:36px;
+    margin-bottom:10px;
+}
+
+/* =========================
+   ORDER DETAIL MODAL
+========================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(38,30,28,.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:200;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    background:var(--surface);
+    width:min(720px,100%);
+    max-height:90vh;
+    overflow:auto;
+    border-radius:22px;
+    box-shadow:0 25px 70px rgba(0,0,0,.2);
+}
+
+.modal-header{
+    padding:22px 25px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.modal-header h2{
+    font-family:'Playfair Display',serif;
+    font-size:21px;
+}
+
+.close-btn{
+    border:0;
+    background:none;
+    font-size:25px;
+    color:var(--muted);
+    cursor:pointer;
+}
+
+.close-btn:hover{
+    color:var(--text);
+}
+
+.detail{
+    padding:24px 25px;
+}
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-bottom:22px;
+}
+
+.detail-box{
+    background:#f7f0ec;
+    border-radius:13px;
+    padding:13px;
+}
+
+.detail-label{
+    color:var(--muted);
+    font-size:9px;
+    letter-spacing:.5px;
+}
+
+.detail-value{
+    font-size:12px;
+    font-weight:600;
+    margin-top:5px;
+}
+
+.detail-section{
+    margin-top:20px;
+}
+
+.detail-section h3{
+    font-family:'Playfair Display',serif;
+    font-size:17px;
+    margin-bottom:10px;
+}
+
+.item-row{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    padding:11px 0;
+    border-bottom:1px solid var(--line);
+    font-size:11px;
+}
+
+.item-row:last-child{
+    border-bottom:none;
+}
+
+.item-name{
+    font-weight:600;
+}
+
+.item-qty{
+    color:var(--muted);
+}
+
+.item-price{
+    font-weight:700;
+    white-space:nowrap;
+}
+
+.total-box{
+    margin-top:18px;
+    padding-top:15px;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    font-size:15px;
+    font-weight:700;
+}
+
+.total-box span:last-child{
+    font-family:'Playfair Display',serif;
+    font-size:21px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+.mobile-menu{
+    display:none;
+    border:0;
+    background:none;
+    font-size:22px;
+    cursor:pointer;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1100px){
+
+    .order-stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        transform:translateX(-100%);
+        transition:.25s;
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-menu{
+        display:block;
+    }
+
+    .topbar{
+        padding:0 18px;
+    }
+
+    .content{
+        padding:24px 18px 40px;
+    }
+
+    .profile-text{
+        display:none;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .order-stats{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .toolbar{
+        flex-direction:column;
+    }
+
+    .toolbar select{
+        min-height:43px;
+        width:100%;
+    }
+
+    .detail-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+        <div class="brand-name">BALENN</div>
+        <div class="brand-sub">FASHION ADMIN</div>
+    </div>
+
+    <div class="menu-title">Management</div>
+
+    <nav class="nav">
+
+        <a href="admin.html">
+            <span class="nav-icon">⌂</span>
+            Dashboard
+        </a>
+
+        <a href="admin-products.html">
+            <span class="nav-icon">◈</span>
+            Products
+        </a>
+
+        <a href="admin-orders.html" class="active">
+            <span class="nav-icon">▤</span>
+            Orders
+        </a>
+
+        <a href="admin-customers.html">
+            <span class="nav-icon">♧</span>
+            Customers
+        </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <a href="index.html" class="store-link">
+            ↗ View BALENN Store
+        </a>
+
+    </div>
+
+</aside>
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+<header class="topbar">
+
+    <div style="display:flex;align-items:center;gap:15px;">
+
+        <button class="mobile-menu" id="mobileMenu">
+            ☰
+        </button>
+
+        <div>
+
+            <div class="page-title">
+                Orders
+            </div>
+
+            <div class="page-subtitle">
+                BALENN Fashion Co., Ltd.
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="admin-profile">
+
+        <div class="avatar">
+            B
+        </div>
+
+        <div class="profile-text">
+
+            <strong>
+                Administrator
+            </strong>
+
+            <span>
+                Store Manager
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+<section class="content">
+
+    <div class="heading">
+
+        <h1>
+            Order Management
+        </h1>
+
+        <p>
+            ตรวจสอบและจัดการคำสั่งซื้อของลูกค้า
+        </p>
+
+    </div>
+
+    <!-- =========================
+         STATS
+    ========================= -->
+
+    <div class="order-stats">
+
+        <div class="order-stat">
+
+            <div class="order-stat-label">
+                ALL ORDERS
+            </div>
+
+            <div
+                class="order-stat-number"
+                id="allCount"
+            >
+                0
+            </div>
+
+        </div>
+
+        <div class="order-stat">
+
+            <div class="order-stat-label">
+                PENDING
+            </div>
+
+            <div
+                class="order-stat-number"
+                id="pendingCount"
+            >
+                0
+            </div>
+
+        </div>
+
+        <div class="order-stat">
+
+            <div class="order-stat-label">
+                SHIPPING
+            </div>
+
+            <div
+                class="order-stat-number"
+                id="shippingCount"
+            >
+                0
+            </div>
+
+        </div>
+
+        <div class="order-stat">
+
+            <div class="order-stat-label">
+                COMPLETED
+            </div>
+
+            <div
+                class="order-stat-number"
+                id="completedCount"
+            >
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =========================
+         FILTER
+    ========================= -->
+
+    <div class="toolbar">
+
+        <div class="search">
+
+            <span class="search-icon">
+                ⌕
+            </span>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="ค้นหาเลขออเดอร์ หรือชื่อลูกค้า..."
+            >
+
+        </div>
+
+        <select id="statusFilter">
+
+            <option value="ALL">
+                All Status
+            </option>
+
+            <option value="Pending">
+                Pending
+            </option>
+
+            <option value="Shipping">
+                Shipping
+            </option>
+
+            <option value="Completed">
+                Completed
+            </option>
+
+            <option value="Cancelled">
+                Cancelled
+            </option>
+
+        </select>
+
+    </div>
+
+    <!-- =========================
+         TABLE
+    ========================= -->
+
+    <div class="orders-card">
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ORDER
+                        </th>
+
+                        <th>
+                            CUSTOMER
+                        </th>
+
+                        <th>
+                            ITEMS
+                        </th>
+
+                        <th>
+                            TOTAL
+                        </th>
+
+                        <th>
+                            PAYMENT
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                        <th>
+                            ACTION
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="ordersTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+<!-- =========================
+     DETAIL MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="detailModal"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>
+                Order Details
+            </h2>
+
+            <button
+                class="close-btn"
+                id="closeModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            class="detail"
+            id="orderDetail"
+        ></div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =====================================================
+   BALENN ORDER MANAGEMENT
+===================================================== */
+
+const ORDER_KEY =
+    "balennOrderHistory";
+
+let orders =
+    readOrders();
+
+/* =========================
+   STORAGE
+========================= */
+
+function readOrders(){
+
+    try{
+
+        const data =
+            JSON.parse(
+                localStorage.getItem(ORDER_KEY)
+            );
+
+        return Array.isArray(data)
+            ? data
+            : [];
+
+    }catch(error){
+
+        console.error(
+            "Cannot read orders:",
+            error
+        );
+
+        return [];
+
+    }
+
+}
+
+/* =========================
+   SAVE
+========================= */
+
+function saveOrders(){
+
+    try{
+
+        localStorage.setItem(
+            ORDER_KEY,
+            JSON.stringify(orders)
+        );
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "Cannot save orders:",
+            error
+        );
+
+        alert(
+            "ไม่สามารถบันทึกข้อมูลออเดอร์ได้"
+        );
+
+        return false;
+
+    }
+
+}
+
+/* =========================
+   NUMBER
+========================= */
+
+function toNumber(value){
+
+    if(typeof value === "number"){
+
+        return Number.isFinite(value)
+            ? value
+            : 0;
+
+    }
+
+    if(
+        value === null ||
+        value === undefined
+    ){
+
+        return 0;
+
+    }
+
+    const cleaned =
+        String(value)
+        .replace(/฿/g,"")
+        .replace(/บาท/gi,"")
+        .replace(/,/g,"")
+        .replace(/\s/g,"")
+        .trim();
+
+    const number =
+        Number(cleaned);
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+
+}
+
+/* =========================
+   ORDER TOTAL
+========================= */
+
+function getOrderTotal(order){
+
+    const values = [
+
+        order?.total,
+        order?.grandTotal,
+        order?.orderTotal,
+        order?.amount
+
+    ];
+
+    for(const value of values){
+
+        const number =
+            toNumber(value);
+
+        if(number > 0){
+
+            return number;
+
+        }
+
+    }
+
+    if(Array.isArray(order?.items)){
+
+        return order.items.reduce(
+            (sum,item)=>{
+
+                const price =
+                    toNumber(item?.price) ||
+                    toNumber(item?.salePrice) ||
+                    toNumber(item?.unitPrice) ||
+                    toNumber(item?.productPrice);
+
+                const quantity =
+                    Number(item?.quantity) ||
+                    Number(item?.qty) ||
+                    1;
+
+                return sum +
+                    price * quantity;
+
+            },
+            0
+        );
+
+    }
+
+    return 0;
+
+}
+
+/* =========================
+   CUSTOMER
+========================= */
+
+function getCustomer(order){
+
+    const customer =
+        order?.customer ||
+        order?.customerInfo ||
+        order?.user ||
+        {};
+
+    if(typeof customer === "string"){
+
+        return {
+
+            name:customer,
+            phone:"",
+            email:""
+
+        };
+
+    }
+
+    return {
+
+        name:
+            customer?.name ||
+            customer?.fullName ||
+            "Guest Customer",
+
+        phone:
+            customer?.phone ||
+            customer?.telephone ||
+            customer?.tel ||
+            "",
+
+        email:
+            customer?.email ||
+            ""
+
+    };
+
+}
+
+/* =========================
+   STATUS
+========================= */
+
+function normalizeStatus(value){
+
+    const status =
+        String(
+            value ||
+            "Pending"
+        )
+        .toLowerCase()
+        .trim();
+
+    if(
+        status.includes("shipping") ||
+        status.includes("จัดส่ง")
+    ){
+
+        return "Shipping";
+
+    }
+
+    if(
+        status.includes("completed") ||
+        status.includes("complete") ||
+        status.includes("สำเร็จ")
+    ){
+
+        return "Completed";
+
+    }
+
+    if(
+        status.includes("cancelled") ||
+        status.includes("canceled") ||
+        status.includes("cancel") ||
+        status.includes("ยกเลิก")
+    ){
+
+        return "Cancelled";
+
+    }
+
+    return "Pending";
+
+}
+
+/* =========================
+   ORDER NUMBER
+========================= */
+
+function getOrderNumber(
+    order,
+    index
+){
+
+    return (
+
+        order?.orderNumber ||
+        order?.orderId ||
+        order?.id ||
+        `ORDER-${String(
+            index + 1
+        ).padStart(4,"0")}`
+
+    );
+
+}
+
+/* =========================
+   DATE
+========================= */
+
+function getOrderDate(order){
+
+    const raw =
+        order?.createdAt ||
+        order?.dateTime ||
+        order?.date;
+
+    if(!raw){
+
+        return "-";
+
+    }
+
+    const date =
+        new Date(raw);
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+
+        return String(raw);
+
+    }
+
+    return date.toLocaleDateString(
+        "th-TH",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric"
+        }
+    );
+
+}
+
+/* =========================
+   ITEM COUNT
+========================= */
+
+function getItemCount(order){
+
+    if(
+        !Array.isArray(
+            order?.items
+        )
+    ){
+
+        return 0;
+
+    }
+
+    return order.items.reduce(
+        (sum,item)=>{
+
+            return sum +
+                (
+                    Number(
+                        item?.quantity
+                    ) ||
+                    Number(
+                        item?.qty
+                    ) ||
+                    1
+                );
+
+        },
+        0
+    );
+
+}
+
+/* =========================
+   RENDER
+========================= */
+
+const ordersTable =
+    document.getElementById(
+        "ordersTable"
+    );
+
+function renderOrders(){
+
+    const search =
+        document
+        .getElementById(
+            "searchInput"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+    const statusFilter =
+        document
+        .getElementById(
+            "statusFilter"
+        )
+        .value;
+
+    const filtered =
+        orders.filter(
+            (order,index)=>{
+
+                const number =
+                    String(
+                        getOrderNumber(
+                            order,
+                            index
+                        )
+                    )
+                    .toLowerCase();
+
+                const customer =
+                    String(
+                        getCustomer(
+                            order
+                        ).name
+                    )
+                    .toLowerCase();
+
+                const status =
+                    normalizeStatus(
+                        order?.status ||
+                        order?.orderStatus
+                    );
+
+                const matchesSearch =
+                    !search ||
+                    number.includes(
+                        search
+                    ) ||
+                    customer.includes(
+                        search
+                    );
+
+                const matchesStatus =
+                    statusFilter === "ALL" ||
+                    status === statusFilter;
+
+                return (
+                    matchesSearch &&
+                    matchesStatus
+                );
+
+            }
+        );
+
+    if(!filtered.length){
+
+        ordersTable.innerHTML = `
+
+            <tr>
+
+                <td colspan="7">
+
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            ▤
+                        </div>
+
+                        <div>
+                            ${
+                                orders.length
+                                ? "ไม่พบคำสั่งซื้อที่ค้นหา"
+                                : "ยังไม่มีคำสั่งซื้อในระบบ"
+                            }
+                        </div>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+    ordersTable.innerHTML =
+        filtered
+        .map(order=>{
+
+            const index =
+                orders.indexOf(
+                    order
+                );
+
+            const number =
+                getOrderNumber(
+                    order,
+                    index
+                );
+
+            const customer =
+                getCustomer(order);
+
+            const status =
+                normalizeStatus(
+                    order?.status ||
+                    order?.orderStatus
+                );
+
+            const total =
+                getOrderTotal(
+                    order
+                );
+
+            const itemCount =
+                getItemCount(
+                    order
+                );
+
+            const payment =
+                order?.paymentMethod ||
+                "Bank Transfer";
+
+            return `
+
+                <tr>
+
+                    <td>
+
+                        <div class="order-number">
+                            ${escapeHTML(
+                                number
+                            )}
+                        </div>
+
+                        <div class="order-date">
+                            ${escapeHTML(
+                                getOrderDate(
+                                    order
+                                )
+                            )}
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <div class="customer-name">
+                            ${escapeHTML(
+                                customer.name
+                            )}
+                        </div>
+
+                        <div class="customer-contact">
+                            ${escapeHTML(
+                                customer.phone ||
+                                customer.email ||
+                                ""
+                            )}
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <div class="item-count">
+                            ${itemCount} ชิ้น
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <div class="total">
+                            ฿${formatMoney(
+                                total
+                            )}
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <div class="payment">
+                            ${escapeHTML(
+                                payment
+                            )}
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <select
+                            class="status-select ${status.toLowerCase()}"
+                            onchange="changeStatus(
+                                '${escapeJS(number)}',
+                                this.value
+                            )"
+                        >
+
+                            <option
+                                value="Pending"
+                                ${status === "Pending"
+                                    ? "selected"
+                                    : ""}
+                            >
+                                Pending
+                            </option>
+
+                            <option
+                                value="Shipping"
+                                ${status === "Shipping"
+                                    ? "selected"
+                                    : ""}
+                            >
+                                Shipping
+                            </option>
+
+                            <option
+                                value="Completed"
+                                ${status === "Completed"
+                                    ? "selected"
+                                    : ""}
+                            >
+                                Completed
+                            </option>
+
+                            <option
+                                value="Cancelled"
+                                ${status === "Cancelled"
+                                    ? "selected"
+                                    : ""}
+                            >
+                                Cancelled
+                            </option>
+
+                        </select>
+
+                    </td>
+
+                    <td>
+
+                        <div class="action-buttons">
+
+                            <button
+                                class="view-btn"
+                                onclick="viewOrder(
+                                    '${escapeJS(number)}'
+                                )"
+                            >
+                                ดูรายละเอียด
+                            </button>
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteOrder(
+                                    '${escapeJS(number)}'
+                                )"
+                            >
+                                🗑 ลบ
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        })
+        .join("");
+
+}
+
+/* =========================
+   CHANGE STATUS
+========================= */
+
+function changeStatus(
+    orderNumber,
+    newStatus
+){
+
+    const order =
+        orders.find(
+            (item,index)=>
+                String(
+                    getOrderNumber(
+                        item,
+                        index
+                    )
+                ) ===
+                String(orderNumber)
+        );
+
+    if(!order){
+
+        return;
+
+    }
+
+    order.status =
+        newStatus;
+
+    order.orderStatus =
+        newStatus;
+
+    if(saveOrders()){
+
+        updateStats();
+
+        renderOrders();
+
+    }
+
+}
+
+/* =========================
+   DELETE ORDER
+========================= */
+
+function deleteOrder(
+    orderNumber
+){
+
+    const index =
+        orders.findIndex(
+            (item,i)=>
+                String(
+                    getOrderNumber(
+                        item,
+                        i
+                    )
+                ) ===
+                String(orderNumber)
+        );
+
+    if(index === -1){
+
+        alert(
+            "ไม่พบคำสั่งซื้อนี้"
+        );
+
+        return;
+
+    }
+
+    const order =
+        orders[index];
+
+    const customer =
+        getCustomer(
+            order
+        );
+
+    const total =
+        getOrderTotal(
+            order
+        );
+
+    const confirmed =
+        confirm(
+
+            "ต้องการลบคำสั่งซื้อนี้ใช่หรือไม่?\n\n" +
+
+            "Order: " +
+            orderNumber +
+            "\n" +
+
+            "ลูกค้า: " +
+            customer.name +
+            "\n" +
+
+            "ยอดรวม: ฿" +
+            formatMoney(total) +
+            "\n\n" +
+
+            "⚠️ การลบออเดอร์จะไม่สามารถกู้คืนได้"
+
+        );
+
+    if(!confirmed){
+
+        return;
+
+    }
+
+    orders.splice(
+        index,
+        1
+    );
+
+    if(!saveOrders()){
+
+        // ถ้าบันทึกไม่ได้ ให้คืนข้อมูลกลับ
+        orders.splice(
+            index,
+            0,
+            order
+        );
+
+        renderOrders();
+        updateStats();
+
+        return;
+
+    }
+
+    updateStats();
+
+    renderOrders();
+
+    document
+        .getElementById(
+            "detailModal"
+        )
+        .classList
+        .remove("show");
+
+    alert(
+        "ลบคำสั่งซื้อ " +
+        orderNumber +
+        " เรียบร้อยแล้ว"
+    );
+
+}
+
+/* =========================
+   VIEW ORDER
+========================= */
+
+function viewOrder(
+    orderNumber
+){
+
+    const order =
+        orders.find(
+            (item,index)=>
+                String(
+                    getOrderNumber(
+                        item,
+                        index
+                    )
+                ) ===
+                String(orderNumber)
+        );
+
+    if(!order){
+
+        return;
+
+    }
+
+    const customer =
+        getCustomer(
+            order
+        );
+
+    const items =
+        Array.isArray(
+            order.items
+        )
+        ? order.items
+        : [];
+
+    const total =
+        getOrderTotal(
+            order
+        );
+
+    const subtotal =
+        toNumber(
+            order?.subtotal
+        ) ||
+        items.reduce(
+            (sum,item)=>{
+
+                const price =
+                    toNumber(
+                        item?.price
+                    ) ||
+                    toNumber(
+                        item?.salePrice
+                    ) ||
+                    toNumber(
+                        item?.unitPrice
+                    );
+
+                const quantity =
+                    Number(
+                        item?.quantity
+                    ) ||
+                    Number(
+                        item?.qty
+                    ) ||
+                    1;
+
+                return sum +
+                    price * quantity;
+
+            },
+            0
+        );
+
+    const shipping =
+        toNumber(
+            order?.shipping
+        );
+
+    const discount =
+        toNumber(
+            order?.discount
+        );
+
+    const status =
+        normalizeStatus(
+            order?.status ||
+            order?.orderStatus
+        );
+
+    const payment =
+        order?.paymentMethod ||
+        "Bank Transfer";
+
+    const bank =
+        order?.paymentBank ||
+        "";
+
+    document.getElementById(
+        "orderDetail"
+    ).innerHTML = `
+
+        <div class="detail-grid">
+
+            <div class="detail-box">
+
+                <div class="detail-label">
+                    ORDER NUMBER
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHTML(
+                        orderNumber
+                    )}
+                </div>
+
+            </div>
+
+            <div class="detail-box">
+
+                <div class="detail-label">
+                    ORDER DATE
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHTML(
+                        getOrderDate(
+                            order
+                        )
+                    )}
+                </div>
+
+            </div>
+
+            <div class="detail-box">
+
+                <div class="detail-label">
+                    CUSTOMER
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHTML(
+                        customer.name
+                    )}
+                </div>
+
+            </div>
+
+            <div class="detail-box">
+
+                <div class="detail-label">
+                    PHONE
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHTML(
+                        customer.phone ||
+                        "-"
+                    )}
+                </div>
+
+            </div>
+
+            <div class="detail-box">
+
+                <div class="detail-label">
+                    PAYMENT
+                </div>
+
+                <div class="detail-value">
+
+                    ${escapeHTML(
+                        payment
+                    )}
+
+                    ${
+                        bank
+                        ? " · " +
+                          escapeHTML(
+                              bank
+                          )
+                        : ""
+                    }
+
+                </div>
+
+            </div>
+
+            <div class="detail-box">
+
+                <div class="detail-label">
+                    STATUS
+                </div>
+
+                <div class="detail-value">
+                    ${escapeHTML(
+                        status
+                    )}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="detail-section">
+
+            <h3>
+                Order Items
+            </h3>
+
+            ${
+                items.length
+
+                ?
+
+                items
+                .map(item=>{
+
+                    const name =
+                        item?.name ||
+                        item?.productName ||
+                        "Product";
+
+                    const quantity =
+                        Number(
+                            item?.quantity
+                        ) ||
+                        Number(
+                            item?.qty
+                        ) ||
+                        1;
+
+                    const price =
+                        toNumber(
+                            item?.price
+                        ) ||
+                        toNumber(
+                            item?.salePrice
+                        ) ||
+                        toNumber(
+                            item?.unitPrice
+                        );
+
+                    return `
+
+                        <div class="item-row">
+
+                            <div>
+
+                                <div class="item-name">
+                                    ${escapeHTML(
+                                        name
+                                    )}
+                                </div>
+
+                                <div class="item-qty">
+                                    × ${quantity}
+                                </div>
+
+                            </div>
+
+                            <div class="item-price">
+                                ฿${formatMoney(
+                                    price *
+                                    quantity
+                                )}
+                            </div>
+
+                        </div>
+
+                    `;
+
+                })
+                .join("")
+
+                :
+
+                `
+
+                    <div class="empty">
+                        ไม่มีรายการสินค้า
+                    </div>
+
+                `
+
+            }
+
+        </div>
+
+        <div class="detail-section">
+
+            <h3>
+                Payment Summary
+            </h3>
+
+            <div class="item-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong>
+                    ฿${formatMoney(
+                        subtotal
+                    )}
+                </strong>
+
+            </div>
+
+            <div class="item-row">
+
+                <span>
+                    Shipping
+                </span>
+
+                <strong>
+
+                    ${
+                        shipping === 0
+                        ? "FREE"
+                        : "฿" +
+                          formatMoney(
+                              shipping
+                          )
+                    }
+
+                </strong>
+
+            </div>
+
+            ${
+                discount > 0
+
+                ?
+
+                `
+
+                    <div class="item-row">
+
+                        <span>
+                            Discount
+                        </span>
+
+                        <strong>
+                            -฿${formatMoney(
+                                discount
+                            )}
+                        </strong>
+
+                    </div>
+
+                `
+
+                :
+
+                ""
+
+            }
+
+            <div class="total-box">
+
+                <span>
+                    TOTAL
+                </span>
+
+                <span>
+                    ฿${formatMoney(
+                        total
+                    )}
+                </span>
+
+            </div>
+
+        </div>
+
+    `;
+
+    document
+        .getElementById(
+            "detailModal"
+        )
+        .classList
+        .add("show");
+
+}
+
+/* =========================
+   FORMAT
+========================= */
+
+function formatMoney(
+    value
+){
+
+    return Number(
+        value || 0
+    )
+    .toLocaleString(
+        "en-US",
+        {
+            minimumFractionDigits:0,
+            maximumFractionDigits:2
+        }
+    );
+
+}
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHTML(
+    value
+){
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+/* =========================
+   ESCAPE JS
+========================= */
+
+function escapeJS(
+    value
+){
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /\\/g,
+        "\\\\"
+    )
+    .replace(
+        /'/g,
+        "\\'"
+    )
+    .replace(
+        /\r/g,
+        "\\r"
+    )
+    .replace(
+        /\n/g,
+        "\\n"
+    );
+
+}
+
+/* =========================
+   FILTER
+========================= */
+
+document
+    .getElementById(
+        "searchInput"
+    )
+    .addEventListener(
+        "input",
+        renderOrders
+    );
+
+document
+    .getElementById(
+        "statusFilter"
+    )
+    .addEventListener(
+        "change",
+        renderOrders
+    );
+
+/* =========================
+   MODAL
+========================= */
+
+document
+    .getElementById(
+        "closeModal"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+            document
+                .getElementById(
+                    "detailModal"
+                )
+                .classList
+                .remove("show");
+        }
+    );
+
+document
+    .getElementById(
+        "detailModal"
+    )
+    .addEventListener(
+        "click",
+        event=>{
+
+            if(
+                event.target.id ===
+                "detailModal"
+            ){
+
+                event.currentTarget
+                    .classList
+                    .remove("show");
+
+            }
+
+        }
+    );
+
+/* =========================
+   ESC CLOSE MODAL
+========================= */
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        if(
+            event.key === "Escape"
+        ){
+
+            document
+                .getElementById(
+                    "detailModal"
+                )
+                .classList
+                .remove("show");
+
+        }
+
+    }
+);
+
+/* =========================
+   MOBILE
+========================= */
+
+document
+    .getElementById(
+        "mobileMenu"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            document
+                .getElementById(
+                    "sidebar"
+                )
+                .classList
+                .toggle(
+                    "open"
+                );
+
+        }
+    );
+
+/* =========================
+   STATS
+========================= */
+
+function updateStats(){
+
+    let pending = 0;
+    let shipping = 0;
+    let completed = 0;
+
+    orders.forEach(
+        order=>{
+
+            const status =
+                normalizeStatus(
+                    order?.status ||
+                    order?.orderStatus
+                );
+
+            if(
+                status === "Pending"
+            ){
+
+                pending++;
+
+            }
+
+            if(
+                status === "Shipping"
+            ){
+
+                shipping++;
+
+            }
+
+            if(
+                status === "Completed"
+            ){
+
+                completed++;
+
+            }
+
+        }
+    );
+
+    document.getElementById(
+        "allCount"
+    ).textContent =
+        orders.length;
+
+    document.getElementById(
+        "pendingCount"
+    ).textContent =
+        pending;
+
+    document.getElementById(
+        "shippingCount"
+    ).textContent =
+        shipping;
+
+    document.getElementById(
+        "completedCount"
+    ).textContent =
+        completed;
+
+}
+
+/* =========================
+   STORAGE SYNC
+========================= */
+
+window.addEventListener(
+    "storage",
+    event=>{
+
+        if(
+            event.key ===
+            ORDER_KEY
+        ){
+
+            orders =
+                readOrders();
+
+            updateStats();
+
+            renderOrders();
+
+        }
+
+    }
+);
+
+/* =========================
+   INIT
+========================= */
+
+updateStats();
+
+renderOrders();
+
+</script>
+
+</body>
+</html>

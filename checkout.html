@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Checkout | BALENN</title>
+
+<style>
+:root{
+    --ivory:#faf6f1;
+    --cream:#f3ebe4;
+    --pink:#d8aaa9;
+    --pink-soft:#ead2d0;
+    --gold:#b79b72;
+    --gold-light:#d8c5a5;
+    --orange:#c98e72;
+    --charcoal:#302b2a;
+    --muted:#827875;
+    --line:#e5dcd5;
+    --white:#ffffff;
+    --danger:#b85c5c;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:var(--ivory);
+    color:var(--charcoal);
+}
+
+header{
+    height:78px;
+    background:rgba(250,246,241,.97);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 5%;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    color:var(--charcoal);
+    text-decoration:none;
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:4px;
+}
+
+nav{
+    display:flex;
+    align-items:center;
+    gap:24px;
+}
+
+nav a{
+    text-decoration:none;
+    color:var(--charcoal);
+    font-size:12px;
+    letter-spacing:1px;
+    transition:.2s;
+}
+
+nav a:hover{
+    color:var(--gold);
+}
+
+.header-icons{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.header-icon{
+    width:38px;
+    height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:var(--charcoal);
+    font-size:21px;
+    border-radius:50%;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.header-icon:hover{
+    background:var(--pink-soft);
+}
+
+.menu-btn{
+    display:none;
+}
+
+.page{
+    max-width:1200px;
+    margin:auto;
+    padding:55px 20px 80px;
+}
+
+.page-title{
+    text-align:center;
+    margin-bottom:45px;
+}
+
+.page-title span{
+    display:block;
+    font-size:11px;
+    letter-spacing:4px;
+    color:var(--gold);
+    margin-bottom:10px;
+}
+
+.page-title h1{
+    font-size:38px;
+    letter-spacing:2px;
+}
+
+.checkout-grid{
+    display:grid;
+    grid-template-columns:1.4fr .8fr;
+    gap:28px;
+    align-items:start;
+}
+
+.card{
+    background:var(--white);
+    border:1px solid var(--line);
+    padding:30px;
+    margin-bottom:22px;
+}
+
+.card-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:25px;
+    font-size:18px;
+    letter-spacing:1px;
+}
+
+.card-number{
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--pink-soft);
+    color:var(--gold);
+    border-radius:50%;
+    font-size:13px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.form-group.full{
+    grid-column:1 / -1;
+}
+
+label{
+    font-size:12px;
+    color:var(--muted);
+}
+
+.required{
+    color:var(--danger);
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid var(--line);
+    background:var(--ivory);
+    color:var(--charcoal);
+    outline:none;
+    font-family:inherit;
+    transition:.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    border-color:var(--gold);
+    background:white;
+}
+
+textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.payment-options{
+    display:grid;
+    gap:12px;
+}
+
+.payment-option{
+    position:relative;
+}
+
+.payment-option input{
+    position:absolute;
+    opacity:0;
+}
+
+.payment-label{
+    display:block;
+    border:1px solid var(--line);
+    padding:18px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.payment-label:hover{
+    border-color:var(--gold-light);
+}
+
+.payment-option input:checked + .payment-label{
+    border-color:var(--gold);
+    background:#fbf7f2;
+}
+
+.bank-name{
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.bank-detail{
+    font-size:12px;
+    color:var(--muted);
+}
+
+.terms{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin-top:20px;
+    font-size:12px;
+    line-height:1.6;
+    color:var(--muted);
+}
+
+.terms input{
+    width:auto;
+    margin-top:3px;
+}
+
+.summary-card{
+    position:sticky;
+    top:100px;
+}
+
+.summary-items{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.summary-item{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+    padding-bottom:15px;
+    border-bottom:1px solid var(--line);
+}
+
+.item-info{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.item-name{
+    font-size:14px;
+}
+
+.item-qty{
+    font-size:11px;
+    color:var(--muted);
+}
+
+.item-price{
+    white-space:nowrap;
+    font-size:14px;
+    font-weight:600;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    margin:12px 0;
+    font-size:14px;
+}
+
+.summary-row.muted{
+    color:var(--muted);
+}
+
+.summary-total{
+    display:flex;
+    justify-content:space-between;
+    padding-top:20px;
+    margin-top:20px;
+    border-top:1px solid var(--line);
+    font-size:20px;
+    font-weight:700;
+}
+
+.shipping-note{
+    margin-top:18px;
+    padding:13px;
+    background:var(--pink-soft);
+    color:var(--charcoal);
+    font-size:12px;
+    line-height:1.6;
+}
+
+.submit-btn{
+    width:100%;
+    border:none;
+    padding:17px;
+    margin-top:25px;
+    background:var(--charcoal);
+    color:white;
+    font-family:inherit;
+    font-size:13px;
+    letter-spacing:2px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.submit-btn:hover{
+    background:var(--gold);
+}
+
+.submit-btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.empty{
+    text-align:center;
+    padding:50px 20px;
+    color:var(--muted);
+}
+
+.empty a{
+    display:inline-block;
+    margin-top:18px;
+    color:var(--charcoal);
+    text-decoration:none;
+    border-bottom:1px solid var(--gold);
+}
+
+.bank-selected{
+    margin-top:15px;
+    padding:15px;
+    background:#fbf7f2;
+    border:1px solid var(--line);
+    font-size:12px;
+    color:var(--muted);
+    display:none;
+}
+
+@media(max-width:900px){
+
+    nav{
+        display:none;
+    }
+
+    .menu-btn{
+        display:flex;
+    }
+
+    .checkout-grid{
+        grid-template-columns:1fr;
+    }
+
+    .summary-card{
+        position:static;
+    }
+}
+
+@media(max-width:600px){
+
+    header{
+        height:70px;
+        padding:0 18px;
+    }
+
+    .logo{
+        font-size:23px;
+    }
+
+    .page{
+        padding:40px 15px 60px;
+    }
+
+    .page-title h1{
+        font-size:30px;
+    }
+
+    .card{
+        padding:22px 18px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <a href="index.html" class="logo">
+        BALENN
+    </a>
+
+    <nav>
+        <a href="index.html">HOME</a>
+        <a href="shop.html">NEW ARRIVALS</a>
+        <a href="shop.html">CLOTHING</a>
+        <a href="shop.html">DRESSES</a>
+        <a href="shop.html">TOPS</a>
+        <a href="shop.html">BOTTOMS</a>
+        <a href="shop.html">BAGS</a>
+        <a href="shop.html">SALE</a>
+    </nav>
+
+    <div class="header-icons">
+
+        <a href="order-history.html"
+           class="header-icon"
+           title="Order History">
+            ♡
+        </a>
+
+        <a href="cart.html"
+           class="header-icon"
+           title="Shopping Bag">
+            🛍️
+        </a>
+
+        <button
+            class="header-icon menu-btn"
+            type="button"
+            onclick="window.location.href='index.html'">
+            ☰
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="page">
+
+    <div class="page-title">
+
+        <span>SECURE CHECKOUT</span>
+
+        <h1>Checkout</h1>
+
+    </div>
+
+
+    <div id="checkoutContent" class="checkout-grid">
+
+        <div>
+
+            <section class="card">
+
+                <div class="card-title">
+                    <div class="card-number">1</div>
+                    Customer Information
+                </div>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            ชื่อ - นามสกุล
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="กรอกชื่อ - นามสกุล">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            เบอร์โทรศัพท์
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            maxlength="10"
+                            placeholder="08X-XXX-XXXX">
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Email
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="example@email.com">
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            ที่อยู่
+                            <span class="required">*</span>
+                        </label>
+
+                        <textarea
+                            id="address"
+                            placeholder="บ้านเลขที่ / หมู่ / ถนน"></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            อำเภอ / เขต
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="district"
+                            placeholder="อำเภอ / เขต">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            จังหวัด
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="province"
+                            placeholder="จังหวัด">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            รหัสไปรษณีย์
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="postalCode"
+                            maxlength="5"
+                            placeholder="50000">
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            หมายเหตุเพิ่มเติม
+                        </label>
+
+                        <input
+                            type="text"
+                            id="note"
+                            placeholder="เช่น ฝากไว้กับ รปภ.">
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section class="card">
+
+                <div class="card-title">
+
+                    <div class="card-number">
+                        2
+                    </div>
+
+                    Payment Method
+
+                </div>
+
+
+                <div class="payment-options">
+
+                    <div class="payment-option">
+
+                        <input
+                            type="radio"
+                            name="paymentBank"
+                            id="kbank"
+                            value="KBANK"
+                            checked>
+
+                        <label
+                            for="kbank"
+                            class="payment-label">
+
+                            <div class="bank-name">
+                                KASIKORNBANK (KBANK)
+                            </div>
+
+                            <div class="bank-detail">
+                                เลขบัญชี XXX-X-XXXXX-X
+                            </div>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="payment-option">
+
+                        <input
+                            type="radio"
+                            name="paymentBank"
+                            id="scb"
+                            value="SCB">
+
+                        <label
+                            for="scb"
+                            class="payment-label">
+
+                            <div class="bank-name">
+                                SIAM COMMERCIAL BANK (SCB)
+                            </div>
+
+                            <div class="bank-detail">
+                                เลขบัญชี XXX-X-XXXXX-X
+                            </div>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="payment-option">
+
+                        <input
+                            type="radio"
+                            name="paymentBank"
+                            id="ktb"
+                            value="KTB">
+
+                        <label
+                            for="ktb"
+                            class="payment-label">
+
+                            <div class="bank-name">
+                                KRUNG THAI BANK (KTB)
+                            </div>
+
+                            <div class="bank-detail">
+                                เลขบัญชี XXX-X-XXXXX-X
+                            </div>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div id="selectedBank" class="bank-selected">
+                    ธนาคารที่เลือก: <strong id="selectedBankName">KBANK</strong>
+                </div>
+
+
+                <label class="terms">
+
+                    <input
+                        type="checkbox"
+                        id="terms">
+
+                    <span>
+                        ฉันยืนยันว่าข้อมูลที่กรอกถูกต้อง
+                        และยอมรับเงื่อนไขการสั่งซื้อของ BALENN
+                        <span class="required">*</span>
+                    </span>
+
+                </label>
+
+            </section>
+
+        </div>
+
+
+        <aside class="card summary-card">
+
+            <div class="card-title">
+
+                <div class="card-number">
+                    3
+                </div>
+
+                Order Summary
+
+            </div>
+
+
+            <div
+                id="summaryItems"
+                class="summary-items">
+            </div>
+
+
+            <div class="summary-row muted">
+
+                <span>Subtotal</span>
+
+                <span id="subtotal">
+                    ฿0.00
+                </span>
+
+            </div>
+
+
+            <div class="summary-row muted">
+
+                <span>Shipping</span>
+
+                <span id="shipping">
+                    ฿0.00
+                </span>
+
+            </div>
+
+
+            <div class="summary-row muted">
+
+                <span>Discount</span>
+
+                <span id="discount">
+                    ฿0.00
+                </span>
+
+            </div>
+
+
+            <div class="summary-total">
+
+                <span>Total</span>
+
+                <span id="total">
+                    ฿0.00
+                </span>
+
+            </div>
+
+
+            <div
+                id="shippingNote"
+                class="shipping-note">
+
+                🚚 จัดส่งฟรีเมื่อสั่งซื้อครบ ฿1,500
+
+            </div>
+
+
+            <button
+                id="submitOrder"
+                class="submit-btn"
+                type="button">
+
+                ยืนยันคำสั่งซื้อ
+
+            </button>
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    const CART_KEY = "balennCart";
+    const ORDER_KEY = "balennOrderHistory";
+    const LAST_ORDER_KEY = "balennLastOrder";
+
+    const FREE_SHIPPING_LIMIT = 1500;
+    const STANDARD_SHIPPING = 80;
+
+
+    /* =====================================================
+       NUMBER / PRICE NORMALIZER
+       รองรับ:
+       1290
+       "1290"
+       "1,290"
+       "฿1,290"
+       "฿ 1,290 บาท"
+    ===================================================== */
+
+    function toNumber(value){
+
+        if(
+            value === null ||
+            value === undefined ||
+            value === ""
+        ){
+            return 0;
+        }
+
+        if(typeof value === "number"){
+
+            return Number.isFinite(value)
+                ? value
+                : 0;
+
+        }
+
+        const cleaned =
+            String(value)
+                .replace(/฿/g,"")
+                .replace(/บาท/g,"")
+                .replace(/,/g,"")
+                .replace(/\s/g,"")
+                .trim();
+
+        const number =
+            parseFloat(cleaned);
+
+        return Number.isFinite(number)
+            ? number
+            : 0;
+
+    }
+
+
+    /* =====================================================
+       PRICE
+    ===================================================== */
+
+    function getPrice(item){
+
+        if(!item){
+            return 0;
+        }
+
+        const possiblePrices = [
+
+            item.price,
+
+            item.salePrice,
+
+            item.unitPrice,
+
+            item.productPrice,
+
+            item.regularPrice,
+
+            item.originalPrice,
+
+            item.amount,
+
+            item.cost
+
+        ];
+
+
+        for(const value of possiblePrices){
+
+            const number =
+                toNumber(value);
+
+            if(number > 0){
+                return number;
+            }
+
+        }
+
+
+        return 0;
+
+    }
+
+
+    /* =====================================================
+       QUANTITY
+    ===================================================== */
+
+    function getQuantity(item){
+
+        const quantity =
+            toNumber(
+                item?.quantity ??
+                item?.qty ??
+                item?.count ??
+                1
+            );
+
+        return quantity > 0
+            ? quantity
+            : 1;
+
+    }
+
+
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
+
+    function escapeHTML(value){
+
+        return String(value ?? "")
+            .replace(/&/g,"&amp;")
+            .replace(/</g,"&lt;")
+            .replace(/>/g,"&gt;")
+            .replace(/"/g,"&quot;")
+            .replace(/'/g,"&#039;");
+
+    }
+
+
+    /* =====================================================
+       FORMAT PRICE
+    ===================================================== */
+
+    function formatPrice(value){
+
+        const number =
+            toNumber(value);
+
+        return "฿" +
+            number.toLocaleString(
+                "th-TH",
+                {
+                    minimumFractionDigits:2,
+                    maximumFractionDigits:2
+                }
+            );
+
+    }
+
+
+    /* =====================================================
+       GET CART
+    ===================================================== */
+
+    let cart = [];
+
+
+    try{
+
+        const savedCart =
+            localStorage.getItem(CART_KEY);
+
+        if(savedCart){
+
+            const parsed =
+                JSON.parse(savedCart);
+
+            if(Array.isArray(parsed)){
+
+                cart = parsed;
+
+            }else if(
+                parsed &&
+                Array.isArray(parsed.items)
+            ){
+
+                cart = parsed.items;
+
+            }
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "Cannot read cart:",
+            error
+        );
+
+        cart = [];
+
+    }
+
+
+    const summaryItems =
+        document.getElementById(
+            "summaryItems"
+        );
+
+
+    const checkoutContent =
+        document.getElementById(
+            "checkoutContent"
+        );
+
+
+    /* =====================================================
+       EMPTY CART
+    ===================================================== */
+
+    if(!cart.length){
+
+        checkoutContent.innerHTML = `
+
+            <div
+                class="card"
+                style="
+                    grid-column:1 / -1;
+                    text-align:center;
+                "
+            >
+
+                <div class="empty">
+
+                    <h2 style="margin-bottom:10px;">
+                        ไม่มีสินค้าใน Bag
+                    </h2>
+
+                    <p>
+                        กรุณาเลือกสินค้าก่อนทำรายการสั่งซื้อ
+                    </p>
+
+                    <a href="index.html">
+                        กลับไปเลือกสินค้า
+                    </a>
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       NORMALIZE CART
+       ทำให้ข้อมูลสินค้าทุกชิ้นมี price เป็น Number
+    ===================================================== */
+
+    cart =
+        cart.map(function(item){
+
+            const price =
+                getPrice(item);
+
+            const quantity =
+                getQuantity(item);
+
+            return {
+
+                id:
+                    item.id ??
+                    item.productId ??
+                    item.product_id ??
+                    "",
+
+                name:
+                    item.name ??
+                    item.title ??
+                    item.productName ??
+                    "สินค้า BALENN",
+
+                price:
+                    price,
+
+                quantity:
+                    quantity,
+
+                qty:
+                    quantity,
+
+                image:
+                    item.image ??
+                    item.img ??
+                    item.imageUrl ??
+                    item.imageURL ??
+                    item.thumbnail ??
+                    item.thumbnailUrl ??
+                    item.photo ??
+                    item.picture ??
+                    "",
+
+                variant:
+                    item.variant ??
+                    "",
+
+                size:
+                    item.size ??
+                    "",
+
+                color:
+                    item.color ??
+                    ""
+
+            };
+
+        });
+
+
+    /* =====================================================
+       CALCULATE SUBTOTAL
+    ===================================================== */
+
+    let subtotalValue = 0;
+
+
+    cart.forEach(function(item){
+
+        subtotalValue +=
+            item.price *
+            item.quantity;
+
+    });
+
+
+    subtotalValue =
+        Math.round(
+            subtotalValue * 100
+        ) / 100;
+
+
+    /* =====================================================
+       SHIPPING
+    ===================================================== */
+
+    const shippingValue =
+        subtotalValue >= FREE_SHIPPING_LIMIT
+            ? 0
+            : STANDARD_SHIPPING;
+
+
+    const discountValue = 0;
+
+
+    const totalValue =
+        Math.max(
+            0,
+            subtotalValue +
+            shippingValue -
+            discountValue
+        );
+
+
+    /* =====================================================
+       RENDER ITEMS
+    ===================================================== */
+
+    summaryItems.innerHTML = "";
+
+
+    cart.forEach(function(item){
+
+        const itemTotal =
+            item.price *
+            item.quantity;
+
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.className =
+            "summary-item";
+
+
+        div.innerHTML = `
+
+            <div class="item-info">
+
+                <div class="item-name">
+                    ${escapeHTML(item.name)}
+                </div>
+
+                <div class="item-qty">
+                    จำนวน ${item.quantity}
+                </div>
+
+            </div>
+
+            <div class="item-price">
+                ${formatPrice(itemTotal)}
+            </div>
+
+        `;
+
+
+        summaryItems.appendChild(div);
+
+    });
+
+
+    /* =====================================================
+       SUMMARY
+    ===================================================== */
+
+    document.getElementById("subtotal")
+        .textContent =
+        formatPrice(subtotalValue);
+
+
+    document.getElementById("shipping")
+        .textContent =
+        shippingValue === 0
+            ? "FREE"
+            : formatPrice(shippingValue);
+
+
+    document.getElementById("discount")
+        .textContent =
+        formatPrice(discountValue);
+
+
+    document.getElementById("total")
+        .textContent =
+        formatPrice(totalValue);
+
+
+    document.getElementById("shippingNote")
+        .textContent =
+        shippingValue === 0
+            ? "✨ คุณได้รับสิทธิ์จัดส่งฟรีสำหรับคำสั่งซื้อนี้"
+            : "🚚 จัดส่งฟรีเมื่อสั่งซื้อครบ ฿1,500";
+
+
+    /* =====================================================
+       PAYMENT BANK
+    ===================================================== */
+
+    const paymentInputs =
+        document.querySelectorAll(
+            'input[name="paymentBank"]'
+        );
+
+
+    const selectedBank =
+        document.getElementById(
+            "selectedBank"
+        );
+
+
+    const selectedBankName =
+        document.getElementById(
+            "selectedBankName"
+        );
+
+
+    function updateSelectedBank(){
+
+        const selected =
+            document.querySelector(
+                'input[name="paymentBank"]:checked'
+            );
+
+
+        if(!selected){
+            return;
+        }
+
+
+        selectedBankName.textContent =
+            selected.value;
+
+
+        selectedBank.style.display =
+            "block";
+
+    }
+
+
+    paymentInputs.forEach(function(input){
+
+        input.addEventListener(
+            "change",
+            updateSelectedBank
+        );
+
+    });
+
+
+    updateSelectedBank();
+
+
+    /* =====================================================
+       ORDER NUMBER
+    ===================================================== */
+
+    function generateOrderNumber(){
+
+        const now =
+            new Date();
+
+
+        const year =
+            now.getFullYear();
+
+
+        const month =
+            String(
+                now.getMonth() + 1
+            ).padStart(2,"0");
+
+
+        const day =
+            String(
+                now.getDate()
+            ).padStart(2,"0");
+
+
+        const random =
+            Math.floor(
+                1000 +
+                Math.random() * 9000
+            );
+
+
+        return `BLN-${year}${month}${day}-${random}`;
+
+    }
+
+
+    /* =====================================================
+       SUBMIT
+    ===================================================== */
+
+    document
+        .getElementById("submitOrder")
+        .addEventListener(
+            "click",
+            function(){
+
+                /* =========================
+                   CUSTOMER
+                ========================= */
+
+                const name =
+                    document
+                    .getElementById("name")
+                    .value.trim();
+
+
+                const phone =
+                    document
+                    .getElementById("phone")
+                    .value.trim();
+
+
+                const email =
+                    document
+                    .getElementById("email")
+                    .value.trim();
+
+
+                const address =
+                    document
+                    .getElementById("address")
+                    .value.trim();
+
+
+                const district =
+                    document
+                    .getElementById("district")
+                    .value.trim();
+
+
+                const province =
+                    document
+                    .getElementById("province")
+                    .value.trim();
+
+
+                const postalCode =
+                    document
+                    .getElementById("postalCode")
+                    .value.trim();
+
+
+                const note =
+                    document
+                    .getElementById("note")
+                    .value.trim();
+
+
+                const terms =
+                    document
+                    .getElementById("terms")
+                    .checked;
+
+
+                const payment =
+                    document.querySelector(
+                        'input[name="paymentBank"]:checked'
+                    );
+
+
+                /* =========================
+                   VALIDATION
+                ========================= */
+
+                if(!name){
+
+                    alert(
+                        "กรุณากรอกชื่อ - นามสกุล"
+                    );
+
+                    document
+                        .getElementById("name")
+                        .focus();
+
+                    return;
+
+                }
+
+
+                if(!phone){
+
+                    alert(
+                        "กรุณากรอกเบอร์โทรศัพท์"
+                    );
+
+                    document
+                        .getElementById("phone")
+                        .focus();
+
+                    return;
+
+                }
+
+
+                const cleanPhone =
+                    phone.replace(
+                        /\D/g,
+                        ""
+                    );
+
+
+                if(cleanPhone.length !== 10){
+
+                    alert(
+                        "กรุณากรอกเบอร์โทรศัพท์ 10 หลัก"
+                    );
+
+                    document
+                        .getElementById("phone")
+                        .focus();
+
+                    return;
+
+                }
+
+
+                if(!email){
+
+                    alert(
+                        "กรุณากรอก Email"
+                    );
+
+                    document
+                        .getElementById("email")
+                        .focus();
+
+                    return;
+
+                }
+
+
+                if(!address){
+
+                    alert(
+                        "กรุณากรอกที่อยู่"
+                    );
+
+                    document
+                        .getElementById("address")
+                        .focus();
+
+                    return;
+
+                }
+
+
+                if(!district){
+
+                    alert(
+                        "กรุณากรอกอำเภอ / เขต"
+                    );
+
+                    document
+                        .getElementById("district")
+                        .focus();
+
+                    return;
+
+                }
+
+
+                if(!province){
+
+                    alert(
+                        "กรุณากรอกจังหวัด"
+                    );
+
+                    document
+                        .getElementById("province")
+                        .focus();
+
+                    return;
+
+                }
+
+
+                if(!postalCode){
+
+                    alert(
+                        "กรุณากรอกรหัสไปรษณีย์"
+                    );
+
+                    document
+                        .getElementById("postalCode")
+                        .focus();
+
+                    return;
+
+                }
+
+
+                const cleanPostalCode =
+                    postalCode.replace(
+                        /\D/g,
+                        ""
+                    );
+
+
+                if(cleanPostalCode.length !== 5){
+
+                    alert(
+                        "กรุณากรอกรหัสไปรษณีย์ 5 หลัก"
+                    );
+
+                    document
+                        .getElementById("postalCode")
+                        .focus();
+
+                    return;
+
+                }
+
+
+                if(!payment){
+
+                    alert(
+                        "กรุณาเลือกธนาคาร"
+                    );
+
+                    return;
+
+                }
+
+
+                if(!terms){
+
+                    alert(
+                        "กรุณายอมรับเงื่อนไขการสั่งซื้อ"
+                    );
+
+                    return;
+
+                }
+
+
+                if(!cart.length){
+
+                    alert(
+                        "ไม่พบสินค้าในตะกร้า"
+                    );
+
+                    window.location.href =
+                        "cart.html";
+
+                    return;
+
+                }
+
+
+                /* =========================
+                   CUSTOMER OBJECT
+                ========================= */
+
+                const customer = {
+
+                    name:
+                        name,
+
+                    fullName:
+                        name,
+
+                    phone:
+                        cleanPhone,
+
+                    email:
+                        email,
+
+                    address:
+                        address,
+
+                    district:
+                        district,
+
+                    province:
+                        province,
+
+                    subdistrict:
+                        "",
+
+                    postalCode:
+                        cleanPostalCode
+
+                };
+
+
+                /* =========================
+                   ORDER NUMBER
+                ========================= */
+
+                const orderNumber =
+                    generateOrderNumber();
+
+
+                const now =
+                    new Date();
+
+
+                /* =================================================
+                   IMPORTANT:
+                   สร้าง ITEMS ใหม่โดยบังคับ price เป็น Number
+                ================================================= */
+
+                const orderItems =
+                    cart.map(function(item){
+
+                        const price =
+                            toNumber(
+                                item.price
+                            );
+
+
+                        const quantity =
+                            getQuantity(
+                                item
+                            );
+
+
+                        return {
+
+                            id:
+                                item.id || "",
+
+                            productId:
+                                item.id || "",
+
+                            name:
+                                item.name ||
+                                "สินค้า BALENN",
+
+                            title:
+                                item.name ||
+                                "สินค้า BALENN",
+
+                            price:
+                                price,
+
+                            unitPrice:
+                                price,
+
+                            quantity:
+                                quantity,
+
+                            qty:
+                                quantity,
+
+                            image:
+                                item.image ||
+                                "",
+
+                            variant:
+                                item.variant ||
+                                "",
+
+                            size:
+                                item.size ||
+                                "",
+
+                            color:
+                                item.color ||
+                                "",
+
+                            lineTotal:
+                                Math.round(
+                                    price *
+                                    quantity *
+                                    100
+                                ) / 100
+
+                        };
+
+                    });
+
+
+                /* =========================
+                   CREATE ORDER
+                ========================= */
+
+                const order = {
+
+                    id:
+                        "order_" +
+                        Date.now(),
+
+                    orderId:
+                        orderNumber,
+
+                    orderNumber:
+                        orderNumber,
+
+                    date:
+                        now.toLocaleDateString(
+                            "th-TH"
+                        ),
+
+                    dateTime:
+                        now.toLocaleString(
+                            "th-TH"
+                        ),
+
+                    createdAt:
+                        now.toISOString(),
+
+                    status:
+                        "Pending",
+
+                    paymentMethod:
+                        "Bank Transfer",
+
+                    paymentBank:
+                        payment.value,
+
+                    delivery:
+                        "Standard Delivery",
+
+                    customer:
+                        customer,
+
+                    customerInfo:
+                        customer,
+
+                    items:
+                        orderItems,
+
+                    subtotal:
+                        Number(
+                            subtotalValue.toFixed(2)
+                        ),
+
+                    shipping:
+                        Number(
+                            shippingValue.toFixed(2)
+                        ),
+
+                    discount:
+                        Number(
+                            discountValue.toFixed(2)
+                        ),
+
+                    total:
+                        Number(
+                            totalValue.toFixed(2)
+                        ),
+
+                    note:
+                        note
+
+                };
+
+
+                /* =================================================
+                   SAVE ORDER HISTORY
+                ================================================= */
+
+                let orderHistory = [];
+
+
+                try{
+
+                    const oldOrders =
+                        localStorage.getItem(
+                            ORDER_KEY
+                        );
+
+
+                    if(oldOrders){
+
+                        const parsed =
+                            JSON.parse(
+                                oldOrders
+                            );
+
+
+                        if(
+                            Array.isArray(
+                                parsed
+                            )
+                        ){
+
+                            orderHistory =
+                                parsed;
+
+                        }
+
+                    }
+
+                }catch(error){
+
+                    console.error(
+                        "Cannot read order history:",
+                        error
+                    );
+
+                    orderHistory = [];
+
+                }
+
+
+                orderHistory.unshift(
+                    order
+                );
+
+
+                localStorage.setItem(
+                    ORDER_KEY,
+                    JSON.stringify(
+                        orderHistory
+                    )
+                );
+
+
+                /* =================================================
+                   SAVE LAST ORDER
+                ================================================= */
+
+                localStorage.setItem(
+                    LAST_ORDER_KEY,
+                    JSON.stringify(
+                        order
+                    )
+                );
+
+
+                /* =================================================
+                   CLEAR CART
+                ================================================= */
+
+                localStorage.removeItem(
+                    CART_KEY
+                );
+
+
+                /* =================================================
+                   GO ORDER SUCCESS
+                ================================================= */
+
+                window.location.href =
+                    "order-success.html?order=" +
+                    encodeURIComponent(
+                        orderNumber
+                    );
+
+            }
+        );
+
+});
+
+</script>
+
+</body>
+</html>

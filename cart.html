@@ -1,0 +1,1575 @@
+```html
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BALENN — Shopping Bag</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --ivory:#fbf7f2;
+  --cream:#f4ebe3;
+  --pink:#d8aeb0;
+  --pink-soft:#ead4d1;
+  --peach:#d99a78;
+  --gold:#b99a6b;
+  --gold-soft:#d8c29d;
+  --charcoal:#302b2b;
+  --brown:#665856;
+  --white:#fff;
+  --line:#e8ddd6;
+  --muted:#8d817e;
+  --serif:"Cormorant Garamond",serif;
+  --sans:"Manrope",sans-serif;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:var(--sans);
+  background:var(--ivory);
+  color:var(--charcoal);
+  font-size:16px;
+}
+
+button{
+  font:inherit;
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* =========================
+TOPBAR
+========================= */
+
+.topbar{
+  background:var(--charcoal);
+  color:white;
+  text-align:center;
+  padding:9px 15px;
+  font-size:12px;
+  letter-spacing:1.4px;
+}
+
+/* =========================
+HEADER
+========================= */
+
+.header{
+  background:rgba(251,247,242,.96);
+  border-bottom:1px solid var(--line);
+}
+
+.header-inner{
+  max-width:1400px;
+  min-height:82px;
+  margin:auto;
+  padding:0 30px;
+
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
+
+.logo{
+  min-width:190px;
+  cursor:pointer;
+}
+
+.logo-main{
+  font-family:var(--serif);
+  font-size:38px;
+  font-weight:700;
+  letter-spacing:4px;
+}
+
+.logo-sub{
+  display:block;
+  text-align:center;
+
+  font-size:9px;
+  letter-spacing:3px;
+
+  color:var(--gold);
+}
+
+.nav{
+  flex:1;
+
+  display:flex;
+  justify-content:center;
+
+  gap:25px;
+}
+
+.nav button{
+  border:0;
+  background:none;
+
+  color:var(--brown);
+
+  font-size:12px;
+  font-weight:600;
+
+  letter-spacing:.8px;
+
+  padding:30px 0;
+}
+
+.nav button:hover{
+  color:var(--peach);
+}
+
+.header-actions{
+  display:flex;
+  gap:8px;
+}
+
+.icon-btn{
+  width:44px;
+  height:44px;
+
+  border:1px solid transparent;
+  background:transparent;
+
+  border-radius:50%;
+
+  position:relative;
+
+  font-size:20px;
+}
+
+.icon-btn:hover{
+  background:var(--cream);
+}
+
+.count{
+  position:absolute;
+
+  top:1px;
+  right:0;
+
+  min-width:17px;
+  height:17px;
+
+  background:var(--peach);
+  color:white;
+
+  border-radius:50%;
+
+  font-size:9px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* =========================
+PAGE
+========================= */
+
+.page{
+  max-width:1400px;
+  margin:auto;
+
+  padding:55px 30px 100px;
+}
+
+.breadcrumb{
+  color:var(--muted);
+  font-size:11px;
+
+  margin-bottom:35px;
+}
+
+.breadcrumb button{
+  border:0;
+  background:none;
+
+  color:var(--brown);
+}
+
+.page-title{
+  font-family:var(--serif);
+
+  font-size:68px;
+  line-height:1;
+
+  font-weight:600;
+
+  margin-bottom:45px;
+}
+
+/* =========================
+LAYOUT
+========================= */
+
+.cart-layout{
+  display:grid;
+
+  grid-template-columns:1.5fr .7fr;
+
+  gap:55px;
+
+  align-items:start;
+}
+
+/* =========================
+ITEMS
+========================= */
+
+.cart-items{
+  border-top:1px solid var(--line);
+}
+
+.cart-item{
+  display:grid;
+
+  grid-template-columns:150px 1fr auto;
+
+  gap:25px;
+
+  padding:25px 0;
+
+  border-bottom:1px solid var(--line);
+}
+
+.cart-image{
+  width:150px;
+  height:185px;
+
+  object-fit:cover;
+
+  background:#eee5df;
+}
+
+.cart-info{
+  padding:5px 0;
+}
+
+.cart-category{
+  color:var(--gold);
+
+  font-size:10px;
+
+  letter-spacing:2px;
+
+  margin-bottom:7px;
+}
+
+.cart-name{
+  font-family:var(--serif);
+
+  font-size:29px;
+
+  margin-bottom:7px;
+}
+
+.cart-price{
+  font-size:14px;
+
+  font-weight:700;
+}
+
+.cart-controls{
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  margin-top:25px;
+}
+
+.qty{
+  display:flex;
+
+  border:1px solid var(--line);
+
+  background:white;
+}
+
+.qty button{
+  width:35px;
+  height:35px;
+
+  border:0;
+  background:white;
+}
+
+.qty span{
+  width:38px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:13px;
+}
+
+.remove{
+  border:0;
+  background:none;
+
+  color:#a56b6b;
+
+  font-size:10px;
+
+  letter-spacing:.5px;
+
+  margin-left:10px;
+}
+
+.item-total{
+  font-size:15px;
+
+  font-weight:700;
+
+  padding-top:7px;
+
+  text-align:right;
+}
+
+/* =========================
+SUMMARY
+========================= */
+
+.summary{
+  background:var(--cream);
+
+  padding:30px;
+
+  position:sticky;
+  top:110px;
+}
+
+.summary h2{
+  font-family:var(--serif);
+
+  font-size:38px;
+
+  margin-bottom:25px;
+}
+
+.summary-row{
+  display:flex;
+
+  justify-content:space-between;
+
+  font-size:13px;
+
+  padding:10px 0;
+}
+
+.summary-row.total{
+  border-top:1px solid #d8cbc3;
+
+  margin-top:10px;
+  padding-top:18px;
+
+  font-size:16px;
+
+  font-weight:700;
+}
+
+.summary-row.total strong{
+  font-size:21px;
+}
+
+.shipping-note{
+  background:white;
+
+  padding:15px;
+
+  margin:20px 0;
+
+  font-size:11px;
+
+  line-height:1.7;
+
+  color:var(--brown);
+}
+
+.checkout-btn{
+  width:100%;
+
+  border:0;
+
+  background:var(--charcoal);
+
+  color:white;
+
+  padding:17px;
+
+  font-size:11px;
+
+  font-weight:700;
+
+  letter-spacing:1.5px;
+
+  margin-top:12px;
+}
+
+.continue-btn{
+  width:100%;
+
+  border:1px solid var(--charcoal);
+
+  background:transparent;
+
+  color:var(--charcoal);
+
+  padding:15px;
+
+  font-size:11px;
+
+  font-weight:700;
+
+  letter-spacing:1px;
+
+  margin-top:9px;
+}
+
+/* =========================
+EMPTY
+========================= */
+
+.empty{
+  text-align:center;
+
+  padding:100px 20px;
+
+  border-top:1px solid var(--line);
+}
+
+.empty-icon{
+  font-size:50px;
+
+  margin-bottom:15px;
+}
+
+.empty h2{
+  font-family:var(--serif);
+
+  font-size:42px;
+}
+
+.empty p{
+  color:var(--muted);
+
+  margin:10px 0 25px;
+
+  font-size:13px;
+}
+
+.shop-btn{
+  border:0;
+
+  background:var(--charcoal);
+
+  color:white;
+
+  padding:15px 28px;
+
+  font-size:11px;
+
+  font-weight:700;
+
+  letter-spacing:1px;
+}
+
+/* =========================
+FOOTER
+========================= */
+
+footer{
+  background:var(--charcoal);
+
+  color:white;
+
+  padding:55px 30px 25px;
+}
+
+.footer-inner{
+  max-width:1400px;
+
+  margin:auto;
+
+  display:grid;
+
+  grid-template-columns:2fr 1fr 1fr 1fr;
+
+  gap:40px;
+}
+
+.footer-logo{
+  font-family:var(--serif);
+
+  font-size:45px;
+
+  letter-spacing:4px;
+}
+
+.footer-text{
+  color:#cfc3be;
+
+  font-size:12px;
+
+  line-height:1.8;
+
+  max-width:320px;
+
+  margin-top:12px;
+}
+
+footer h4{
+  font-size:11px;
+
+  letter-spacing:2px;
+
+  margin-bottom:18px;
+}
+
+footer button{
+  display:block;
+
+  border:0;
+
+  background:none;
+
+  color:#cfc3be;
+
+  margin:9px 0;
+
+  font-size:12px;
+}
+
+.copyright{
+  max-width:1400px;
+
+  margin:45px auto 0;
+
+  padding-top:20px;
+
+  border-top:1px solid #514947;
+
+  color:#9e9491;
+
+  font-size:10px;
+}
+
+/* =========================
+MOBILE
+========================= */
+
+.menu-btn{
+  display:none;
+}
+
+@media(max-width:1100px){
+
+  .nav{
+    gap:12px;
+  }
+
+  .nav button{
+    font-size:10px;
+  }
+
+  .cart-layout{
+    grid-template-columns:1fr;
+  }
+
+  .summary{
+    position:static;
+  }
+
+}
+
+@media(max-width:800px){
+
+  .header-inner{
+    min-height:70px;
+    padding:0 18px;
+
+    justify-content:space-between;
+  }
+
+  .logo{
+    min-width:auto;
+  }
+
+  .logo-main{
+    font-size:31px;
+  }
+
+  .logo-sub{
+    font-size:7px;
+  }
+
+  .nav{
+    display:none;
+  }
+
+  .menu-btn{
+    display:flex;
+  }
+
+  .page{
+    padding:35px 18px 70px;
+  }
+
+  .page-title{
+    font-size:52px;
+  }
+
+  .cart-item{
+    grid-template-columns:100px 1fr;
+    gap:15px;
+  }
+
+  .cart-image{
+    width:100px;
+    height:130px;
+  }
+
+  .item-total{
+    grid-column:2;
+    text-align:left;
+  }
+
+  .footer-inner{
+    grid-template-columns:1fr 1fr;
+  }
+
+}
+
+@media(max-width:500px){
+
+  .topbar{
+    font-size:9px;
+  }
+
+  .header-actions .search{
+    display:none;
+  }
+
+  .cart-item{
+    grid-template-columns:90px 1fr;
+  }
+
+  .cart-image{
+    width:90px;
+    height:120px;
+  }
+
+  .cart-name{
+    font-size:24px;
+  }
+
+  .footer-inner{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+FREE SHIPPING ON ORDERS OVER ฿1,500
+</div>
+
+<header class="header">
+
+<div class="header-inner">
+
+<button
+class="icon-btn menu-btn"
+onclick="goHome()"
+>
+☰
+</button>
+
+<div
+class="logo"
+onclick="goHome()"
+>
+
+<div class="logo-main">
+BALENN
+</div>
+
+<span class="logo-sub">
+WOMEN'S FASHION
+</span>
+
+</div>
+
+<nav class="nav">
+
+<button onclick="goHome()">HOME</button>
+<button onclick="goCategory('NEW ARRIVALS')">NEW ARRIVALS</button>
+<button onclick="goCategory('CLOTHING')">CLOTHING</button>
+<button onclick="goCategory('DRESSES')">DRESSES</button>
+<button onclick="goCategory('TOPS')">TOPS</button>
+<button onclick="goCategory('BOTTOMS')">BOTTOMS</button>
+<button onclick="goCategory('BAGS')">BAGS</button>
+<button onclick="goCategory('SALE')">SALE</button>
+
+</nav>
+
+<div class="header-actions">
+
+<button
+class="icon-btn search"
+onclick="goHome()"
+>
+⌕
+</button>
+
+<button
+class="icon-btn"
+onclick="goWishlist()"
+>
+♡
+<span
+class="count"
+id="wishCount"
+>
+0
+</span>
+</button>
+
+<button
+class="icon-btn"
+onclick="window.scrollTo(0,0)"
+>
+🛍️
+<span
+class="count"
+id="cartCount"
+>
+0
+</span>
+</button>
+
+</div>
+
+</div>
+
+</header>
+
+<main class="page">
+
+<div class="breadcrumb">
+
+<button onclick="goHome()">
+Home
+</button>
+
+<span> › </span>
+
+<strong>
+Shopping Bag
+</strong>
+
+</div>
+
+<h1 class="page-title">
+Your Shopping Bag
+</h1>
+
+<div id="cartContent"></div>
+
+</main>
+
+<footer>
+
+<div class="footer-inner">
+
+<div>
+
+<div class="footer-logo">
+BALENN
+</div>
+
+<p class="footer-text">
+Women's fashion สำหรับผู้หญิงยุคใหม่
+ที่ต้องการความเรียบหรู สวมใส่ง่าย
+และเป็นตัวเองในทุกวัน
+</p>
+
+</div>
+
+<div>
+
+<h4>SHOP</h4>
+
+<button onclick="goCategory('NEW ARRIVALS')">
+New Arrivals
+</button>
+
+<button onclick="goCategory('DRESSES')">
+Dresses
+</button>
+
+<button onclick="goCategory('TOPS')">
+Tops
+</button>
+
+<button onclick="goCategory('BOTTOMS')">
+Bottoms
+</button>
+
+</div>
+
+<div>
+
+<h4>HELP</h4>
+
+<button>Shipping</button>
+<button>Returns</button>
+<button>Size Guide</button>
+<button>Contact</button>
+
+</div>
+
+<div>
+
+<h4>FOLLOW</h4>
+
+<button>Instagram</button>
+<button>Facebook</button>
+<button>TikTok</button>
+
+</div>
+
+</div>
+
+<div class="copyright">
+
+© 2026 BALENN Fashion Co., Ltd. All Rights Reserved.
+
+</div>
+
+</footer>
+
+<script>
+
+/* ==========================================
+BALENN PRODUCT DATABASE
+========================================== */
+
+const products = [
+
+{
+id:1,
+name:"Satin Blush Dress",
+category:"DRESSES",
+price:1290,
+image:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+id:2,
+name:"Soft Ribbon Blouse",
+category:"TOPS",
+price:890,
+image:"https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+id:3,
+name:"Elegant Wide Pants",
+category:"BOTTOMS",
+price:1090,
+image:"https://images.unsplash.com/photo-1506629905607-d9a9b5d8d4d0?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+id:4,
+name:"Mini Pearl Bag",
+category:"BAGS",
+price:1190,
+image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+id:5,
+name:"Rosé Midi Dress",
+category:"DRESSES",
+price:1390,
+oldPrice:1690,
+image:"https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+id:6,
+name:"Linen Everyday Top",
+category:"TOPS",
+price:790,
+image:"https://images.unsplash.com/photo-1564257577054-6e4a4a6a1c8d?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+id:7,
+name:"Cream Tailored Pants",
+category:"BOTTOMS",
+price:990,
+oldPrice:1190,
+image:"https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+id:8,
+name:"Champagne Shoulder Bag",
+category:"BAGS",
+price:1490,
+image:"https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+id:9,
+name:"Peach Evening Dress",
+category:"DRESSES",
+price:1590,
+image:"https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+id:10,
+name:"Pearl Knit Top",
+category:"TOPS",
+price:950,
+image:"https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+id:11,
+name:"Soft Pleated Skirt",
+category:"BOTTOMS",
+price:890,
+oldPrice:1090,
+image:"https://images.unsplash.com/photo-1583496661160-fb5886a13d27?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+id:12,
+name:"Mini Rosé Handbag",
+category:"BAGS",
+price:990,
+image:"https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=900&q=85"
+}
+
+];
+
+
+/* ==========================================
+STORAGE
+========================================== */
+
+let cart = [];
+
+let wishlist = [];
+
+try{
+  cart = JSON.parse(
+    localStorage.getItem("balennCart") || "[]"
+  );
+
+  if(!Array.isArray(cart)){
+    cart = [];
+  }
+}catch(error){
+  cart = [];
+}
+
+try{
+  wishlist = JSON.parse(
+    localStorage.getItem("balennWishlist") || "[]"
+  );
+
+  if(!Array.isArray(wishlist)){
+    wishlist = [];
+  }
+}catch(error){
+  wishlist = [];
+}
+
+
+/* ==========================================
+NUMBER
+========================================== */
+
+function toNumber(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    value === ""
+  ){
+    return 0;
+  }
+
+  if(typeof value === "number"){
+    return Number.isFinite(value)
+      ? value
+      : 0;
+  }
+
+  const cleaned =
+    String(value)
+      .replace(/฿/g,"")
+      .replace(/บาท/g,"")
+      .replace(/,/g,"")
+      .replace(/\s/g,"")
+      .trim();
+
+  const number = parseFloat(cleaned);
+
+  return Number.isFinite(number)
+    ? number
+    : 0;
+}
+
+
+/* ==========================================
+MONEY
+========================================== */
+
+function money(number){
+
+  return "฿" +
+    toNumber(number).toLocaleString("th-TH");
+
+}
+
+
+/* ==========================================
+GET REAL PRODUCT
+========================================== */
+
+function getProduct(id){
+
+  return products.find(
+    product => Number(product.id) === Number(id)
+  );
+
+}
+
+
+/* ==========================================
+NORMALIZE CART
+========================================== */
+
+function normalizeCart(){
+
+  let changed = false;
+
+  cart = cart
+    .map(item => {
+
+      const product =
+        getProduct(item.id);
+
+      if(!product){
+        return null;
+      }
+
+      const quantity =
+        Math.max(
+          1,
+          parseInt(
+            item.quantity ||
+            item.qty ||
+            1,
+            10
+          )
+        );
+
+      /*
+        สำคัญมาก:
+        ถ้า Cart เก่าไม่มีราคา
+        ให้ดึงราคาจริงจาก Product Database
+      */
+
+      const normalized = {
+
+        id: product.id,
+
+        name: product.name,
+
+        category: product.category,
+
+        price: toNumber(product.price),
+
+        oldPrice:
+          product.oldPrice
+          ? toNumber(product.oldPrice)
+          : null,
+
+        image: product.image,
+
+        quantity: quantity
+
+      };
+
+      if(
+        JSON.stringify(item) !==
+        JSON.stringify(normalized)
+      ){
+        changed = true;
+      }
+
+      return normalized;
+
+    })
+    .filter(Boolean);
+
+  if(changed){
+    saveCart(false);
+  }
+
+}
+
+
+/* ==========================================
+SAVE CART
+========================================== */
+
+function saveCart(update=true){
+
+  localStorage.setItem(
+    "balennCart",
+    JSON.stringify(cart)
+  );
+
+  if(update){
+    updateCount();
+  }
+
+}
+
+
+/* ==========================================
+COUNT
+========================================== */
+
+function updateCount(){
+
+  const count =
+    cart.reduce(
+      (sum,item) =>
+        sum + toNumber(item.quantity),
+      0
+    );
+
+  document.getElementById("cartCount").textContent =
+    count;
+
+  document.getElementById("wishCount").textContent =
+    wishlist.length;
+
+}
+
+
+/* ==========================================
+RENDER CART
+========================================== */
+
+function renderCart(){
+
+  const container =
+    document.getElementById("cartContent");
+
+  if(!cart.length){
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <div class="empty-icon">
+          🛍️
+        </div>
+
+        <h2>
+          Your Bag is Empty
+        </h2>
+
+        <p>
+          ยังไม่มีสินค้าในถุงของคุณ
+          เลือกสินค้าที่ชอบแล้วกลับมาได้เลย
+        </p>
+
+        <button
+          class="shop-btn"
+          onclick="goHome()"
+        >
+          CONTINUE SHOPPING
+        </button>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  let subtotal = 0;
+
+
+  const itemsHTML =
+    cart.map(item => {
+
+      const product =
+        getProduct(item.id);
+
+      if(!product){
+        return "";
+      }
+
+
+      /*
+        ใช้ราคาจริงจาก Product Database
+      */
+
+      const price =
+        toNumber(product.price);
+
+
+      const quantity =
+        Math.max(
+          1,
+          parseInt(item.quantity || 1,10)
+        );
+
+
+      const itemTotal =
+        price * quantity;
+
+
+      subtotal += itemTotal;
+
+
+      return `
+
+        <div class="cart-item">
+
+          <img
+            class="cart-image"
+            src="${product.image}"
+            alt="${product.name}"
+          >
+
+          <div class="cart-info">
+
+            <div class="cart-category">
+              ${product.category}
+            </div>
+
+            <div class="cart-name">
+              ${product.name}
+            </div>
+
+            <div class="cart-price">
+              ${money(price)}
+            </div>
+
+            <div class="cart-controls">
+
+              <div class="qty">
+
+                <button
+                  onclick="changeQty(${product.id},-1)"
+                >
+                  −
+                </button>
+
+                <span>
+                  ${quantity}
+                </span>
+
+                <button
+                  onclick="changeQty(${product.id},1)"
+                >
+                  +
+                </button>
+
+              </div>
+
+              <button
+                class="remove"
+                onclick="removeItem(${product.id})"
+              >
+                REMOVE
+              </button>
+
+            </div>
+
+          </div>
+
+          <div class="item-total">
+            ${money(itemTotal)}
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
+
+
+  /*
+    BALENN SHIPPING POLICY
+    ครบ ฿1,500 = FREE
+    ต่ำกว่า = ฿80
+  */
+
+  const shipping =
+    subtotal >= 1500
+      ? 0
+      : 80;
+
+
+  const total =
+    subtotal + shipping;
+
+
+  container.innerHTML = `
+
+    <div class="cart-layout">
+
+      <div class="cart-items">
+
+        ${itemsHTML}
+
+      </div>
+
+
+      <aside class="summary">
+
+        <h2>
+          Order Summary
+        </h2>
+
+
+        <div class="summary-row">
+
+          <span>
+            Subtotal
+          </span>
+
+          <strong>
+            ${money(subtotal)}
+          </strong>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Shipping
+          </span>
+
+          <strong>
+            ${
+              shipping === 0
+                ? "FREE"
+                : money(shipping)
+            }
+          </strong>
+
+        </div>
+
+
+        <div class="shipping-note">
+
+          ${
+            subtotal >= 1500
+
+            ? "✦ คุณได้รับสิทธิ์จัดส่งฟรีสำหรับออเดอร์นี้"
+
+            : `เพิ่มอีก ${money(1500-subtotal)}
+               เพื่อรับสิทธิ์จัดส่งฟรี`
+          }
+
+        </div>
+
+
+        <div class="summary-row total">
+
+          <span>
+            TOTAL
+          </span>
+
+          <strong>
+            ${money(total)}
+          </strong>
+
+        </div>
+
+
+        <button
+          class="checkout-btn"
+          onclick="checkout()"
+        >
+          PROCEED TO CHECKOUT
+        </button>
+
+
+        <button
+          class="continue-btn"
+          onclick="goHome()"
+        >
+          CONTINUE SHOPPING
+        </button>
+
+      </aside>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ==========================================
+QUANTITY
+========================================== */
+
+function changeQty(id,change){
+
+  const item =
+    cart.find(
+      item => Number(item.id) === Number(id)
+    );
+
+  if(!item){
+    return;
+  }
+
+
+  item.quantity =
+    Math.max(
+      1,
+      parseInt(item.quantity || 1,10) + change
+    );
+
+
+  saveCart();
+
+  renderCart();
+
+}
+
+
+/* ==========================================
+REMOVE
+========================================== */
+
+function removeItem(id){
+
+  cart =
+    cart.filter(
+      item =>
+        Number(item.id) !== Number(id)
+    );
+
+  saveCart();
+
+  renderCart();
+
+}
+
+
+/* ==========================================
+CHECKOUT
+========================================== */
+
+function checkout(){
+
+  if(!cart.length){
+    return;
+  }
+
+  /*
+    ก่อนเข้า Checkout
+    บันทึก Cart แบบเต็มอีกครั้ง
+    เพื่อให้ Checkout ได้ราคาแน่นอน
+  */
+
+  normalizeCart();
+
+  saveCart();
+
+  window.location.href =
+    "checkout.html";
+
+}
+
+
+/* ==========================================
+NAVIGATION
+========================================== */
+
+function goHome(){
+
+  window.location.href =
+    "index.html";
+
+}
+
+
+function goCategory(category){
+
+  window.location.href =
+    "index.html?category=" +
+    encodeURIComponent(category);
+
+}
+
+
+function goWishlist(){
+
+  window.location.href =
+    "index.html#wishlist";
+
+}
+
+
+/* ==========================================
+INIT
+========================================== */
+
+normalizeCart();
+
+renderCart();
+
+updateCount();
+
+</script>
+
+</body>
+</html>
+```

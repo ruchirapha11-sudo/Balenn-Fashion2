@@ -1,0 +1,2524 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Order History | BALENN Fashion</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f7f1ed;
+    color:#302a27;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+.topbar{
+    height:78px;
+    background:rgba(255,255,255,.96);
+    border-bottom:1px solid #eadfd8;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6%;
+    position:sticky;
+    top:0;
+    z-index:50;
+}
+
+.logo{
+    font-family:Georgia,serif;
+    font-size:27px;
+    font-weight:bold;
+    letter-spacing:5px;
+    color:#a97c68;
+}
+
+.back-home{
+    font-size:13px;
+    color:#756963;
+}
+
+.page{
+    width:min(1100px,92%);
+    margin:55px auto 80px;
+}
+
+.page-head{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.eyebrow{
+    color:#b58c78;
+    font-size:10px;
+    letter-spacing:4px;
+    margin-bottom:10px;
+}
+
+.page-head h1{
+    font-family:Georgia,serif;
+    font-size:40px;
+    font-weight:500;
+    margin-bottom:10px;
+}
+
+.page-head p{
+    color:#91827b;
+    font-size:14px;
+}
+
+.empty{
+    background:#fff;
+    border:1px solid #eadfd8;
+    border-radius:18px;
+    padding:70px 20px;
+    text-align:center;
+}
+
+.empty-icon{
+    font-size:42px;
+    color:#b98c76;
+    margin-bottom:15px;
+}
+
+.empty h2{
+    font-family:Georgia,serif;
+    font-weight:500;
+    margin-bottom:10px;
+}
+
+.empty p{
+    color:#8c7d76;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+.shop-btn{
+    display:inline-block;
+    background:#b98c76;
+    color:#fff;
+    padding:13px 25px;
+    border-radius:30px;
+    font-size:13px;
+}
+
+.orders{
+    display:grid;
+    gap:25px;
+}
+
+.order-card{
+    background:#fff;
+    border:1px solid #eadfd8;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(90,70,60,.05);
+}
+
+.order-top{
+    padding:21px 25px;
+    border-bottom:1px solid #eee4de;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.order-number{
+    font-family:Georgia,serif;
+    font-size:19px;
+    margin-bottom:5px;
+}
+
+.order-date{
+    color:#95867f;
+    font-size:12px;
+}
+
+.status{
+    padding:7px 15px;
+    border-radius:30px;
+    background:#f5e9e2;
+    color:#986b58;
+    font-size:11px;
+    white-space:nowrap;
+}
+
+.status.completed{
+    background:#e8f0e7;
+    color:#668060;
+}
+
+.status.shipping{
+    background:#eee9f3;
+    color:#746486;
+}
+
+.status.cancelled{
+    background:#f4e4e4;
+    color:#a26666;
+}
+
+.customer-box{
+    padding:18px 25px;
+    background:#fcfaf8;
+    border-bottom:1px solid #eee4de;
+}
+
+.customer-title{
+    font-size:10px;
+    letter-spacing:2px;
+    color:#a48676;
+    margin-bottom:8px;
+}
+
+.customer-name{
+    font-size:14px;
+    font-weight:bold;
+}
+
+.customer-contact{
+    color:#8c7d76;
+    font-size:12px;
+    line-height:1.7;
+    margin-top:5px;
+}
+
+.items{
+    padding:5px 25px;
+}
+
+.item{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:17px 0;
+    border-bottom:1px solid #f0e8e3;
+}
+
+.item:last-child{
+    border-bottom:none;
+}
+
+.item-image{
+    width:65px;
+    height:78px;
+    background:#f1e7e1;
+    border-radius:10px;
+    overflow:hidden;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.item-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.item-image.no-image{
+    color:#b99786;
+    font-family:Georgia,serif;
+    font-size:10px;
+}
+
+.item-info{
+    flex:1;
+    min-width:0;
+}
+
+.item-name{
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+.item-qty{
+    color:#93847d;
+    font-size:12px;
+}
+
+.item-price{
+    color:#a46f59;
+    font-size:15px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.summary{
+    padding:20px 25px;
+    background:#fffdfb;
+    border-top:1px solid #eee4de;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:9px;
+    font-size:13px;
+    color:#766b65;
+}
+
+.summary-row.total{
+    border-top:1px solid #e8ddd6;
+    margin-top:14px;
+    padding-top:15px;
+    color:#302a27;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.total-value{
+    color:#a46f59;
+    font-size:19px;
+}
+
+.order-actions{
+    border-top:1px solid #eee4de;
+    padding:18px 25px;
+    display:flex;
+    justify-content:flex-end;
+}
+
+.receipt-btn{
+    background:#b98c76;
+    color:#fff;
+    padding:11px 20px;
+    border-radius:25px;
+    font-size:12px;
+    transition:.2s;
+}
+
+.receipt-btn:hover{
+    background:#9f705c;
+}
+
+/* =========================
+   IMAGE LOADING
+========================= */
+
+.image-loading{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#b99786;
+    font-family:Georgia,serif;
+    font-size:10px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:650px){
+
+    .topbar{
+        height:68px;
+        padding:0 5%;
+    }
+
+    .logo{
+        font-size:22px;
+    }
+
+    .page{
+        width:94%;
+        margin-top:35px;
+    }
+
+    .page-head h1{
+        font-size:30px;
+    }
+
+    .order-top{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:18px;
+    }
+
+    .customer-box,
+    .items,
+    .summary,
+    .order-actions{
+        padding-left:18px;
+        padding-right:18px;
+    }
+
+    .item-image{
+        width:55px;
+        height:68px;
+    }
+
+    .item-price{
+        font-size:13px;
+    }
+
+    .order-actions{
+        justify-content:stretch;
+    }
+
+    .receipt-btn{
+        width:100%;
+        text-align:center;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+<a href="index.html" class="logo">
+    BALENN
+</a>
+
+<a href="index.html" class="back-home">
+    ← กลับหน้าหลัก
+</a>
+
+</header>
+
+
+<main class="page">
+
+<section class="page-head">
+
+<div class="eyebrow">
+    BALENN FASHION
+</div>
+
+<h1>
+    Order History
+</h1>
+
+<p>
+    ประวัติการสั่งซื้อของคุณ
+</p>
+
+</section>
+
+
+<section
+    id="emptyOrders"
+    class="empty"
+    style="display:none;"
+>
+
+<div class="empty-icon">
+    ♡
+</div>
+
+<h2>
+    ยังไม่มีคำสั่งซื้อ
+</h2>
+
+<p>
+    เมื่อคุณสั่งซื้อสินค้า
+    รายการสั่งซื้อจะแสดงที่หน้านี้
+</p>
+
+<a
+    href="index.html"
+    class="shop-btn"
+>
+    SHOP NOW
+</a>
+
+</section>
+
+
+<section
+    id="ordersContainer"
+    class="orders"
+></section>
+
+</main>
+
+
+<script>
+
+"use strict";
+
+
+/* =====================================================
+   BALENN ORDER HISTORY
+   IndexedDB Image Support
+===================================================== */
+
+const ORDER_KEY = "balennOrderHistory";
+const PRODUCT_KEY = "balennProducts";
+
+
+/* =====================================================
+   INDEXED DB
+===================================================== */
+
+const DB_NAME = "BALENN_DB";
+const DB_VERSION = 1;
+const IMAGE_STORE = "images";
+const IMAGE_PREFIX = "idb:";
+
+
+/* =====================================================
+   DOM
+===================================================== */
+
+const ordersContainer =
+    document.getElementById("ordersContainer");
+
+const emptyOrders =
+    document.getElementById("emptyOrders");
+
+
+/* =====================================================
+   INDEXED DB OPEN
+===================================================== */
+
+function openDatabase(){
+
+    return new Promise(function(resolve,reject){
+
+        if(!("indexedDB" in window)){
+
+            reject(
+                new Error(
+                    "IndexedDB is not supported."
+                )
+            );
+
+            return;
+
+        }
+
+
+        const request =
+            indexedDB.open(
+                DB_NAME,
+                DB_VERSION
+            );
+
+
+        request.onupgradeneeded =
+            function(event){
+
+                const db =
+                    event.target.result;
+
+
+                if(
+                    !db.objectStoreNames.contains(
+                        IMAGE_STORE
+                    )
+                ){
+
+                    db.createObjectStore(
+                        IMAGE_STORE,
+                        {
+                            keyPath:"id"
+                        }
+                    );
+
+                }
+
+            };
+
+
+        request.onsuccess =
+            function(){
+
+                resolve(
+                    request.result
+                );
+
+            };
+
+
+        request.onerror =
+            function(){
+
+                reject(
+                    request.error
+                );
+
+            };
+
+    });
+
+}
+
+
+/* =====================================================
+   GET IMAGE BLOB
+===================================================== */
+
+async function getImageBlob(imageRef){
+  if(
+    !imageRef ||
+    typeof imageRef !== "string" ||
+    !imageRef.startsWith(IMAGE_PREFIX)
+  ){
+    return null;
+  }
+
+  try{
+    const db = await openDatabase();
+
+    return await new Promise((resolve) => {
+      const transaction = db.transaction(
+        IMAGE_STORE,
+        "readonly"
+      );
+
+      const store = transaction.objectStore(IMAGE_STORE);
+
+      // ลองทั้ง key แบบใหม่ และ key แบบเก่า
+      const refs = [
+        imageRef,
+        imageRef.slice(IMAGE_PREFIX.length)
+      ];
+
+      let index = 0;
+
+      function extractBlob(result){
+        if(!result) return null;
+
+        if(result instanceof Blob){
+          return result;
+        }
+
+        const values = [
+          result.blob,
+          result.data,
+          result.image,
+          result.file
+        ];
+
+        for(const value of values){
+
+          if(value instanceof Blob){
+            return value;
+          }
+
+          if(value instanceof ArrayBuffer){
+            return new Blob([value]);
+          }
+        }
+
+        return null;
+      }
+
+      function tryNext(){
+        if(index >= refs.length){
+          resolve(null);
+          return;
+        }
+
+        const ref = refs[index++];
+
+        let request;
+
+        try{
+          request = store.get(ref);
+        }catch(error){
+          tryNext();
+          return;
+        }
+
+        request.onsuccess = () => {
+
+          const blob = extractBlob(request.result);
+
+          if(blob){
+            resolve(blob);
+          }else{
+            tryNext();
+          }
+        };
+
+        request.onerror = () => {
+          tryNext();
+        };
+      }
+
+      tryNext();
+    });
+
+  }catch(error){
+    console.warn(
+      "BALENN order history image read error:",
+      error
+    );
+
+    return null;
+  }
+}
+
+
+/* =====================================================
+   OBJECT URL CACHE
+===================================================== */
+
+const imageObjectURLs =
+    new Map();
+
+
+/* =====================================================
+   RESOLVE IMAGE
+===================================================== */
+
+async function resolveImage(imageRef){
+
+    if(!imageRef){
+
+        return "";
+
+    }
+
+
+    /*
+       URL / Base64
+    */
+
+    if(
+        !String(imageRef)
+            .startsWith(IMAGE_PREFIX)
+    ){
+
+        return String(imageRef);
+
+    }
+
+
+    /*
+       Cache
+    */
+
+    if(
+        imageObjectURLs.has(imageRef)
+    ){
+
+        return imageObjectURLs.get(
+            imageRef
+        );
+
+    }
+
+
+    /*
+       IndexedDB
+    */
+
+    const blob =
+        await getImageBlob(
+            imageRef
+        );
+
+
+    if(!blob){
+
+        return "";
+
+    }
+
+
+    const objectURL =
+        URL.createObjectURL(blob);
+
+
+    imageObjectURLs.set(
+        imageRef,
+        objectURL
+    );
+
+
+    return objectURL;
+
+}
+
+
+/* =====================================================
+   FALLBACK PRODUCT DATABASE
+===================================================== */
+
+const BALENN_PRODUCTS = [
+
+    {
+        id:1,
+        name:"Satin Blush Dress",
+        category:"DRESSES",
+        price:1290,
+        image:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        id:2,
+        name:"Soft Ribbon Blouse",
+        category:"TOPS",
+        price:890,
+        image:"https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        id:3,
+        name:"Elegant Wide Pants",
+        category:"BOTTOMS",
+        price:1090,
+        image:"https://images.unsplash.com/photo-1506629905607-d9a9b5d8d4d0?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        id:4,
+        name:"Mini Pearl Bag",
+        category:"BAGS",
+        price:1190,
+        image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        id:5,
+        name:"Rosé Midi Dress",
+        category:"DRESSES",
+        price:1390,
+        image:"https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        id:6,
+        name:"Linen Everyday Top",
+        category:"TOPS",
+        price:790,
+        image:"https://images.unsplash.com/photo-1564257577054-6e4a4a6a1c8d?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        id:7,
+        name:"Cream Tailored Pants",
+        category:"BOTTOMS",
+        price:990,
+        image:"https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        id:8,
+        name:"Champagne Shoulder Bag",
+        category:"BAGS",
+        price:1490,
+        image:"https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        id:9,
+        name:"Peach Evening Dress",
+        category:"DRESSES",
+        price:1590,
+        image:"https://images.unsplash.com/photo-1566174053879-31528523f8ae?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        id:10,
+        name:"Pearl Knit Top",
+        category:"TOPS",
+        price:950,
+        image:"https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        id:11,
+        name:"Soft Pleated Skirt",
+        category:"BOTTOMS",
+        price:890,
+        image:"https://images.unsplash.com/photo-1583496661160-fb5886a13d27?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        id:12,
+        name:"Mini Rosé Handbag",
+        category:"BAGS",
+        price:990,
+        image:"https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?auto=format&fit=crop&w=900&q=85"
+    }
+
+];
+
+
+/* =====================================================
+   NUMBER
+===================================================== */
+
+function toNumber(value){
+
+    if(
+        value === null ||
+        value === undefined ||
+        value === ""
+    ){
+
+        return 0;
+
+    }
+
+
+    if(typeof value === "number"){
+
+        return Number.isFinite(value)
+            ? value
+            : 0;
+
+    }
+
+
+    const cleaned =
+        String(value)
+            .replace(/฿/gi,"")
+            .replace(/บาท/gi,"")
+            .replace(/,/g,"")
+            .replace(/\s/g,"")
+            .trim();
+
+
+    const number =
+        parseFloat(cleaned);
+
+
+    return Number.isFinite(number)
+        ? number
+        : 0;
+
+}
+
+
+/* =====================================================
+   MONEY
+===================================================== */
+
+function money(value){
+
+    return "฿" +
+        toNumber(value).toLocaleString(
+            "th-TH",
+            {
+                minimumFractionDigits:0,
+                maximumFractionDigits:0
+            }
+        );
+
+}
+
+
+/* =====================================================
+   ESCAPE
+===================================================== */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/[&<>"']/g,function(char){
+
+            return {
+
+                "&":"&amp;",
+                "<":"&lt;",
+                ">":"&gt;",
+                '"':"&quot;",
+                "'":"&#039;"
+
+            }[char];
+
+        });
+
+}
+
+
+/* =====================================================
+   LOAD ORDERS
+===================================================== */
+
+function getOrders(){
+
+    try{
+
+        const data =
+            JSON.parse(
+                localStorage.getItem(
+                    ORDER_KEY
+                ) || "[]"
+            );
+
+
+        return Array.isArray(data)
+            ? data
+            : [];
+
+    }catch(error){
+
+        console.error(error);
+
+        return [];
+
+    }
+
+}
+
+
+/* =====================================================
+   SAVE ORDERS
+===================================================== */
+
+function saveOrders(orders){
+
+    try{
+
+        localStorage.setItem(
+            ORDER_KEY,
+            JSON.stringify(orders)
+        );
+
+    }catch(error){
+
+        console.error(
+            "ไม่สามารถบันทึก Order History ได้",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD PRODUCTS
+===================================================== */
+
+function getProducts(){
+
+    let stored = [];
+
+
+    try{
+
+        const data =
+            JSON.parse(
+                localStorage.getItem(
+                    PRODUCT_KEY
+                ) || "[]"
+            );
+
+
+        if(Array.isArray(data)){
+
+            stored = data;
+
+        }
+
+    }catch(error){
+
+        stored = [];
+
+    }
+
+
+    return stored.length
+        ? stored
+        : BALENN_PRODUCTS;
+
+}
+
+
+/* =====================================================
+   FIND PRODUCT
+===================================================== */
+
+function findProduct(item){
+
+    const products =
+        getProducts();
+
+
+    const itemId =
+        item?.productId ??
+        item?.productID ??
+        item?.product_id ??
+        item?.id ??
+        item?.sku;
+
+
+    const itemName =
+        String(
+            item?.name ??
+            item?.title ??
+            item?.productName ??
+            ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    /*
+       ID / SKU
+    */
+
+    if(
+        itemId !== undefined &&
+        itemId !== null &&
+        itemId !== ""
+    ){
+
+        const product =
+            products.find(
+                function(p){
+
+                    const productId =
+                        p?.productId ??
+                        p?.productID ??
+                        p?.product_id ??
+                        p?.id ??
+                        p?.sku;
+
+
+                    return String(
+                        productId
+                    ) === String(
+                        itemId
+                    );
+
+                }
+            );
+
+
+        if(product){
+
+            return product;
+
+        }
+
+    }
+
+
+    /*
+       Name
+    */
+
+    if(itemName){
+
+        const product =
+            products.find(
+                function(p){
+
+                    const productName =
+                        String(
+                            p?.name ??
+                            p?.title ??
+                            p?.productName ??
+                            ""
+                        )
+                        .trim()
+                        .toLowerCase();
+
+
+                    return (
+                        productName ===
+                        itemName
+                    );
+
+                }
+            );
+
+
+        if(product){
+
+            return product;
+
+        }
+
+    }
+
+
+    /*
+       Fallback
+    */
+
+    if(
+        itemId !== undefined &&
+        itemId !== null &&
+        itemId !== ""
+    ){
+
+        const product =
+            BALENN_PRODUCTS.find(
+                function(p){
+
+                    return String(
+                        p.id
+                    ) === String(
+                        itemId
+                    );
+
+                }
+            );
+
+
+        if(product){
+
+            return product;
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =====================================================
+   GET ITEM PRICE
+===================================================== */
+
+function getItemPrice(item){
+
+    const directValues = [
+
+        item?.price,
+        item?.unitPrice,
+        item?.salePrice,
+        item?.productPrice,
+        item?.regularPrice,
+        item?.originalPrice,
+        item?.amount
+
+    ];
+
+
+    for(
+        const value of directValues
+    ){
+
+        const price =
+            toNumber(value);
+
+
+        if(price > 0){
+
+            return price;
+
+        }
+
+    }
+
+
+    const product =
+        findProduct(item);
+
+
+    if(product){
+
+        const productValues = [
+
+            product?.price,
+            product?.salePrice,
+            product?.unitPrice,
+            product?.productPrice,
+            product?.regularPrice,
+            product?.originalPrice,
+            product?.amount
+
+        ];
+
+
+        for(
+            const value of productValues
+        ){
+
+            const price =
+                toNumber(value);
+
+
+            if(price > 0){
+
+                return price;
+
+            }
+
+        }
+
+    }
+
+
+    return 0;
+
+}
+
+
+/* =====================================================
+   GET QUANTITY
+===================================================== */
+
+function getQuantity(item){
+
+    const quantity =
+        parseInt(
+            item?.quantity ??
+            item?.qty ??
+            item?.count ??
+            1,
+            10
+        );
+
+
+    return Number.isFinite(quantity) &&
+           quantity > 0
+        ? quantity
+        : 1;
+
+}
+
+
+/* =====================================================
+   GET ITEMS
+===================================================== */
+
+function getItems(order){
+
+    if(
+        Array.isArray(
+            order?.items
+        )
+    ){
+
+        return order.items;
+
+    }
+
+
+    if(
+        Array.isArray(
+            order?.products
+        )
+    ){
+
+        return order.products;
+
+    }
+
+
+    if(
+        Array.isArray(
+            order?.cart
+        )
+    ){
+
+        return order.cart;
+
+    }
+
+
+    return [];
+
+}
+
+
+/* =====================================================
+   GET IMAGE
+===================================================== */
+
+function getImage(item){
+
+    /*
+       1. รูปที่อยู่ใน Order
+    */
+
+    const direct =
+        item?.image ||
+        item?.imageRef ||
+        item?.imageUrl ||
+        item?.imageURL ||
+        item?.img ||
+        item?.thumbnail ||
+        item?.productImage;
+
+
+    if(direct){
+
+        return direct;
+
+    }
+
+
+    /*
+       2. ค้นจาก Product
+    */
+
+    const product =
+        findProduct(item);
+
+
+    if(product){
+
+        return (
+            product?.image ||
+            product?.imageRef ||
+            product?.imageUrl ||
+            product?.imageURL ||
+            product?.img ||
+            product?.thumbnail ||
+            product?.productImage ||
+            ""
+        );
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =====================================================
+   GET ITEM NAME
+===================================================== */
+
+function getItemName(item){
+
+    if(
+        item?.name ||
+        item?.title ||
+        item?.productName
+    ){
+
+        return (
+            item?.name ||
+            item?.title ||
+            item?.productName
+        );
+
+    }
+
+
+    const product =
+        findProduct(item);
+
+
+    return (
+        product?.name ||
+        product?.title ||
+        "BALENN Product"
+    );
+
+}
+
+
+/* =====================================================
+   SUBTOTAL
+===================================================== */
+
+function getSubtotal(order){
+
+    const items =
+        getItems(order);
+
+
+    const calculated =
+        items.reduce(
+            function(sum,item){
+
+                const price =
+                    getItemPrice(item);
+
+
+                const quantity =
+                    getQuantity(item);
+
+
+                return sum +
+                    price * quantity;
+
+            },
+            0
+        );
+
+
+    if(calculated > 0){
+
+        return calculated;
+
+    }
+
+
+    return toNumber(
+        order?.subtotal
+    );
+
+}
+
+
+/* =====================================================
+   SHIPPING
+===================================================== */
+
+function getShipping(
+    order,
+    subtotal
+){
+
+    if(
+        order?.shipping !== undefined &&
+        order?.shipping !== null
+    ){
+
+        return toNumber(
+            order.shipping
+        );
+
+    }
+
+
+    return subtotal >= 1500
+        ? 0
+        : 150;
+
+}
+
+
+/* =====================================================
+   DISCOUNT
+===================================================== */
+
+function getDiscount(order){
+
+    return toNumber(
+        order?.discount ?? 0
+    );
+
+}
+
+
+/* =====================================================
+   TOTAL
+===================================================== */
+
+function getTotal(order){
+
+    const subtotal =
+        getSubtotal(order);
+
+
+    const shipping =
+        getShipping(
+            order,
+            subtotal
+        );
+
+
+    const discount =
+        getDiscount(order);
+
+
+    if(subtotal > 0){
+
+        return Math.max(
+            0,
+            subtotal +
+            shipping -
+            discount
+        );
+
+    }
+
+
+    return toNumber(
+        order?.total
+    );
+
+}
+
+
+/* =====================================================
+   REPAIR ORDER
+===================================================== */
+
+function repairOrder(order){
+
+    let changed = false;
+
+
+    const items =
+        getItems(order);
+
+
+    const repairedItems =
+        items.map(function(item){
+
+            const product =
+                findProduct(item);
+
+
+            const price =
+                getItemPrice(item);
+
+
+            const quantity =
+                getQuantity(item);
+
+
+            const repaired = {
+                ...item,
+                quantity: quantity
+            };
+
+
+            /*
+               เติมชื่อ
+            */
+
+            if(
+                !repaired.name &&
+                product?.name
+            ){
+
+                repaired.name =
+                    product.name;
+
+                changed = true;
+
+            }
+
+
+            /*
+               เติมราคา
+            */
+
+            if(
+                toNumber(
+                    repaired.price
+                ) <= 0 &&
+                price > 0
+            ){
+
+                repaired.price =
+                    price;
+
+                changed = true;
+
+            }
+
+
+            /*
+               เติมรูป
+            */
+
+            if(
+                !repaired.image &&
+                product
+            ){
+
+                const productImage =
+                    product?.image ||
+                    product?.imageRef ||
+                    product?.imageUrl ||
+                    product?.imageURL ||
+                    product?.img ||
+                    product?.thumbnail ||
+                    product?.productImage ||
+                    "";
+
+
+                if(productImage){
+
+                    repaired.image =
+                        productImage;
+
+                    changed = true;
+
+                }
+
+            }
+
+
+            return repaired;
+
+        });
+
+
+    if(changed){
+
+        if(
+            Array.isArray(
+                order.items
+            )
+        ){
+
+            order.items =
+                repairedItems;
+
+        }else if(
+            Array.isArray(
+                order.products
+            )
+        ){
+
+            order.products =
+                repairedItems;
+
+        }else if(
+            Array.isArray(
+                order.cart
+            )
+        ){
+
+            order.cart =
+                repairedItems;
+
+        }
+
+
+        const subtotal =
+            repairedItems.reduce(
+                function(sum,item){
+
+                    return sum +
+                        getItemPrice(item) *
+                        getQuantity(item);
+
+                },
+                0
+            );
+
+
+        if(subtotal > 0){
+
+            order.subtotal =
+                subtotal;
+
+
+            const shipping =
+                getShipping(
+                    order,
+                    subtotal
+                );
+
+
+            const discount =
+                getDiscount(order);
+
+
+            order.total =
+                Math.max(
+                    0,
+                    subtotal +
+                    shipping -
+                    discount
+                );
+
+
+            changed = true;
+
+        }
+
+    }
+
+
+    return {
+        order,
+        changed
+    };
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function getStatus(order){
+
+    return order?.status ||
+        "Pending";
+
+}
+
+
+function getStatusClass(status){
+
+    const text =
+        String(status)
+            .toLowerCase();
+
+
+    if(
+        text.includes("complete") ||
+        text.includes("สำเร็จ") ||
+        text.includes("เสร็จ")
+    ){
+
+        return "completed";
+
+    }
+
+
+    if(
+        text.includes("shipping") ||
+        text.includes("จัดส่ง") ||
+        text.includes("ส่ง")
+    ){
+
+        return "shipping";
+
+    }
+
+
+    if(
+        text.includes("cancel") ||
+        text.includes("ยกเลิก")
+    ){
+
+        return "cancelled";
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =====================================================
+   CUSTOMER
+===================================================== */
+
+function getCustomer(order){
+
+    return (
+        order?.customer ||
+        order?.customerInfo ||
+        order?.user ||
+        {}
+    );
+
+}
+
+
+/* =====================================================
+   ORDER NUMBER
+===================================================== */
+
+function getOrderNumber(order){
+
+    return (
+        order?.orderNumber ||
+        order?.orderId ||
+        order?.id ||
+        "-"
+    );
+
+}
+
+
+/* =====================================================
+   RENDER ITEM
+===================================================== */
+
+function renderItem(
+    item,
+    index
+){
+
+    const name =
+        getItemName(item);
+
+
+    const quantity =
+        getQuantity(item);
+
+
+    const price =
+        getItemPrice(item);
+
+
+    const itemTotal =
+        price * quantity;
+
+
+    const image =
+        getImage(item);
+
+
+    /*
+       IndexedDB
+    */
+
+    if(
+        image &&
+        String(image)
+            .startsWith(IMAGE_PREFIX)
+    ){
+
+        return `
+
+            <div class="item">
+
+                <div
+                    class="item-image"
+                    data-image-ref="${escapeHTML(image)}"
+                >
+
+                    <div
+                        class="image-loading"
+                        data-image-index="${index}"
+                    >
+                        BALENN
+                    </div>
+
+                </div>
+
+
+                <div class="item-info">
+
+                    <div class="item-name">
+                        ${escapeHTML(name)}
+                    </div>
+
+                    <div class="item-qty">
+
+                        จำนวน ${quantity} ชิ้น
+
+                        ${
+                            price > 0
+                            ?
+                            ` · ${money(price)} / ชิ้น`
+                            :
+                            ""
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <div class="item-price">
+
+                    ${
+                        price > 0
+                        ?
+                        money(itemTotal)
+                        :
+                        "฿0"
+                    }
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+       URL / Base64
+    */
+
+    return `
+
+        <div class="item">
+
+            <div class="item-image">
+
+                ${
+                    image
+                    ?
+                    `
+
+                    <img
+                        src="${escapeHTML(image)}"
+                        alt="${escapeHTML(name)}"
+                        onerror="
+                            this.style.display='none';
+                            this.parentElement.classList.add('no-image');
+                            this.parentElement.innerHTML='BALENN';
+                        "
+                    >
+
+                    `
+                    :
+                    `
+
+                    <div class="item-image no-image">
+                        BALENN
+                    </div>
+
+                    `
+                }
+
+            </div>
+
+
+            <div class="item-info">
+
+                <div class="item-name">
+                    ${escapeHTML(name)}
+                </div>
+
+                <div class="item-qty">
+
+                    จำนวน ${quantity} ชิ้น
+
+                    ${
+                        price > 0
+                        ?
+                        ` · ${money(price)} / ชิ้น`
+                        :
+                        ""
+                    }
+
+                </div>
+
+            </div>
+
+
+            <div class="item-price">
+
+                ${
+                    price > 0
+                    ?
+                    money(itemTotal)
+                    :
+                    "฿0"
+                }
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   HYDRATE INDEXED DB IMAGES
+===================================================== */
+
+async function hydrateImages(){
+
+    const boxes =
+        ordersContainer.querySelectorAll(
+            ".item-image[data-image-ref]"
+        );
+
+
+    if(!boxes.length){
+
+        return;
+
+    }
+
+
+    await Promise.all(
+
+        Array.from(boxes).map(
+            async function(box){
+
+                const imageRef =
+                    box.getAttribute(
+                        "data-image-ref"
+                    );
+
+
+                const imageURL =
+                    await resolveImage(
+                        imageRef
+                    );
+
+
+                if(!imageURL){
+
+                    box.classList.add(
+                        "no-image"
+                    );
+
+                    box.innerHTML =
+                        "BALENN";
+
+                    return;
+
+                }
+
+
+                const img =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                img.src =
+                    imageURL;
+
+
+                img.alt =
+                    "BALENN Product";
+
+
+                img.onload =
+                    function(){
+
+                        box.innerHTML = "";
+
+                        box.appendChild(img);
+
+                    };
+
+
+                img.onerror =
+                    function(){
+
+                        box.classList.add(
+                            "no-image"
+                        );
+
+                        box.innerHTML =
+                            "BALENN";
+
+                    };
+
+            }
+        )
+
+    );
+
+}
+
+
+/* =====================================================
+   RENDER ORDER
+===================================================== */
+
+function renderOrder(order){
+
+    const orderNumber =
+        getOrderNumber(order);
+
+
+    const customer =
+        getCustomer(order);
+
+
+    const items =
+        getItems(order);
+
+
+    const subtotal =
+        getSubtotal(order);
+
+
+    const shipping =
+        getShipping(
+            order,
+            subtotal
+        );
+
+
+    const discount =
+        getDiscount(order);
+
+
+    const total =
+        getTotal(order);
+
+
+    const status =
+        getStatus(order);
+
+
+    const customerName =
+        customer?.fullName ||
+        customer?.name ||
+        "-";
+
+
+    const phone =
+        customer?.phone ||
+        "-";
+
+
+    const email =
+        customer?.email ||
+        "-";
+
+
+    const address = [
+
+        customer?.address,
+        customer?.addressLine,
+        customer?.subdistrict,
+        customer?.district,
+        customer?.province,
+        customer?.postalCode
+
+    ]
+    .filter(Boolean)
+    .join(" ") || "-";
+
+
+    return `
+
+        <article class="order-card">
+
+            <div class="order-top">
+
+                <div>
+
+                    <div class="order-number">
+                        ${escapeHTML(orderNumber)}
+                    </div>
+
+                    <div class="order-date">
+
+                        ${escapeHTML(
+                            order?.dateTime ||
+                            order?.date ||
+                            order?.createdAt ||
+                            "-"
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <div class="status ${getStatusClass(status)}">
+
+                    ${escapeHTML(status)}
+
+                </div>
+
+            </div>
+
+
+            <div class="customer-box">
+
+                <div class="customer-title">
+                    CUSTOMER
+                </div>
+
+                <div class="customer-name">
+                    ${escapeHTML(customerName)}
+                </div>
+
+                <div class="customer-contact">
+
+                    ${escapeHTML(phone)}
+
+                    ${
+                        email !== "-"
+                        ?
+                        ` · ${escapeHTML(email)}`
+                        :
+                        ""
+                    }
+
+                    <br>
+
+                    ${escapeHTML(address)}
+
+                </div>
+
+            </div>
+
+
+            <div class="items">
+
+                ${
+                    items.length
+                    ?
+                    items
+                        .map(renderItem)
+                        .join("")
+                    :
+                    `
+
+                    <div style="
+                        padding:25px 0;
+                        text-align:center;
+                        color:#999;
+                        font-size:13px;
+                    ">
+                        ไม่พบรายการสินค้า
+                    </div>
+
+                    `
+                }
+
+            </div>
+
+
+            <div class="summary">
+
+                <div class="summary-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <span>
+                        ${money(subtotal)}
+                    </span>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Shipping
+                    </span>
+
+                    <span>
+
+                        ${
+                            shipping === 0
+                            ?
+                            "FREE"
+                            :
+                            money(shipping)
+                        }
+
+                    </span>
+
+                </div>
+
+
+                ${
+                    discount > 0
+                    ?
+                    `
+
+                    <div class="summary-row">
+
+                        <span>
+                            Discount
+                        </span>
+
+                        <span>
+                            -${money(discount)}
+                        </span>
+
+                    </div>
+
+                    `
+                    :
+                    ""
+                }
+
+
+                <div class="summary-row total">
+
+                    <span>
+                        TOTAL
+                    </span>
+
+                    <span class="total-value">
+                        ${money(total)}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="order-actions">
+
+                <a
+                    href="receipt.html?order=${encodeURIComponent(orderNumber)}"
+                    class="receipt-btn"
+                >
+                    ดูใบเสร็จ / รายละเอียด
+                </a>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+/* =====================================================
+   LOAD + REPAIR
+===================================================== */
+
+async function loadOrders(){
+
+    let orders =
+        getOrders();
+
+
+    if(!orders.length){
+
+        emptyOrders.style.display =
+            "block";
+
+
+        ordersContainer.innerHTML =
+            "";
+
+
+        return;
+
+    }
+
+
+    /*
+       ซ่อม Order เก่า
+    */
+
+    let changed =
+        false;
+
+
+    orders =
+        orders.map(
+            function(order){
+
+                const result =
+                    repairOrder(order);
+
+
+                if(result.changed){
+
+                    changed = true;
+
+                }
+
+
+                return result.order;
+
+            }
+        );
+
+
+    /*
+       บันทึก Order ที่ซ่อมแล้ว
+    */
+
+    if(changed){
+
+        saveOrders(orders);
+
+
+        console.log(
+            "BALENN: repaired old orders successfully."
+        );
+
+    }
+
+
+    emptyOrders.style.display =
+        "none";
+
+
+    /*
+       เรียงล่าสุดก่อน
+    */
+
+    orders.sort(
+        function(a,b){
+
+            const dateA =
+                new Date(
+                    a?.createdAt ||
+                    a?.dateTime ||
+                    a?.date ||
+                    0
+                ).getTime() || 0;
+
+
+            const dateB =
+                new Date(
+                    b?.createdAt ||
+                    b?.dateTime ||
+                    b?.date ||
+                    0
+                ).getTime() || 0;
+
+
+            return dateB - dateA;
+
+        }
+    );
+
+
+    /*
+       Render
+    */
+
+    ordersContainer.innerHTML =
+        orders
+            .map(renderOrder)
+            .join("");
+
+
+    /*
+       สำคัญ:
+       โหลดรูป IndexedDB หลังจาก Render
+    */
+
+    await hydrateImages();
+
+}
+
+
+/* =====================================================
+   CLEAN OBJECT URL
+===================================================== */
+
+window.addEventListener(
+    "beforeunload",
+    function(){
+
+        imageObjectURLs.forEach(
+            function(url){
+
+                try{
+
+                    URL.revokeObjectURL(url);
+
+                }catch(error){}
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadOrders();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3653 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BALENN — จัดการสินค้า</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+
+:root{
+    --bg:#f7f3ef;
+    --card:#ffffff;
+    --white:#ffffff;
+
+    --text:#2e2928;
+    --muted:#8a817e;
+
+    --pink:#d9a7a5;
+    --pink-dark:#b97978;
+    --pink-soft:#f6e8e6;
+
+    --gold:#b89a68;
+    --gold-soft:#f4eddf;
+
+    --line:#e8dfda;
+
+    --success:#648b70;
+    --success-soft:#e7f1e9;
+
+    --danger:#b86d6d;
+    --danger-soft:#f7e8e8;
+
+    --shadow:0 12px 35px rgba(67,49,42,.08);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:"DM Sans",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
+
+button,
+input,
+select,
+textarea{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+button:disabled{
+    cursor:not-allowed;
+    opacity:.65;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    width:250px;
+    background:#fff;
+    border-right:1px solid var(--line);
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+}
+
+.brand{
+    padding:30px 25px 24px;
+    border-bottom:1px solid var(--line);
+}
+
+.brand-name{
+    font-family:"Playfair Display",serif;
+    font-size:28px;
+    letter-spacing:2px;
+    color:#292321;
+}
+
+.brand-sub{
+    margin-top:5px;
+    color:var(--muted);
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+}
+
+.nav{
+    padding:20px 14px;
+}
+
+.nav-title{
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    color:#aaa19d;
+    margin:8px 12px 10px;
+    text-transform:uppercase;
+}
+
+.nav-link{
+    width:100%;
+    border:0;
+    background:transparent;
+    color:#716965;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:13px;
+    border-radius:12px;
+    margin-bottom:4px;
+    text-decoration:none;
+    font-size:14px;
+    text-align:left;
+    transition:.2s;
+}
+
+.nav-link:hover{
+    background:#faf4f1;
+    color:var(--pink-dark);
+}
+
+.nav-link.active{
+    background:var(--pink-soft);
+    color:var(--pink-dark);
+    font-weight:700;
+}
+
+.nav-icon{
+    width:20px;
+    text-align:center;
+    font-size:16px;
+}
+
+.sidebar-bottom{
+    margin-top:auto;
+    padding:18px;
+    border-top:1px solid var(--line);
+}
+
+.store-status{
+    background:#faf7f4;
+    border:1px solid var(--line);
+    padding:14px;
+    border-radius:14px;
+}
+
+.store-status-title{
+    font-size:12px;
+    font-weight:700;
+}
+
+.store-status-text{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:4px;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+    margin-left:250px;
+    width:calc(100% - 250px);
+    min-height:100vh;
+}
+
+.topbar{
+    height:78px;
+    background:rgba(255,255,255,.94);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 35px;
+    position:sticky;
+    top:0;
+    z-index:40;
+    backdrop-filter:blur(12px);
+}
+
+.page-title{
+    font-family:"Playfair Display",serif;
+    font-size:25px;
+}
+
+.page-subtitle{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:3px;
+}
+
+.admin-user{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:13px;
+}
+
+.admin-avatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:var(--pink-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.content{
+    padding:30px 35px 50px;
+}
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.toolbar{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+    box-shadow:var(--shadow);
+}
+
+.search-wrap{
+    flex:1;
+    min-width:230px;
+    position:relative;
+}
+
+.search-wrap input{
+    width:100%;
+    height:44px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    padding:0 14px 0 40px;
+    outline:none;
+    background:#fff;
+    color:var(--text);
+}
+
+.search-wrap input:focus{
+    border-color:var(--pink);
+}
+
+.search-icon{
+    position:absolute;
+    left:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#aaa;
+}
+
+.filter{
+    height:44px;
+    border:1px solid var(--line);
+    border-radius:11px;
+    background:#fff;
+    padding:0 13px;
+    color:#625b58;
+    outline:none;
+}
+
+.btn{
+    min-height:44px;
+    border-radius:11px;
+    border:1px solid var(--line);
+    padding:0 17px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    font-weight:700;
+    transition:.2s;
+}
+
+.btn-primary{
+    background:#b97978;
+    color:#fff;
+    border-color:#b97978;
+}
+
+.btn-primary:hover{
+    background:#a96766;
+    transform:translateY(-1px);
+}
+
+.btn-secondary{
+    background:#fff;
+    color:#645c59;
+}
+
+.btn-secondary:hover{
+    background:#faf5f2;
+}
+
+.btn-danger{
+    background:var(--danger-soft);
+    color:var(--danger);
+    border-color:#efd4d4;
+}
+
+.btn-small{
+    min-height:35px;
+    padding:0 11px;
+    font-size:12px;
+}
+
+/* =========================
+   STORAGE
+========================= */
+
+.storage-box{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:15px 18px;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.storage-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.storage-icon{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    background:var(--gold-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.storage-title{
+    font-size:13px;
+    font-weight:700;
+}
+
+.storage-text{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:2px;
+}
+
+.storage-badge{
+    padding:7px 11px;
+    background:var(--success-soft);
+    color:var(--success);
+    border-radius:999px;
+    font-size:11px;
+    font-weight:700;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:var(--shadow);
+}
+
+.table-head{
+    padding:18px 20px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.table-head-title{
+    font-weight:700;
+    font-size:15px;
+}
+
+.product-count{
+    font-size:12px;
+    color:var(--muted);
+}
+
+.table-scroll{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:950px;
+}
+
+thead{
+    background:#fcfaf8;
+}
+
+th{
+    text-align:left;
+    padding:13px 16px;
+    color:#928984;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-weight:700;
+    border-bottom:1px solid var(--line);
+}
+
+td{
+    padding:15px 16px;
+    border-bottom:1px solid #f0eae6;
+    vertical-align:middle;
+    font-size:13px;
+}
+
+tbody tr:hover{
+    background:#fffcfa;
+}
+
+.product-cell{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.product-img{
+    width:55px;
+    height:67px;
+    border-radius:10px;
+    object-fit:cover;
+    background:#f4efec;
+    border:1px solid var(--line);
+}
+
+.product-img-placeholder{
+    width:55px;
+    height:67px;
+    border-radius:10px;
+    background:#f5efec;
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#aaa;
+    font-size:10px;
+    text-align:center;
+}
+
+.product-name{
+    font-weight:700;
+    color:#38312e;
+    margin-bottom:3px;
+}
+
+.product-id{
+    color:#aaa19d;
+    font-size:10px;
+}
+
+.category-badge{
+    display:inline-block;
+    padding:6px 9px;
+    border-radius:999px;
+    background:#f8eeeb;
+    color:#a56e6b;
+    font-size:10px;
+    font-weight:700;
+}
+
+.price{
+    font-weight:700;
+}
+
+.old-price{
+    font-size:10px;
+    color:#aaa;
+    text-decoration:line-through;
+    margin-top:2px;
+}
+
+.stock-good{
+    color:var(--success);
+    font-weight:700;
+}
+
+.stock-low{
+    color:#b88954;
+    font-weight:700;
+}
+
+.stock-out{
+    color:var(--danger);
+    font-weight:700;
+}
+
+.actions{
+    display:flex;
+    gap:7px;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+    padding:70px 20px;
+    text-align:center;
+}
+
+.empty-icon{
+    font-size:40px;
+    opacity:.45;
+    margin-bottom:12px;
+}
+
+.empty-title{
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.empty-text{
+    font-size:12px;
+    color:var(--muted);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(38,28,24,.48);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:100;
+    backdrop-filter:blur(5px);
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-card{
+    width:min(760px,100%);
+    max-height:92vh;
+    overflow:auto;
+    background:#fff;
+    border-radius:22px;
+    box-shadow:0 30px 80px rgba(30,20,16,.2);
+}
+
+.modal-header{
+    padding:22px 25px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.modal-title{
+    font-family:"Playfair Display",serif;
+    font-size:23px;
+}
+
+.modal-close{
+    width:35px;
+    height:35px;
+    border:0;
+    background:#f7f1ee;
+    border-radius:50%;
+    font-size:19px;
+    color:#766d69;
+}
+
+.modal-body{
+    padding:24px 25px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:17px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+label{
+    font-size:12px;
+    font-weight:700;
+    color:#5d5552;
+}
+
+.required{
+    color:#c67878;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="url"],
+select,
+textarea{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:10px;
+    min-height:43px;
+    padding:10px 12px;
+    outline:none;
+    color:var(--text);
+    background:#fff;
+}
+
+textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:var(--pink);
+    box-shadow:0 0 0 3px rgba(217,167,165,.12);
+}
+
+.help{
+    color:#9d9490;
+    font-size:10px;
+    line-height:1.5;
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.image-mode{
+    display:flex;
+    gap:8px;
+    margin-bottom:10px;
+}
+
+.image-mode button{
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:9px;
+    padding:8px 12px;
+    font-size:11px;
+    font-weight:700;
+    color:#776f6b;
+}
+
+.image-mode button.active{
+    background:var(--pink-soft);
+    border-color:#e6c2c0;
+    color:var(--pink-dark);
+}
+
+.image-panel{
+    display:none;
+}
+
+.image-panel.active{
+    display:block;
+}
+
+.upload-box{
+    border:1.5px dashed #ddcec8;
+    border-radius:13px;
+    padding:18px;
+    text-align:center;
+    background:#fcfaf8;
+}
+
+.upload-box input{
+    border:0;
+    padding:0;
+    min-height:auto;
+    background:transparent;
+}
+
+.preview-box{
+    margin-top:12px;
+    min-height:140px;
+    border-radius:12px;
+    background:#f7f2ef;
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    color:#aaa;
+    font-size:11px;
+    text-align:center;
+}
+
+.preview-box img{
+    max-width:100%;
+    max-height:240px;
+    display:block;
+    object-fit:contain;
+}
+
+.github-path{
+    margin-top:8px;
+    padding:9px 11px;
+    background:#faf7f4;
+    border:1px solid var(--line);
+    border-radius:9px;
+    font-size:10px;
+    color:#817773;
+    word-break:break-all;
+}
+
+.modal-footer{
+    padding:18px 25px;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    background:#302a28;
+    color:#fff;
+    padding:13px 17px;
+    border-radius:12px;
+    box-shadow:0 15px 35px rgba(0,0,0,.18);
+    font-size:12px;
+    opacity:0;
+    transform:translateY(15px);
+    pointer-events:none;
+    transition:.25s;
+    z-index:300;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.toast.success{
+    background:#4f755b;
+}
+
+.toast.error{
+    background:#9c5e5e;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .sidebar{
+        width:75px;
+    }
+
+    .brand{
+        padding:25px 10px;
+        text-align:center;
+    }
+
+    .brand-name{
+        font-size:20px;
+    }
+
+    .brand-sub,
+    .nav-title,
+    .nav-link span:not(.nav-icon),
+    .store-status{
+        display:none;
+    }
+
+    .nav-link{
+        justify-content:center;
+    }
+
+    .main{
+        margin-left:75px;
+        width:calc(100% - 75px);
+    }
+
+    .topbar{
+        padding:0 20px;
+    }
+
+    .content{
+        padding:22px 20px 40px;
+    }
+}
+
+@media(max-width:650px){
+
+    .topbar{
+        height:auto;
+        min-height:70px;
+    }
+
+    .page-title{
+        font-size:21px;
+    }
+
+    .admin-user{
+        display:none;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+
+    .toolbar{
+        align-items:stretch;
+    }
+
+    .search-wrap{
+        flex-basis:100%;
+    }
+
+    .storage-box{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-name">BALENN</div>
+            <div class="brand-sub">Fashion Administration</div>
+        </div>
+
+        <nav class="nav">
+
+            <div class="nav-title">Management</div>
+
+            <a class="nav-link" href="admin.html">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a class="nav-link active" href="admin-products.html">
+                <span class="nav-icon">▣</span>
+                <span>สินค้า</span>
+            </a>
+
+            <a class="nav-link" href="admin-orders.html">
+                <span class="nav-icon">▤</span>
+                <span>คำสั่งซื้อ</span>
+            </a>
+
+            <a class="nav-link" href="admin-customers.html">
+                <span class="nav-icon">♙</span>
+                <span>ลูกค้า</span>
+            </a>
+
+            <div class="nav-title" style="margin-top:25px;">
+                Store
+            </div>
+
+            <a class="nav-link" href="index.html">
+                <span class="nav-icon">↗</span>
+                <span>ดูหน้าร้าน</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="store-status">
+
+                <div class="store-status-title">
+                    BALENN ONLINE
+                </div>
+
+                <div class="store-status-text">
+                    ระบบจัดการร้านค้าออนไลน์
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+
+                <div class="page-title">
+                    จัดการสินค้า
+                </div>
+
+                <div class="page-subtitle">
+                    เพิ่ม แก้ไข และจัดการสินค้าของ BALENN
+                </div>
+
+            </div>
+
+            <div class="admin-user">
+
+                <div class="admin-avatar">
+                    ♙
+                </div>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <!-- TOOLBAR -->
+            <div class="toolbar">
+
+                <div class="search-wrap">
+
+                    <span class="search-icon">
+                        ⌕
+                    </span>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="ค้นหาชื่อสินค้า หรือรหัสสินค้า..."
+                    >
+
+                </div>
+
+
+                <select
+                    class="filter"
+                    id="categoryFilter"
+                >
+
+                    <option value="">
+                        ทุกหมวดหมู่
+                    </option>
+
+                    <option value="DRESSES">
+                        DRESSES
+                    </option>
+
+                    <option value="TOPS">
+                        TOPS
+                    </option>
+
+                    <option value="BOTTOMS">
+                        BOTTOMS
+                    </option>
+
+                    <option value="BAGS">
+                        BAGS
+                    </option>
+
+                    <option value="ACCESSORIES">
+                        ACCESSORIES
+                    </option>
+
+                </select>
+
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="resetFilterBtn"
+                >
+                    รีเซ็ต
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="addProductBtn"
+                >
+                    ＋ เพิ่มสินค้า
+                </button>
+
+            </div>
+
+
+            <!-- STORAGE -->
+            <div class="storage-box">
+
+                <div class="storage-left">
+
+                    <div class="storage-icon">
+                        🖼️
+                    </div>
+
+                    <div>
+
+                        <div class="storage-title">
+                            ระบบรูปสินค้า BALENN
+                        </div>
+
+                        <div class="storage-text">
+                            รูปสินค้าเชื่อมจาก GitHub ในโฟลเดอร์
+                            images/products/
+                            ส่วนข้อมูลสินค้าใช้ LocalStorage
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="storage-badge"
+                    id="storageStatus"
+                >
+                    ✓ GitHub Images
+                </div>
+
+            </div>
+
+
+            <!-- TABLE -->
+            <div class="table-card">
+
+                <div class="table-head">
+
+                    <div class="table-head-title">
+                        รายการสินค้า
+                    </div>
+
+                    <div
+                        class="product-count"
+                        id="productCount"
+                    >
+                        0 รายการ
+                    </div>
+
+                </div>
+
+
+                <div class="table-scroll">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    สินค้า
+                                </th>
+
+                                <th>
+                                    หมวดหมู่
+                                </th>
+
+                                <th>
+                                    ราคา
+                                </th>
+
+                                <th>
+                                    สต็อก
+                                </th>
+
+                                <th>
+                                    จัดการ
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="productTableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =========================
+     PRODUCT MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="productModal"
+>
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <div
+                class="modal-title"
+                id="modalTitle"
+            >
+                เพิ่มสินค้า
+            </div>
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeModalBtn"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form
+            id="productForm"
+            novalidate
+        >
+
+            <div class="modal-body">
+
+                <div class="form-grid">
+
+                    <!-- NAME -->
+                    <div class="form-group full">
+
+                        <label for="productName">
+                            ชื่อสินค้า
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productName"
+                            placeholder="เช่น Satin Midi Dress"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+
+                    <!-- ID -->
+                    <div class="form-group">
+
+                        <label for="productId">
+                            รหัสสินค้า
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productId"
+                            placeholder="เช่น DR-001"
+                            autocomplete="off"
+                        >
+
+                        <div class="help">
+                            หากไม่กรอก ระบบจะสร้างรหัสให้อัตโนมัติ
+                        </div>
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+                    <div class="form-group">
+
+                        <label for="productCategory">
+                            หมวดหมู่
+                            <span class="required">*</span>
+                        </label>
+
+                        <select id="productCategory">
+
+                            <option value="">
+                                เลือกหมวดหมู่
+                            </option>
+
+                            <option value="DRESSES">
+                                DRESSES
+                            </option>
+
+                            <option value="TOPS">
+                                TOPS
+                            </option>
+
+                            <option value="BOTTOMS">
+                                BOTTOMS
+                            </option>
+
+                            <option value="BAGS">
+                                BAGS
+                            </option>
+
+                            <option value="ACCESSORIES">
+                                ACCESSORIES
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PRICE -->
+                    <div class="form-group">
+
+                        <label for="productPrice">
+                            ราคาปัจจุบัน (บาท)
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productPrice"
+                            min="0"
+                            step="1"
+                            placeholder="1290"
+                        >
+
+                    </div>
+
+
+                    <!-- OLD PRICE -->
+                    <div class="form-group">
+
+                        <label for="productOldPrice">
+                            ราคาเดิม (บาท)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productOldPrice"
+                            min="0"
+                            step="1"
+                            placeholder="1590"
+                        >
+
+                        <div class="help">
+                            ไม่ต้องกรอกหากสินค้าไม่มีราคาลด
+                        </div>
+
+                    </div>
+
+
+                    <!-- STOCK -->
+                    <div class="form-group">
+
+                        <label for="productStock">
+                            จำนวนสต็อก
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productStock"
+                            min="0"
+                            step="1"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <!-- IMAGE -->
+                    <div class="form-group full">
+
+                        <label>
+                            รูปสินค้า
+                        </label>
+
+
+                        <div class="image-mode">
+
+                            <button
+                                type="button"
+                                id="uploadModeBtn"
+                                class="active"
+                            >
+                                🖼️ เลือกรูปดูตัวอย่าง
+                            </button>
+
+                            <button
+                                type="button"
+                                id="urlModeBtn"
+                            >
+                                🔗 ใช้ URL รูป
+                            </button>
+
+                        </div>
+
+
+                        <!-- LOCAL PREVIEW -->
+                        <div
+                            class="image-panel active"
+                            id="uploadPanel"
+                        >
+
+                            <div class="upload-box">
+
+                                <input
+                                    type="file"
+                                    id="productImageFile"
+                                    accept="image/*"
+                                >
+
+                                <div
+                                    class="help"
+                                    style="margin-top:8px;"
+                                >
+                                    ใช้สำหรับดูตัวอย่างรูปเท่านั้น
+                                    รูปจริงของร้านต้องอยู่ใน
+                                    images/products/
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- URL -->
+                        <div
+                            class="image-panel"
+                            id="urlPanel"
+                        >
+
+                            <input
+                                type="url"
+                                id="productImageUrl"
+                                placeholder="https://example.com/product.jpg"
+                            >
+
+                        </div>
+
+
+                        <div
+                            class="github-path"
+                            id="githubImagePath"
+                        >
+                            images/products/ชื่อสินค้า.jpg
+                        </div>
+
+
+                        <div
+                            class="preview-box"
+                            id="imagePreview"
+                        >
+                            ยังไม่มีรูป
+                        </div>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+                    <div class="form-group full">
+
+                        <label for="productDescription">
+                            รายละเอียดสินค้า
+                        </label>
+
+                        <textarea
+                            id="productDescription"
+                            placeholder="รายละเอียดสินค้า..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="cancelModalBtn"
+                >
+                    ยกเลิก
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="saveProductBtn"
+                >
+                    บันทึกสินค้า
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script>
+
+/* =========================================================
+   BALENN PRODUCT ADMIN
+   GitHub Images Version
+========================================================= */
+
+const PRODUCT_KEY = "balennProducts";
+
+let products = [];
+
+let editingProductId = null;
+
+let selectedImageData = null;
+
+let selectedImageType = null;
+
+
+/* =========================================================
+   DEFAULT PRODUCTS
+   ใช้เฉพาะกรณีไม่มีข้อมูลใน LocalStorage จริง ๆ
+========================================================= */
+
+function getDefaultProducts() {
+  const names = [
+    "Satin Midi Dress-1",
+    "Rosé Slip Dress-1",
+    "Ribbon Mini Dress-1",
+    "Soft Pleated Dress-1",
+    "Elegant Wrap Dress-1",
+    "Linen Summer Dress-1",
+    "Square Neck Dress-1",
+    "One Shoulder Dress-1",
+    "Floral Midi Dress-1",
+    "Classic Black Dress-1",
+
+    "Ribbon Blouse-2",
+    "Satin Camisole-2",
+    "Soft Knit Top-2",
+    "Pearl Knit Top-2",
+    "Basic Fitted Top-2",
+    "Cropped Blouse-2",
+    "Lace Trim Top-2",
+    "Off Shoulder Top-2",
+    "Bow Tie Blouse-2",
+    "Linen Everyday Top-2",
+
+    "Wide Leg Tailored Pants-3",
+    "Cream Tailored Pants-3",
+    "Straight Leg Pants-3",
+    "High Waist Trousers-3",
+    "Satin Midi Skirt-3",
+    "Pleated Skirt-3",
+    "A-Line Mini Skirt-3",
+    "Soft Linen Pants-3",
+    "Denim Wide Jeans-3",
+    "Wrap Midi Skirt-3",
+
+    "Mini Pearl Bag-4",
+    "Mini Rosé Handbag-4",
+    "Champagne Shoulder Bag-4",
+    "Soft Leather Shoulder Bag-4",
+    "Mini Top Handle Bag-4",
+    "Quilted Chain Bag-4",
+    "Ribbon Mini Bag-4",
+    "Everyday Tote Bag-4",
+
+    "Pearl Necklace-5",
+    "Minimal Gold Earrings-5",
+    "Ribbon Hair Clip-5",
+    "Satin Scrunchie-5",
+    "Pearl Hairband-5",
+    "Slim Fashion Belt-5"
+  ];
+
+  return names.map((name, index) => {
+    const suffix = name.slice(-1);
+
+    const categoryMap = {
+      "1": "Dresses",
+      "2": "Tops",
+      "3": "Bottoms",
+      "4": "Bags",
+      "5": "Accessories"
+    };
+
+    return {
+      id: `BAL-${String(index + 1).padStart(3, "0")}`,
+      name: name,
+      category: categoryMap[suffix] || "Fashion",
+      price: 1290,
+      stock: 10,
+      image: `images/products/${name}.jpg`,
+      description: `${name.replace(/-[1-5]$/, "")} จาก BALENN Fashion`
+    };
+  });
+}
+
+
+/* =========================================================
+   SLUGIFY
+========================================================= */
+
+function slugifyProductName(name){
+
+    return String(name || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .toLowerCase()
+        .trim()
+        .replace(/&/g,"and")
+        .replace(/[^a-z0-9]+/g,"-")
+        .replace(/^-+|-+$/g,"");
+
+}
+
+
+/* =========================================================
+   GITHUB IMAGE PATH
+========================================================= */
+
+function getGitHubProductImage(product){
+
+    if(!product || !product.name){
+        return "";
+    }
+
+    const slug =
+        slugifyProductName(
+            product.name
+        );
+
+    if(!slug){
+        return "";
+    }
+
+    return (
+        "images/products/" +
+        slug +
+        ".jpg"
+    );
+
+}
+
+
+/* =========================================================
+   READ PRODUCTS
+========================================================= */
+
+function readProducts(){
+
+    try{
+
+        const raw =
+            localStorage.getItem(
+                PRODUCT_KEY
+            );
+
+        if(!raw){
+
+            const defaults =
+                getDefaultProducts();
+
+            localStorage.setItem(
+                PRODUCT_KEY,
+                JSON.stringify(defaults)
+            );
+
+            return defaults;
+
+        }
+
+
+        const parsed =
+            JSON.parse(raw);
+
+
+        if(!Array.isArray(parsed)){
+
+            const defaults =
+                getDefaultProducts();
+
+            localStorage.setItem(
+                PRODUCT_KEY,
+                JSON.stringify(defaults)
+            );
+
+            return defaults;
+
+        }
+
+
+        return parsed;
+
+    }catch(error){
+
+        console.error(
+            "readProducts error:",
+            error
+        );
+
+        return getDefaultProducts();
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVE PRODUCTS
+========================================================= */
+
+function saveProducts(){
+
+    try{
+
+        localStorage.setItem(
+            PRODUCT_KEY,
+            JSON.stringify(products)
+        );
+
+        return true;
+
+    }catch(error){
+
+        console.error(
+            "saveProducts error:",
+            error
+        );
+
+        showToast(
+            "ไม่สามารถบันทึกข้อมูลสินค้าได้",
+            "error"
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   GITHUB IMAGE PATH
+   รูปจริงอยู่ใน images/products/
+   และใช้ชื่อสินค้า + .jpg ตรง ๆ
+========================================================= */
+
+function getGitHubProductImage(product){
+
+    if(!product || !product.name){
+        return "";
+    }
+
+    return `images/products/${product.name}.jpg`;
+
+}
+
+
+/* =========================================================
+   DEFAULT PRODUCTS — 44 ITEMS
+========================================================= */
+
+function getDefaultProducts(){
+
+    const names = [
+
+        "Satin Midi Dress-1",
+        "Rosé Slip Dress-1",
+        "Ribbon Mini Dress-1",
+        "Soft Pleated Dress-1",
+        "Elegant Wrap Dress-1",
+        "Linen Summer Dress-1",
+        "Square Neck Dress-1",
+        "One Shoulder Dress-1",
+        "Floral Midi Dress-1",
+        "Classic Black Dress-1",
+
+        "Ribbon Blouse-2",
+        "Satin Camisole-2",
+        "Soft Knit Top-2",
+        "Pearl Knit Top-2",
+        "Basic Fitted Top-2",
+        "Cropped Blouse-2",
+        "Lace Trim Top-2",
+        "Off Shoulder Top-2",
+        "Bow Tie Blouse-2",
+        "Linen Everyday Top-2",
+
+        "Wide Leg Tailored Pants-3",
+        "Cream Tailored Pants-3",
+        "Straight Leg Pants-3",
+        "High Waist Trousers-3",
+        "Satin Midi Skirt-3",
+        "Pleated Skirt-3",
+        "A-Line Mini Skirt-3",
+        "Soft Linen Pants-3",
+        "Denim Wide Jeans-3",
+        "Wrap Midi Skirt-3",
+
+        "Mini Pearl Bag-4",
+        "Mini Rosé Handbag-4",
+        "Champagne Shoulder Bag-4",
+        "Soft Leather Shoulder Bag-4",
+        "Mini Top Handle Bag-4",
+        "Quilted Chain Bag-4",
+        "Ribbon Mini Bag-4",
+        "Everyday Tote Bag-4",
+
+        "Pearl Necklace-5",
+        "Minimal Gold Earrings-5",
+        "Ribbon Hair Clip-5",
+        "Satin Scrunchie-5",
+        "Pearl Hairband-5",
+        "Slim Fashion Belt-5"
+
+    ];
+
+    const categoryMap = {
+
+        "1":"DRESSES",
+        "2":"TOPS",
+        "3":"BOTTOMS",
+        "4":"BAGS",
+        "5":"ACCESSORIES"
+
+    };
+
+    return names.map((name,index) => {
+
+        const suffix = name.slice(-1);
+
+        const cleanName =
+            name.replace(/-[1-5]$/,"");
+
+        return {
+
+            id:
+                `BAL-${String(index + 1).padStart(3,"0")}`,
+
+            name:
+                name,
+
+            category:
+                categoryMap[suffix] || "DRESSES",
+
+            price:
+                1290,
+
+            oldPrice:
+                null,
+
+            stock:
+                10,
+
+            image:
+                `images/products/${name}.jpg`,
+
+            description:
+                `${cleanName} จาก BALENN Fashion`
+
+        };
+
+    });
+
+}
+
+
+/* =========================================================
+   READ + MERGE PRODUCTS
+   ทำให้มีสินค้า 44 รายการ
+========================================================= */
+
+function readProducts(){
+
+    const masterProducts =
+        getDefaultProducts();
+
+    let savedProducts = [];
+
+    try{
+
+        const raw =
+            localStorage.getItem(
+                PRODUCT_KEY
+            );
+
+        if(raw){
+
+            const parsed =
+                JSON.parse(raw);
+
+            if(Array.isArray(parsed)){
+
+                savedProducts =
+                    parsed;
+
+            }
+
+        }
+
+    }catch(error){
+
+        console.error(
+            "readProducts error:",
+            error
+        );
+
+    }
+
+
+    /*
+     * เอาข้อมูลเดิมมาเก็บไว้
+     * แล้วเติมสินค้าที่หายให้ครบ 44 ตัว
+     */
+
+    const mergedProducts =
+        masterProducts.map(master => {
+
+            const masterBaseName =
+                master.name
+                    .replace(/-[1-5]$/,"")
+                    .trim()
+                    .toLowerCase();
+
+
+            const existing =
+                savedProducts.find(product => {
+
+                    if(!product || !product.name){
+                        return false;
+                    }
+
+                    const existingBaseName =
+                        String(product.name)
+                            .replace(/-[1-5]$/,"")
+                            .trim()
+                            .toLowerCase();
+
+                    return (
+                        existingBaseName ===
+                        masterBaseName
+                    );
+
+                });
+
+
+            if(existing){
+
+                return {
+
+                    ...master,
+                    ...existing,
+
+                    /*
+                     * บังคับชื่อให้ตรงกับ
+                     * ชื่อไฟล์จริง
+                     */
+
+                    name:
+                        master.name,
+
+                    category:
+                        existing.category ||
+                        master.category,
+
+                    image:
+                        `images/products/${master.name}.jpg`
+
+                };
+
+            }
+
+
+            return master;
+
+        });
+
+
+    /*
+     * บันทึกกลับ LocalStorage
+     */
+
+    localStorage.setItem(
+        PRODUCT_KEY,
+        JSON.stringify(
+            mergedProducts
+        )
+    );
+
+
+    return mergedProducts;
+
+}
+
+
+/* =========================================================
+   MIGRATE IMAGE PATH
+========================================================= */
+
+function migrateProductsToGitHubImages(){
+
+    let changed = false;
+
+
+    products =
+        products.map(product => {
+
+            const githubImage =
+                getGitHubProductImage(
+                    product
+                );
+
+
+            if(
+                product.image !==
+                githubImage
+            ){
+
+                changed = true;
+
+            }
+
+
+            return {
+
+                ...product,
+
+                image:
+                    githubImage
+
+            };
+
+        });
+
+
+    if(changed){
+
+        saveProducts();
+
+        console.log(
+            "BALENN: อัปเดต path รูปสินค้าแล้ว"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE IMAGE PATH FOR PRODUCT NAME
+========================================================= */
+
+function updateGitHubImagePath(){
+
+    const name =
+        document.getElementById(
+            "productName"
+        ).value.trim();
+
+
+    const path =
+        getGitHubProductImage({
+            name:name
+        });
+
+
+    document.getElementById(
+        "githubImagePath"
+    ).textContent =
+        path ||
+        "images/products/ชื่อสินค้า.jpg";
+
+
+    if(
+        editingProductId !== null &&
+        !selectedImageType
+    ){
+
+        showGitHubPreview(
+            path
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SHOW GITHUB PREVIEW
+========================================================= */
+
+function showGitHubPreview(path){
+
+    const preview =
+        document.getElementById(
+            "imagePreview"
+        );
+
+
+    if(!path){
+
+        preview.innerHTML =
+            "ยังไม่มีรูป";
+
+        return;
+
+    }
+
+
+    preview.innerHTML = `
+
+        <img
+            src="${escapeAttribute(path)}"
+            alt="Preview"
+            onerror="this.parentElement.innerHTML='<div style=&quot;padding:20px&quot;>ไม่พบรูปใน GitHub<br><small>${escapeHTML(path)}</small></div>';"
+        >
+
+    `;
+
+}
+
+
+/* =========================================================
+   RENDER PRODUCTS
+========================================================= */
+
+function renderProducts(){
+
+    const tbody =
+        document.getElementById(
+            "productTableBody"
+        );
+
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value
+        .trim()
+        .toLowerCase();
+
+
+    const category =
+        document.getElementById(
+            "categoryFilter"
+        ).value;
+
+
+    const filtered =
+        products.filter(product => {
+
+            const name =
+                String(
+                    product.name || ""
+                ).toLowerCase();
+
+
+            const id =
+                String(
+                    product.id || ""
+                ).toLowerCase();
+
+
+            const matchSearch =
+                !search ||
+                name.includes(search) ||
+                id.includes(search);
+
+
+            const matchCategory =
+                !category ||
+                String(
+                    product.category || ""
+                ).toUpperCase() === category;
+
+
+            return (
+                matchSearch &&
+                matchCategory
+            );
+
+        });
+
+
+    document.getElementById(
+        "productCount"
+    ).textContent =
+        `${filtered.length} รายการ`;
+
+
+    if(!filtered.length){
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="5">
+
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            🛍️
+                        </div>
+
+                        <div class="empty-title">
+                            ไม่พบสินค้า
+                        </div>
+
+                        <div class="empty-text">
+                            ลองเปลี่ยนคำค้นหาหรือเพิ่มสินค้าใหม่
+                        </div>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML = "";
+
+
+    filtered.forEach(product => {
+
+        const tr =
+            document.createElement("tr");
+
+
+        const imageSource =
+            getGitHubProductImage(
+                product
+            );
+
+
+        const stock =
+            Number(
+                product.stock || 0
+            );
+
+
+        let stockClass =
+            "stock-good";
+
+
+        if(stock === 0){
+
+            stockClass =
+                "stock-out";
+
+        }else if(stock <= 5){
+
+            stockClass =
+                "stock-low";
+
+        }
+
+
+        const oldPrice =
+            product.oldPrice
+                ? `
+                    <div class="old-price">
+                        ฿${formatMoney(product.oldPrice)}
+                    </div>
+                `
+                : "";
+
+
+        const imageHTML = imageSource
+            ? `
+                <img
+                    class="product-img"
+                    src="${escapeAttribute(imageSource)}"
+                    alt="${escapeAttribute(product.name || "สินค้า")}"
+                    loading="lazy"
+                    onerror="this.outerHTML='<div class=&quot;product-img-placeholder&quot;>ไม่พบรูป</div>';"
+                >
+            `
+            : `
+                <div class="product-img-placeholder">
+                    ไม่มีรูป
+                </div>
+            `;
+
+
+        tr.innerHTML = `
+
+            <td>
+
+                <div class="product-cell">
+
+                    ${imageHTML}
+
+                    <div>
+
+                        <div class="product-name">
+                            ${escapeHTML(product.name || "-")}
+                        </div>
+
+                        <div class="product-id">
+                            ${escapeHTML(product.id || "-")}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </td>
+
+
+            <td>
+
+                <span class="category-badge">
+                    ${escapeHTML(product.category || "-")}
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <div class="price">
+                    ฿${formatMoney(product.price)}
+                </div>
+
+                ${oldPrice}
+
+            </td>
+
+
+            <td>
+
+                <div class="${stockClass}">
+                    ${stock} ชิ้น
+                </div>
+
+            </td>
+
+
+            <td>
+
+                <div class="actions">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary btn-small edit-product-btn"
+                    >
+                        แก้ไข
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn btn-danger btn-small delete-product-btn"
+                    >
+                        ลบ
+                    </button>
+
+                </div>
+
+            </td>
+
+        `;
+
+
+        tr.querySelector(
+            ".edit-product-btn"
+        ).addEventListener(
+            "click",
+            () => openEditModal(product.id)
+        );
+
+
+        tr.querySelector(
+            ".delete-product-btn"
+        ).addEventListener(
+            "click",
+            () => deleteProduct(product.id)
+        );
+
+
+        tbody.appendChild(tr);
+
+    });
+
+}
+
+
+/* =========================================================
+   OPEN ADD MODAL
+========================================================= */
+
+function openAddModal(){
+
+    editingProductId = null;
+
+    selectedImageData = null;
+
+    selectedImageType = null;
+
+
+    document.getElementById(
+        "productForm"
+    ).reset();
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "เพิ่มสินค้า";
+
+
+    document.getElementById(
+        "productStock"
+    ).value =
+        "0";
+
+
+    document.getElementById(
+        "productCategory"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "productImageFile"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "productImageUrl"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "githubImagePath"
+    ).textContent =
+        "images/products/ชื่อสินค้า.jpg";
+
+
+    document.getElementById(
+        "imagePreview"
+    ).innerHTML =
+        "พิมพ์ชื่อสินค้าเพื่อสร้าง path รูป";
+
+
+    switchImageMode(
+        "upload"
+    );
+
+
+    document.getElementById(
+        "productModal"
+    ).classList.add("show");
+
+
+    setTimeout(() => {
+
+        document.getElementById(
+            "productName"
+        ).focus();
+
+    },100);
+
+}
+
+
+/* =========================================================
+   OPEN EDIT MODAL
+========================================================= */
+
+function openEditModal(productId){
+
+    const product =
+        products.find(
+            item =>
+                String(item.id) ===
+                String(productId)
+        );
+
+
+    if(!product){
+
+        showToast(
+            "ไม่พบสินค้าที่ต้องการแก้ไข",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    editingProductId =
+        product.id;
+
+
+    selectedImageData = null;
+
+    selectedImageType = null;
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "แก้ไขสินค้า";
+
+
+    document.getElementById(
+        "productName"
+    ).value =
+        product.name || "";
+
+
+    document.getElementById(
+        "productId"
+    ).value =
+        product.id || "";
+
+
+    document.getElementById(
+        "productCategory"
+    ).value =
+        product.category || "";
+
+
+    document.getElementById(
+        "productPrice"
+    ).value =
+        product.price ?? "";
+
+
+    document.getElementById(
+        "productOldPrice"
+    ).value =
+        product.oldPrice ?? "";
+
+
+    document.getElementById(
+        "productStock"
+    ).value =
+        product.stock ?? 0;
+
+
+    document.getElementById(
+        "productDescription"
+    ).value =
+        product.description || "";
+
+
+    document.getElementById(
+        "productImageFile"
+    ).value =
+        "";
+
+
+    document.getElementById(
+        "productImageUrl"
+    ).value =
+        "";
+
+
+    switchImageMode(
+        "upload"
+    );
+
+
+    const githubImage =
+        getGitHubProductImage(
+            product
+        );
+
+
+    document.getElementById(
+        "githubImagePath"
+    ).textContent =
+        githubImage ||
+        "images/products/ชื่อสินค้า.jpg";
+
+
+    showGitHubPreview(
+        githubImage
+    );
+
+
+    document.getElementById(
+        "productModal"
+    ).classList.add("show");
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
+
+function closeModal(){
+
+    document.getElementById(
+        "productModal"
+    ).classList.remove("show");
+
+
+    editingProductId = null;
+
+    selectedImageData = null;
+
+    selectedImageType = null;
+
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+function handleOverlayClick(event){
+
+    if(
+        event.target ===
+        document.getElementById(
+            "productModal"
+        )
+    ){
+
+        closeModal();
+
+    }
+
+}
+
+
+/* =========================================================
+   IMAGE MODE
+========================================================= */
+
+function switchImageMode(mode){
+
+    const uploadModeBtn =
+        document.getElementById(
+            "uploadModeBtn"
+        );
+
+
+    const urlModeBtn =
+        document.getElementById(
+            "urlModeBtn"
+        );
+
+
+    const uploadPanel =
+        document.getElementById(
+            "uploadPanel"
+        );
+
+
+    const urlPanel =
+        document.getElementById(
+            "urlPanel"
+        );
+
+
+    if(mode === "upload"){
+
+        uploadModeBtn.classList.add(
+            "active"
+        );
+
+        urlModeBtn.classList.remove(
+            "active"
+        );
+
+        uploadPanel.classList.add(
+            "active"
+        );
+
+        urlPanel.classList.remove(
+            "active"
+        );
+
+
+        selectedImageType =
+            selectedImageData
+                ? "blob"
+                : null;
+
+
+        if(!selectedImageData){
+
+            updateGitHubImagePath();
+
+        }
+
+    }else{
+
+        urlModeBtn.classList.add(
+            "active"
+        );
+
+        uploadModeBtn.classList.remove(
+            "active"
+        );
+
+        urlPanel.classList.add(
+            "active"
+        );
+
+        uploadPanel.classList.remove(
+            "active"
+        );
+
+
+        selectedImageType =
+            "url";
+
+
+        previewUrlImage();
+
+    }
+
+}
+
+
+/* =========================================================
+   LOCAL IMAGE PREVIEW
+========================================================= */
+
+function handleImageUpload(event){
+
+    const file =
+        event.target.files &&
+        event.target.files[0];
+
+
+    if(!file){
+        return;
+    }
+
+
+    if(!file.type.startsWith("image/")){
+
+        showToast(
+            "กรุณาเลือกไฟล์รูปภาพ",
+            "error"
+        );
+
+        event.target.value = "";
+
+        return;
+
+    }
+
+
+    selectedImageData =
+        file;
+
+
+    selectedImageType =
+        "blob";
+
+
+    const preview =
+        document.getElementById(
+            "imagePreview"
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            file
+        );
+
+
+    preview.innerHTML = `
+
+        <img
+            src="${escapeAttribute(url)}"
+            alt="Preview"
+        >
+
+        <div style="
+            position:absolute;
+            opacity:0;
+            pointer-events:none;
+        ">
+            preview
+        </div>
+
+    `;
+
+
+    showToast(
+        "เลือกรูปสำหรับดูตัวอย่างแล้ว",
+        "success"
+    );
+
+}
+
+
+/* =========================================================
+   URL PREVIEW
+========================================================= */
+
+function previewUrlImage(){
+
+    const url =
+        document.getElementById(
+            "productImageUrl"
+        ).value.trim();
+
+
+    const preview =
+        document.getElementById(
+            "imagePreview"
+        );
+
+
+    if(!url){
+
+        if(editingProductId !== null){
+
+            const product =
+                products.find(
+                    item =>
+                        String(item.id) ===
+                        String(editingProductId)
+                );
+
+
+            if(product){
+
+                showGitHubPreview(
+                    getGitHubProductImage(
+                        product
+                    )
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        preview.innerHTML =
+            "ยังไม่มีรูป";
+
+        return;
+
+    }
+
+
+    selectedImageType =
+        "url";
+
+
+    preview.innerHTML = `
+
+        <img
+            src="${escapeAttribute(url)}"
+            alt="Preview"
+            onerror="this.parentElement.innerHTML='ไม่สามารถโหลดรูปจาก URL นี้ได้';"
+        >
+
+    `;
+
+}
+
+
+/* =========================================================
+   SAVE PRODUCT
+========================================================= */
+
+function saveProduct(event){
+
+    event.preventDefault();
+
+
+    const name =
+        document.getElementById(
+            "productName"
+        ).value.trim();
+
+
+    const enteredId =
+        document.getElementById(
+            "productId"
+        ).value.trim();
+
+
+    const category =
+        document.getElementById(
+            "productCategory"
+        ).value;
+
+
+    const priceValue =
+        document.getElementById(
+            "productPrice"
+        ).value;
+
+
+    const oldPriceValue =
+        document.getElementById(
+            "productOldPrice"
+        ).value;
+
+
+    const stockValue =
+        document.getElementById(
+            "productStock"
+        ).value;
+
+
+    const description =
+        document.getElementById(
+            "productDescription"
+        ).value.trim();
+
+
+    /* VALIDATE */
+
+    if(!name){
+
+        showToast(
+            "กรุณากรอกชื่อสินค้า",
+            "error"
+        );
+
+        document.getElementById(
+            "productName"
+        ).focus();
+
+        return;
+
+    }
+
+
+    if(!category){
+
+        showToast(
+            "กรุณาเลือกหมวดหมู่สินค้า",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        priceValue === "" ||
+        Number(priceValue) < 0
+    ){
+
+        showToast(
+            "กรุณากรอกราคาสินค้า",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        stockValue === "" ||
+        Number(stockValue) < 0
+    ){
+
+        showToast(
+            "กรุณากรอกจำนวนสต็อก",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    let productId =
+        enteredId;
+
+
+    if(!productId){
+
+        productId =
+            createProductId(
+                category
+            );
+
+    }
+
+
+    const duplicate =
+        products.find(
+            product =>
+                String(product.id) ===
+                String(productId) &&
+                String(product.id) !==
+                String(editingProductId)
+        );
+
+
+    if(duplicate){
+
+        showToast(
+            "รหัสสินค้านี้มีอยู่แล้ว",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * สำคัญที่สุด
+     *
+     * รูปหลักของ BALENN = GitHub
+     *
+     * ชื่อสินค้า:
+     * Satin Midi Dress
+     *
+     * จะกลายเป็น:
+     * images/products/satin-midi-dress.jpg
+     */
+
+    let imageValue =
+        getGitHubProductImage({
+            name:name
+        });
+
+
+    /*
+     * ถ้าเลือก URL โดยตั้งใจ
+     * ให้ใช้ URL นั้นแทน
+     */
+
+    if(selectedImageType === "url"){
+
+        const url =
+            document.getElementById(
+                "productImageUrl"
+            ).value.trim();
+
+
+        if(url){
+
+            imageValue =
+                url;
+
+        }
+
+    }
+
+
+    const productData = {
+
+        id:productId,
+
+        name:name,
+
+        category:category,
+
+        price:Number(
+            priceValue
+        ),
+
+        oldPrice:
+            oldPriceValue === ""
+                ? null
+                : Number(oldPriceValue),
+
+        stock:Number(
+            stockValue
+        ),
+
+        image:imageValue,
+
+        description:description
+
+    };
+
+
+    const saveButton =
+        document.getElementById(
+            "saveProductBtn"
+        );
+
+
+    saveButton.disabled =
+        true;
+
+
+    saveButton.textContent =
+        "กำลังบันทึก...";
+
+
+    try{
+
+        /*
+         * UPDATE
+         */
+
+        if(editingProductId !== null){
+
+            const index =
+                products.findIndex(
+                    product =>
+                        String(product.id) ===
+                        String(editingProductId)
+                );
+
+
+            if(index === -1){
+
+                throw new Error(
+                    "ไม่พบสินค้าที่ต้องการแก้ไข"
+                );
+
+            }
+
+
+            products[index] =
+                productData;
+
+        }
+
+        /*
+         * ADD
+         */
+
+        else{
+
+            products.push(
+                productData
+            );
+
+        }
+
+
+        if(!saveProducts()){
+
+            throw new Error(
+                "LocalStorage save failed"
+            );
+
+        }
+
+
+        renderProducts();
+
+
+        const wasEditing =
+            editingProductId !== null;
+
+
+        closeModal();
+
+
+        showToast(
+            wasEditing
+                ? "แก้ไขสินค้าเรียบร้อยแล้ว"
+                : "เพิ่มสินค้าเรียบร้อยแล้ว",
+            "success"
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "saveProduct error:",
+            error
+        );
+
+
+        showToast(
+            "เกิดข้อผิดพลาดในการบันทึกสินค้า",
+            "error"
+        );
+
+    }finally{
+
+        saveButton.disabled =
+            false;
+
+        saveButton.textContent =
+            "บันทึกสินค้า";
+
+    }
+
+}
+
+
+/* =========================================================
+   DELETE PRODUCT
+========================================================= */
+
+function deleteProduct(productId){
+
+    const index =
+        products.findIndex(
+            product =>
+                String(product.id) ===
+                String(productId)
+        );
+
+
+    if(index === -1){
+
+        showToast(
+            "ไม่พบสินค้าที่ต้องการลบ",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const product =
+        products[index];
+
+
+    const confirmed =
+        confirm(
+            `ต้องการลบ "${product.name}" ใช่หรือไม่?`
+        );
+
+
+    if(!confirmed){
+        return;
+    }
+
+
+    products.splice(
+        index,
+        1
+    );
+
+
+    if(!saveProducts()){
+        return;
+    }
+
+
+    renderProducts();
+
+
+    showToast(
+        "ลบสินค้าเรียบร้อยแล้ว",
+        "success"
+    );
+
+}
+
+
+/* =========================================================
+   RESET FILTER
+========================================================= */
+
+function resetFilters(){
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "";
+
+
+    renderProducts();
+
+}
+
+
+/* =========================================================
+   CREATE PRODUCT ID
+========================================================= */
+
+function createProductId(category){
+
+    const prefixMap = {
+
+        DRESSES:"DR",
+
+        TOPS:"TP",
+
+        BOTTOMS:"BT",
+
+        BAGS:"BG",
+
+        ACCESSORIES:"AC"
+
+    };
+
+
+    const prefix =
+        prefixMap[category] ||
+        "PR";
+
+
+    let number = 1;
+
+
+    while(true){
+
+        const id =
+            `${prefix}-${String(number).padStart(3,"0")}`;
+
+
+        const exists =
+            products.some(
+                product =>
+                    String(product.id) === id
+            );
+
+
+        if(!exists){
+
+            return id;
+
+        }
+
+
+        number++;
+
+    }
+
+}
+
+
+/* =========================================================
+   FORMAT MONEY
+========================================================= */
+
+function formatMoney(value){
+
+    return Number(
+        value || 0
+    ).toLocaleString(
+        "th-TH",
+        {
+            minimumFractionDigits:0,
+            maximumFractionDigits:0
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   ESCAPE ATTRIBUTE
+========================================================= */
+
+function escapeAttribute(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/"/g,"&quot;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;");
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer = null;
+
+
+function showToast(
+    message,
+    type = "success"
+){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.className =
+        "toast show " +
+        type;
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(() => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },3000);
+
+}
+
+
+/* =========================================================
+   EVENT BINDINGS
+========================================================= */
+
+function bindEvents(){
+
+    /* ADD */
+
+    document.getElementById(
+        "addProductBtn"
+    ).addEventListener(
+        "click",
+        openAddModal
+    );
+
+
+    /* CLOSE */
+
+    document.getElementById(
+        "closeModalBtn"
+    ).addEventListener(
+        "click",
+        closeModal
+    );
+
+
+    document.getElementById(
+        "cancelModalBtn"
+    ).addEventListener(
+        "click",
+        closeModal
+    );
+
+
+    /* OVERLAY */
+
+    document.getElementById(
+        "productModal"
+    ).addEventListener(
+        "click",
+        handleOverlayClick
+    );
+
+
+    /* FORM */
+
+    document.getElementById(
+        "productForm"
+    ).addEventListener(
+        "submit",
+        saveProduct
+    );
+
+
+    /* SEARCH */
+
+    document.getElementById(
+        "searchInput"
+    ).addEventListener(
+        "input",
+        renderProducts
+    );
+
+
+    /* CATEGORY */
+
+    document.getElementById(
+        "categoryFilter"
+    ).addEventListener(
+        "change",
+        renderProducts
+    );
+
+
+    /* RESET */
+
+    document.getElementById(
+        "resetFilterBtn"
+    ).addEventListener(
+        "click",
+        resetFilters
+    );
+
+
+    /* IMAGE MODE */
+
+    document.getElementById(
+        "uploadModeBtn"
+    ).addEventListener(
+        "click",
+        () => switchImageMode("upload")
+    );
+
+
+    document.getElementById(
+        "urlModeBtn"
+    ).addEventListener(
+        "click",
+        () => switchImageMode("url")
+    );
+
+
+    /* IMAGE */
+
+    document.getElementById(
+        "productImageFile"
+    ).addEventListener(
+        "change",
+        handleImageUpload
+    );
+
+
+    document.getElementById(
+        "productImageUrl"
+    ).addEventListener(
+        "input",
+        previewUrlImage
+    );
+
+
+    /* NAME */
+
+    document.getElementById(
+        "productName"
+    ).addEventListener(
+        "input",
+        updateGitHubImagePath
+    );
+
+
+    /* ESC */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if(event.key !== "Escape"){
+                return;
+            }
+
+
+            const modal =
+                document.getElementById(
+                    "productModal"
+                );
+
+
+            if(
+                modal.classList.contains(
+                    "show"
+                )
+            ){
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+function initialize(){
+
+    try{
+
+        /*
+         * อ่านข้อมูลเดิมก่อน
+         * สำคัญมาก เพราะต้องรักษาสินค้า 44 ตัว
+         */
+
+        products =
+            readProducts();
+
+
+        /*
+         * เปลี่ยน path รูปเก่าทั้งหมด
+         * เป็น GitHub path ตามชื่อสินค้า
+         */
+
+        migrateProductsToGitHubImages();
+
+
+        /*
+         * อ่านกลับอีกครั้งหลัง migration
+         */
+
+        products =
+            readProducts();
+
+
+        renderProducts();
+
+
+        document.getElementById(
+            "storageStatus"
+        ).textContent =
+            "✓ GitHub Images พร้อมใช้งาน";
+
+
+    }catch(error){
+
+        console.error(
+            "initialize error:",
+            error
+        );
+
+
+        document.getElementById(
+            "storageStatus"
+        ).textContent =
+            "⚠️ โหลดข้อมูลผิดพลาด";
+
+
+        showToast(
+            "ระบบโหลดสินค้าไม่สำเร็จ",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+bindEvents();
+
+initialize();
+
+</script>
+
+</body>
+</html>

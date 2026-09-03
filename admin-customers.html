@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BALENN — Customers</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap');
+
+:root{
+    --bg:#f7f3ef;
+    --card:#fffdfb;
+    --white:#ffffff;
+    --text:#302c2a;
+    --muted:#8b817b;
+    --line:#e9dfd8;
+    --gold:#b89a68;
+    --gold-dark:#96794d;
+    --pink:#c88f8f;
+    --pink-soft:#f5e7e5;
+    --green:#78977f;
+    --green-soft:#e8f0e9;
+    --orange:#c58e62;
+    --orange-soft:#f7ece2;
+    --red:#b66f6f;
+    --red-soft:#f6e7e7;
+    --shadow:0 14px 35px rgba(70,52,42,.07);
+    --serif:'Cormorant Garamond',serif;
+    --sans:'Manrope',sans-serif;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:var(--sans);
+    background:var(--bg);
+    color:var(--text);
+}
+
+button,
+input{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+/* SIDEBAR */
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:250px;
+    height:100vh;
+    background:#302c2a;
+    color:white;
+    padding:30px 20px;
+    z-index:100;
+    display:flex;
+    flex-direction:column;
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:42px;
+}
+
+.logo-main{
+    font-family:var(--serif);
+    font-size:34px;
+    letter-spacing:5px;
+    color:#e4c997;
+}
+
+.logo-sub{
+    font-size:9px;
+    letter-spacing:2px;
+    color:#c9bbb2;
+    margin-top:-3px;
+}
+
+.menu-title{
+    font-size:9px;
+    letter-spacing:2px;
+    color:#95877f;
+    margin:0 12px 12px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#cfc5bf;
+    padding:13px 14px;
+    border-radius:12px;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    transition:.2s;
+}
+
+.nav a:hover{
+    background:rgba(255,255,255,.07);
+    color:white;
+}
+
+.nav a.active{
+    background:linear-gradient(135deg,#b99b6a,#9f8257);
+    color:white;
+}
+
+.nav-icon{
+    width:21px;
+    text-align:center;
+    font-size:15px;
+}
+
+.sidebar-bottom{
+    margin-top:auto;
+    border-top:1px solid rgba(255,255,255,.09);
+    padding-top:20px;
+}
+
+.store-link{
+    display:block;
+    text-decoration:none;
+    text-align:center;
+    padding:12px;
+    border:1px solid rgba(228,201,151,.4);
+    border-radius:12px;
+    color:#e4c997;
+    font-size:11px;
+    transition:.2s;
+}
+
+.store-link:hover{
+    background:rgba(228,201,151,.08);
+}
+
+/* MAIN */
+.main{
+    margin-left:250px;
+    min-height:100vh;
+    padding:35px 42px 50px;
+}
+
+.topbar{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    margin-bottom:30px;
+}
+
+.eyebrow{
+    color:var(--gold-dark);
+    font-size:10px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    margin-bottom:7px;
+}
+
+.page-title{
+    font-family:var(--serif);
+    font-size:42px;
+    font-weight:600;
+    line-height:1;
+}
+
+.page-subtitle{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:9px;
+}
+
+.top-date{
+    font-size:11px;
+    color:var(--muted);
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:10px 15px;
+    border-radius:30px;
+}
+
+/* STATS */
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.stat{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:21px;
+    box-shadow:var(--shadow);
+}
+
+.stat-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.stat-label{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.stat-icon{
+    width:35px;
+    height:35px;
+    border-radius:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--pink-soft);
+    color:var(--pink);
+}
+
+.stat:nth-child(2) .stat-icon{
+    background:var(--orange-soft);
+    color:var(--orange);
+}
+
+.stat:nth-child(3) .stat-icon{
+    background:var(--green-soft);
+    color:var(--green);
+}
+
+.stat:nth-child(4) .stat-icon{
+    background:#eee8f0;
+    color:#88718d;
+}
+
+.stat-value{
+    font-size:25px;
+    font-weight:700;
+    margin-top:12px;
+}
+
+/* TOOLBAR */
+.toolbar{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:17px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.search{
+    position:relative;
+    flex:1;
+}
+
+.search span{
+    position:absolute;
+    left:15px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#aa9e96;
+}
+
+.search input{
+    width:100%;
+    height:44px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:#fffaf7;
+    padding:0 15px 0 42px;
+    outline:none;
+    color:var(--text);
+    font-size:12px;
+}
+
+.search input:focus{
+    border-color:#cdb38c;
+}
+
+.refresh-btn{
+    height:44px;
+    padding:0 17px;
+    border:1px solid var(--line);
+    background:white;
+    border-radius:12px;
+    color:var(--text);
+    font-size:12px;
+}
+
+.refresh-btn:hover{
+    border-color:var(--gold);
+}
+
+/* TABLE */
+.table-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
+
+.table-head{
+    padding:20px 22px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.table-title{
+    font-family:var(--serif);
+    font-size:25px;
+}
+
+.table-count{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:850px;
+}
+
+th{
+    text-align:left;
+    padding:14px 20px;
+    color:#9b9089;
+    font-size:9px;
+    letter-spacing:1.2px;
+    font-weight:700;
+    text-transform:uppercase;
+    background:#fcf8f5;
+}
+
+td{
+    padding:16px 20px;
+    border-top:1px solid #f0e8e2;
+    font-size:11px;
+    vertical-align:middle;
+}
+
+.customer{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#ead2ce,#e6caa4);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--serif);
+    font-size:18px;
+    font-weight:700;
+    flex-shrink:0;
+}
+
+.customer-name{
+    font-weight:700;
+    font-size:12px;
+}
+
+.customer-email{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:3px;
+}
+
+.contact{
+    color:#665d58;
+    line-height:1.8;
+}
+
+.order-count{
+    font-weight:700;
+}
+
+.money{
+    font-weight:700;
+}
+
+.last-order{
+    color:var(--muted);
+    font-size:10px;
+}
+
+.view-btn{
+    border:1px solid var(--line);
+    background:white;
+    border-radius:9px;
+    padding:8px 12px;
+    font-size:10px;
+    color:#645950;
+}
+
+.view-btn:hover{
+    border-color:var(--gold);
+    color:var(--gold-dark);
+}
+
+/* EMPTY */
+.empty{
+    display:none;
+    padding:65px 20px;
+    text-align:center;
+}
+
+.empty-icon{
+    width:65px;
+    height:65px;
+    border-radius:50%;
+    background:var(--pink-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 15px;
+    font-size:25px;
+}
+
+.empty h3{
+    font-family:var(--serif);
+    font-size:26px;
+    margin-bottom:7px;
+}
+
+.empty p{
+    color:var(--muted);
+    font-size:11px;
+}
+
+/* MODAL */
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(40,32,28,.52);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:500;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:min(760px,100%);
+    max-height:90vh;
+    overflow:auto;
+    background:#fffdfb;
+    border-radius:22px;
+    box-shadow:0 25px 80px rgba(0,0,0,.2);
+}
+
+.modal-header{
+    padding:23px 25px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.modal-title{
+    font-family:var(--serif);
+    font-size:28px;
+}
+
+.close{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:white;
+    color:#756961;
+    font-size:18px;
+}
+
+.modal-body{
+    padding:25px;
+}
+
+.customer-profile{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:18px;
+    background:#fcf7f4;
+    border:1px solid var(--line);
+    border-radius:16px;
+    margin-bottom:18px;
+}
+
+.big-avatar{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#ead2ce,#e6caa4);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--serif);
+    font-size:25px;
+    font-weight:700;
+}
+
+.profile-name{
+    font-family:var(--serif);
+    font-size:27px;
+}
+
+.profile-contact{
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.8;
+}
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:22px;
+}
+
+.detail-box{
+    padding:15px;
+    background:white;
+    border:1px solid var(--line);
+    border-radius:13px;
+}
+
+.detail-label{
+    color:var(--muted);
+    font-size:9px;
+    margin-bottom:7px;
+}
+
+.detail-value{
+    font-weight:700;
+    font-size:14px;
+}
+
+.section-title{
+    font-family:var(--serif);
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.order-history{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+.order-row{
+    border:1px solid var(--line);
+    border-radius:13px;
+    padding:14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.order-number{
+    font-weight:700;
+    font-size:11px;
+}
+
+.order-date{
+    color:var(--muted);
+    font-size:9px;
+    margin-top:4px;
+}
+
+.order-total{
+    font-weight:700;
+    font-size:12px;
+    text-align:right;
+}
+
+.status{
+    display:inline-block;
+    margin-top:5px;
+    padding:4px 8px;
+    border-radius:20px;
+    font-size:8px;
+    font-weight:700;
+}
+
+.status.pending{
+    background:var(--orange-soft);
+    color:var(--orange);
+}
+
+.status.shipping{
+    background:#eee9f4;
+    color:#80688a;
+}
+
+.status.completed{
+    background:var(--green-soft);
+    color:var(--green);
+}
+
+.status.cancelled{
+    background:var(--red-soft);
+    color:var(--red);
+}
+
+/* RESPONSIVE */
+@media(max-width:1050px){
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:800px){
+    .sidebar{
+        width:210px;
+    }
+
+    .main{
+        margin-left:210px;
+        padding:25px;
+    }
+
+    .top-date{
+        display:none;
+    }
+}
+
+@media(max-width:650px){
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+        padding:20px;
+    }
+
+    .logo{
+        margin-bottom:20px;
+    }
+
+    .nav{
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .sidebar-bottom{
+        margin-top:20px;
+    }
+
+    .main{
+        margin-left:0;
+        padding:22px 15px 40px;
+    }
+
+    .page-title{
+        font-size:35px;
+    }
+
+    .stats{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .stat{
+        padding:15px;
+    }
+
+    .stat-value{
+        font-size:20px;
+    }
+
+    .toolbar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .detail-grid{
+        grid-template-columns:1fr;
+    }
+
+    .order-row{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .order-total{
+        text-align:left;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+```
+<div class="logo">
+    <div class="logo-main">BALENN</div>
+    <div class="logo-sub">FASHION CO., LTD.</div>
+</div>
+
+<div class="menu-title">ADMIN MENU</div>
+
+<nav class="nav">
+
+    <a href="admin.html">
+        <span class="nav-icon">⌂</span>
+        Dashboard
+    </a>
+
+    <a href="admin-products.html">
+        <span class="nav-icon">◈</span>
+        Products
+    </a>
+
+    <a href="admin-orders.html">
+        <span class="nav-icon">▣</span>
+        Orders
+    </a>
+
+    <a href="admin-customers.html" class="active">
+        <span class="nav-icon">♧</span>
+        Customers
+    </a>
+
+</nav>
+
+<div class="sidebar-bottom">
+    <a href="index.html" class="store-link">
+        VIEW BALENN STORE ↗
+    </a>
+</div>
+```
+
+</aside>
+
+<main class="main">
+
+```
+<div class="topbar">
+
+    <div>
+        <div class="eyebrow">BALENN ADMINISTRATION</div>
+        <h1 class="page-title">Customers</h1>
+        <p class="page-subtitle">
+            ดูข้อมูลและประวัติการสั่งซื้อของลูกค้า
+        </p>
+    </div>
+
+    <div class="top-date" id="todayDate"></div>
+
+</div>
+
+
+<!-- STATS -->
+
+<section class="stats">
+
+    <div class="stat">
+        <div class="stat-top">
+            <div class="stat-label">TOTAL CUSTOMERS</div>
+            <div class="stat-icon">♧</div>
+        </div>
+        <div class="stat-value" id="totalCustomers">0</div>
+    </div>
+
+    <div class="stat">
+        <div class="stat-top">
+            <div class="stat-label">TOTAL ORDERS</div>
+            <div class="stat-icon">▣</div>
+        </div>
+        <div class="stat-value" id="totalOrders">0</div>
+    </div>
+
+    <div class="stat">
+        <div class="stat-top">
+            <div class="stat-label">TOTAL SPENDING</div>
+            <div class="stat-icon">฿</div>
+        </div>
+        <div class="stat-value" id="totalSpending">฿0</div>
+    </div>
+
+    <div class="stat">
+        <div class="stat-top">
+            <div class="stat-label">AVERAGE / CUSTOMER</div>
+            <div class="stat-icon">✦</div>
+        </div>
+        <div class="stat-value" id="averageSpending">฿0</div>
+    </div>
+
+</section>
+
+
+<!-- TOOLBAR -->
+
+<div class="toolbar">
+
+    <div class="search">
+        <span>⌕</span>
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="ค้นหาชื่อลูกค้า, อีเมล หรือเบอร์โทร..."
+        >
+    </div>
+
+    <button class="refresh-btn" onclick="loadCustomers()">
+        ↻ รีเฟรชข้อมูล
+    </button>
+
+</div>
+
+
+<!-- TABLE -->
+
+<section class="table-card">
+
+    <div class="table-head">
+        <div class="table-title">Customer List</div>
+        <div class="table-count" id="tableCount">0 customers</div>
+    </div>
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Contact</th>
+                    <th>Orders</th>
+                    <th>Total Spending</th>
+                    <th>Last Order</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody id="customersBody"></tbody>
+
+        </table>
+
+    </div>
+
+    <div class="empty" id="emptyState">
+        <div class="empty-icon">♧</div>
+        <h3>No Customers Yet</h3>
+        <p>เมื่อลูกค้ามีการสั่งซื้อ ข้อมูลจะแสดงที่หน้านี้</p>
+    </div>
+
+</section>
+```
+
+</main>
+
+<!-- CUSTOMER MODAL -->
+
+<div class="modal" id="customerModal">
+
+```
+<div class="modal-box">
+
+    <div class="modal-header">
+
+        <div class="modal-title">Customer Details</div>
+
+        <button class="close" onclick="closeModal()">×</button>
+
+    </div>
+
+    <div class="modal-body" id="modalBody"></div>
+
+</div>
+```
+
+</div>
+
+<script>
+
+const ORDER_KEY = "balennOrderHistory";
+
+let customers = [];
+
+
+/* ---------- HELPERS ---------- */
+
+function toNumber(value){
+
+    if(typeof value === "number"){
+        return Number.isFinite(value) ? value : 0;
+    }
+
+    if(value === null || value === undefined){
+        return 0;
+    }
+
+    const cleaned = String(value)
+        .replace(/฿/g,"")
+        .replace(/บาท/gi,"")
+        .replace(/,/g,"")
+        .replace(/\s/g,"")
+        .replace(/[^\d.-]/g,"");
+
+    const number = Number(cleaned);
+
+    return Number.isFinite(number) ? number : 0;
+}
+
+
+function money(value){
+
+    return "฿" + toNumber(value).toLocaleString("th-TH",{
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+    });
+
+}
+
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function getOrders(){
+
+    try{
+
+        const raw = localStorage.getItem(ORDER_KEY);
+
+        if(!raw) return [];
+
+        const parsed = JSON.parse(raw);
+
+        return Array.isArray(parsed) ? parsed : [];
+
+    }catch(error){
+
+        console.error("Cannot read orders:",error);
+
+        return [];
+
+    }
+
+}
+
+
+function getCustomerData(order){
+
+    const customer =
+        order?.customer ||
+        order?.customerInfo ||
+        order?.user ||
+        {};
+
+    return {
+
+        name:
+            customer.name ||
+            customer.fullName ||
+            order.customerName ||
+            order.name ||
+            "Guest Customer",
+
+        email:
+            customer.email ||
+            customer.emailAddress ||
+            order.email ||
+            "",
+
+        phone:
+            customer.phone ||
+            customer.tel ||
+            customer.mobile ||
+            order.phone ||
+            order.tel ||
+            "",
+
+        address:
+            customer.address ||
+            customer.shippingAddress ||
+            order.address ||
+            ""
+
+    };
+
+}
+
+
+function getOrderTotal(order){
+
+    return toNumber(
+        order?.total ??
+        order?.grandTotal ??
+        order?.orderTotal ??
+        order?.amount ??
+        0
+    );
+
+}
+
+
+function getOrderNumber(order,index){
+
+    return (
+        order?.orderNumber ||
+        order?.orderId ||
+        order?.id ||
+        `ORDER-${String(index+1).padStart(4,"0")}`
+    );
+
+}
+
+
+function getOrderDate(order){
+
+    return (
+        order?.dateTime ||
+        order?.createdAt ||
+        order?.date ||
+        ""
+    );
+
+}
+
+
+function formatDate(value){
+
+    if(!value) return "—";
+
+    const date = new Date(value);
+
+    if(Number.isNaN(date.getTime())){
+
+        return String(value);
+
+    }
+
+    return date.toLocaleDateString("th-TH",{
+        day:"2-digit",
+        month:"short",
+        year:"numeric"
+    });
+
+}
+
+
+function getStatus(order){
+
+    return (
+        order?.status ||
+        order?.orderStatus ||
+        "Pending"
+    );
+
+}
+
+
+function statusClass(status){
+
+    const s = String(status).toLowerCase();
+
+    if(s.includes("complete")) return "completed";
+
+    if(s.includes("shipping")) return "shipping";
+
+    if(s.includes("cancel")) return "cancelled";
+
+    return "pending";
+
+}
+
+
+function getInitial(name){
+
+    const text = String(name || "G").trim();
+
+    return text.charAt(0).toUpperCase();
+
+}
+
+
+/* ---------- BUILD CUSTOMERS ---------- */
+
+function buildCustomers(){
+
+    const orders = getOrders();
+
+    const map = new Map();
+
+    orders.forEach((order,index)=>{
+
+        const customer = getCustomerData(order);
+
+        const name = customer.name || "Guest Customer";
+        const email = customer.email.trim().toLowerCase();
+        const phone = customer.phone.replace(/\s/g,"");
+
+        let key = "";
+
+        if(email){
+            key = "email:" + email;
+        }else if(phone){
+            key = "phone:" + phone;
+        }else{
+            key = "name:" + name.trim().toLowerCase();
+        }
+
+        if(!map.has(key)){
+
+            map.set(key,{
+                id:key,
+                name:name,
+                email:customer.email,
+                phone:customer.phone,
+                address:customer.address,
+                orders:[],
+                total:0,
+                lastOrder:""
+            });
+
+        }
+
+        const item = map.get(key);
+
+        item.orders.push(order);
+        item.total += getOrderTotal(order);
+
+        if(!item.email && customer.email){
+            item.email = customer.email;
+        }
+
+        if(!item.phone && customer.phone){
+            item.phone = customer.phone;
+        }
+
+        if(!item.address && customer.address){
+            item.address = customer.address;
+        }
+
+        const currentDate = getOrderDate(order);
+
+        if(currentDate){
+
+            if(
+                !item.lastOrder ||
+                new Date(currentDate) > new Date(item.lastOrder)
+            ){
+
+                item.lastOrder = currentDate;
+
+            }
+
+        }
+
+    });
+
+    customers = Array.from(map.values());
+
+    customers.sort((a,b)=>{
+
+        const dateA = a.lastOrder ? new Date(a.lastOrder).getTime() : 0;
+        const dateB = b.lastOrder ? new Date(b.lastOrder).getTime() : 0;
+
+        return dateB - dateA;
+
+    });
+
+}
+
+
+/* ---------- RENDER ---------- */
+
+function renderCustomers(){
+
+    const body = document.getElementById("customersBody");
+    const empty = document.getElementById("emptyState");
+    const search = document.getElementById("searchInput").value
+        .trim()
+        .toLowerCase();
+
+    const filtered = customers.filter(customer=>{
+
+        if(!search) return true;
+
+        return (
+            customer.name.toLowerCase().includes(search) ||
+            customer.email.toLowerCase().includes(search) ||
+            customer.phone.toLowerCase().includes(search)
+        );
+
+    });
+
+
+    body.innerHTML = "";
+
+
+    if(filtered.length === 0){
+
+        empty.style.display = "block";
+
+    }else{
+
+        empty.style.display = "none";
+
+        filtered.forEach(customer=>{
+
+            const tr = document.createElement("tr");
+
+            tr.innerHTML = `
+
+                <td>
+
+                    <div class="customer">
+
+                        <div class="avatar">
+                            ${escapeHTML(getInitial(customer.name))}
+                        </div>
+
+                        <div>
+
+                            <div class="customer-name">
+                                ${escapeHTML(customer.name)}
+                            </div>
+
+                            <div class="customer-email">
+                                ${escapeHTML(customer.email || "ไม่มีอีเมล")}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <div class="contact">
+
+                        <div>
+                            ${escapeHTML(customer.phone || "ไม่มีเบอร์โทร")}
+                        </div>
+
+                        ${
+                            customer.email
+                            ? `<div>${escapeHTML(customer.email)}</div>`
+                            : ""
+                        }
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <div class="order-count">
+                        ${customer.orders.length}
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <div class="money">
+                        ${money(customer.total)}
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <div class="last-order">
+                        ${formatDate(customer.lastOrder)}
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="view-btn"
+                        onclick="openCustomer('${encodeURIComponent(customer.id)}')"
+                    >
+                        VIEW
+                    </button>
+
+                </td>
+
+            `;
+
+            body.appendChild(tr);
+
+        });
+
+    }
+
+
+    document.getElementById("tableCount").textContent =
+        filtered.length + " customers";
+
+}
+
+
+/* ---------- STATS ---------- */
+
+function updateStats(){
+
+    const orders = getOrders();
+
+    const totalCustomers = customers.length;
+
+    const totalOrders = orders.length;
+
+    const totalSpending = customers.reduce(
+        (sum,customer)=>sum + customer.total,
+        0
+    );
+
+    const average =
+        totalCustomers > 0
+        ? totalSpending / totalCustomers
+        : 0;
+
+
+    document.getElementById("totalCustomers").textContent =
+        totalCustomers.toLocaleString("th-TH");
+
+    document.getElementById("totalOrders").textContent =
+        totalOrders.toLocaleString("th-TH");
+
+    document.getElementById("totalSpending").textContent =
+        money(totalSpending);
+
+    document.getElementById("averageSpending").textContent =
+        money(average);
+
+}
+
+
+/* ---------- LOAD ---------- */
+
+function loadCustomers(){
+
+    buildCustomers();
+
+    updateStats();
+
+    renderCustomers();
+
+}
+
+
+/* ---------- MODAL ---------- */
+
+function openCustomer(encodedId){
+
+    const id = decodeURIComponent(encodedId);
+
+    const customer = customers.find(item=>item.id === id);
+
+    if(!customer) return;
+
+
+    const modal = document.getElementById("customerModal");
+
+    const orderHTML = customer.orders
+        .map((order,index)=>{
+
+            const number = getOrderNumber(order,index);
+            const date = formatDate(getOrderDate(order));
+            const total = money(getOrderTotal(order));
+            const status = getStatus(order);
+
+            return `
+
+                <div class="order-row">
+
+                    <div>
+
+                        <div class="order-number">
+                            ${escapeHTML(number)}
+                        </div>
+
+                        <div class="order-date">
+                            ${escapeHTML(date)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="order-total">
+
+                        ${total}
+
+                        <br>
+
+                        <span class="status ${statusClass(status)}">
+                            ${escapeHTML(status)}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        })
+        .join("");
+
+
+    document.getElementById("modalBody").innerHTML = `
+
+        <div class="customer-profile">
+
+            <div class="big-avatar">
+                ${escapeHTML(getInitial(customer.name))}
+            </div>
+
+            <div>
+
+                <div class="profile-name">
+                    ${escapeHTML(customer.name)}
+                </div>
+
+                <div class="profile-contact">
+
+                    ${escapeHTML(customer.email || "ไม่มีอีเมล")}
+
+                    ${
+                        customer.phone
+                        ? `<br>${escapeHTML(customer.phone)}`
+                        : ""
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="detail-grid">
+
+            <div class="detail-box">
+
+                <div class="detail-label">
+                    TOTAL ORDERS
+                </div>
+
+                <div class="detail-value">
+                    ${customer.orders.length}
+                </div>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <div class="detail-label">
+                    TOTAL SPENDING
+                </div>
+
+                <div class="detail-value">
+                    ${money(customer.total)}
+                </div>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <div class="detail-label">
+                    LAST ORDER
+                </div>
+
+                <div class="detail-value">
+                    ${formatDate(customer.lastOrder)}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        ${
+            customer.address
+            ? `
+                <div class="detail-box" style="margin-bottom:22px">
+
+                    <div class="detail-label">
+                        SHIPPING ADDRESS
+                    </div>
+
+                    <div style="font-size:11px;line-height:1.7">
+                        ${escapeHTML(customer.address)}
+                    </div>
+
+                </div>
+            `
+            : ""
+        }
+
+
+        <div class="section-title">
+            Order History
+        </div>
+
+
+        <div class="order-history">
+
+            ${
+                orderHTML ||
+                `<div style="color:#999;font-size:11px">
+                    ยังไม่มีประวัติการสั่งซื้อ
+                </div>`
+            }
+
+        </div>
+
+    `;
+
+
+    modal.classList.add("show");
+
+}
+
+
+function closeModal(){
+
+    document
+        .getElementById("customerModal")
+        .classList.remove("show");
+
+}
+
+
+document
+    .getElementById("customerModal")
+    .addEventListener("click",function(event){
+
+        if(event.target === this){
+
+            closeModal();
+
+        }
+
+    });
+
+
+document
+    .getElementById("searchInput")
+    .addEventListener("input",renderCustomers);
+
+
+/* ---------- DATE ---------- */
+
+document.getElementById("todayDate").textContent =
+    new Date().toLocaleDateString("th-TH",{
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+    });
+
+
+/* ---------- START ---------- */
+
+loadCustomers();
+
+
+/* update when localStorage changes in another tab */
+
+window.addEventListener("storage",function(event){
+
+    if(event.key === ORDER_KEY){
+
+        loadCustomers();
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
